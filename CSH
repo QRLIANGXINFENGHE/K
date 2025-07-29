@@ -191,12 +191,17 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "VexonHub",
+  Name = "扔垃圾桶",
   Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
   end
 })
 Tab:AddLabel("扔垃圾桶农场血量到1/4直接扔")
-Tab:AddLabel("防甩飞")
-Tab:AddLabel("需要卡密")
+Tab:AddLabel("防甩飞-自动连招非常多功能十分推荐")
+Tab:AddButton({
+  Name = "扔垃圾桶",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
+  end
+})
 OrionLib:Init()
