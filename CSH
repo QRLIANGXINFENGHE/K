@@ -14,32 +14,34 @@ Tab:AddLabel("缝合作者KS:Roblox[秋容]🤔")
 Tab:AddLabel("此脚本完全免费")
 Tab:AddLabel("私信ks秋容推荐脚本有机会添加到此缝合脚本里面哦")
 
-player:AddTextbox({
-	Name = "忍者注入器(点击复制下载链接)",
-	TextDisappear = true,
+Tab:AddButton({
+	Name = "忍者注入器(点击复制下载链接)",	
 	Callback = function(Value)
 		setclipboard("http://DeltaExploits.com")
 	end
 })
-player:AddTextbox({
+Tab:AddButton({
 	Name = "Krnl注入器(点击复制下载链接)",
-	TextDisappear = true,
 	Callback = function(Value)
 		setclipboard("http://Krnl.vip")
 	end
 })
-player:AddTextbox({
-	Name = "RONIX注入器(点击复制下载链接)",
-	TextDisappear = true,
+Tab:AddButton({
+	Name = "RONIX注入器(点击复制下载链接)",	
 	Callback = function(Value)
 		setclipboard("https://ronixexecutors.com/")
 	end
 })
-player:AddTextbox({
-	Name = "Xeno注入器PC(点击复制下载链接)",
-	TextDisappear = true,
+Tab:AddButton({
+	Name = "Xeno注入器PC(点击复制下载链接)",	
 	Callback = function(Value)
 		setclipboard("http://Xeno-Executor.com")
+	end
+})
+Tab:AddButton({
+	Name = "神秘礼物点击领取复制粘贴到聊天有惊喜",	
+	Callback = function(Value)
+		setclipboard("看你马呢")
 	end
 })
 local player = Window:MakeTab({
