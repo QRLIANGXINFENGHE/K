@@ -148,12 +148,17 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "99生存",
+  Name = "99生存(和谐传送)",
   Callback = function()
     loadstring(game:HttpGet('https://api.exploitingis.fun/loader', true))()
   end
 })
-
+Tab:AddButton({
+  Name = "99生存(修复传送)",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nevcit/GOA_HUB/refs/heads/main/99%20Nights%20In%20The%20Forest"))()
+  end
+})
 local Tab = Window:MakeTab({
 	Name = "内脏与黑火药",
 	Icon = "rbxassetid://7734068321",
