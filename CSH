@@ -190,7 +190,7 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-TNO4:AddButton({
+Tab:AddButton({
   Name = "VexonHub",
   Callback = function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
