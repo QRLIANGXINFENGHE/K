@@ -117,55 +117,51 @@ end)
 })
 
 
-local TNO1 = Window:MakeTab({
+local Tab = Window:MakeTab({
 	Name = "99生存",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
 
-TNO1:AddButton({
+Tab:AddButton({
   Name = "99生存",
   Callback = function()
     loadstring(game:HttpGet('https://api.exploitingis.fun/loader', true))()
   end
 })
 
-local TNO1 = Window:MakeTab({
+local Tab = Window:MakeTab({
 	Name = "内脏与黑火药",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
 
-TNO1:AddButton({
+Tab:AddButton({
   Name = "GB光环（脚本随时失效）",
   Callback = function()
-   loadstring(game:HttpGet('https://raw.githubusercontent.com/QRCHISHANJIA/QR/refs/heads/main/%E7%9A%873.0%E6%BA%90%E7%A0%81.lua?token=GHSAT0AAAAAADIDGK3AC2HUWFKO33UDKLC62EF7USQ)()
+   loadstring(game:HttpGet('https://raw.githubusercontent.com/QRCHISHANJIA/QR/refs/heads/main/%E7%9A%873.0%E6%BA%90%E7%A0%81.lua?token=GHSAT0AAAAAADIDGK3AC2HUWFKO33UDKLC62EF7USQ'))()
   end
 })
-local TNO1 = Window:MakeTab({
+local Tab = Window:MakeTab({
 	Name = "死铁轨",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
 
-TNO1:AddButton({
+Tab:AddButton({
   Name = "红叶脚本",
   Callback = function()
     loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
   end
 })
---Tab:AddButton({
---   Name = "点击复制秘钥",
---   Callback = function()
---    setclipboard("BestTheStrongest5412Roblox")
---   end
-local TNO1 = Window:MakeTab({
+
+local Tab = Window:MakeTab({
 	Name = "最强的战场",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
 
-TNO1:AddButton({
+Tab:AddButton({
   Name = "VexonHub",
   Callback = function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
