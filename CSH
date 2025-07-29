@@ -190,10 +190,10 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-Tab:AddButton({
-  Name = "扔垃圾桶",
+TNO4:AddButton({
+  Name = "VexonHub",
   Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
   end
 })
 Tab:AddLabel("扔垃圾桶农场血量到1/4直接扔")
