@@ -89,7 +89,7 @@ player:AddButton({
 player:AddButton({
 	Name = "飞行v3",
 	Callback = function()
-loadstring("https://pastebin.com/raw/LY9W7CPL")()
+loadstring("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/%E9%A3%9E%E8%A1%8C%E8%84%9A%E6%9C%AC(%E4%B8%AD%E6%96%87%E5%8F%AF%E9%9A%90%E8%97%8F).txt")()
   	end
 })
 player:AddButton({
