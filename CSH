@@ -185,7 +185,7 @@ Tab:AddButton({
   end
 })
 local Tab = Window:MakeTab({
-	Name = "雨",
+	Name = "鱼",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
@@ -247,7 +247,7 @@ Tab:AddButton({
     loadstring(game:HttpGet('https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0'))("")
   end
 })
-Tab:AddLabel("自动耕种、复制、移植树木、自动购买、传送等")
+Tab:AddLabel("自动伐木、复制、移植树木、自动购买、传送等")
 --[[
 local Tab = Window:MakeTab({
 	Name = "",
