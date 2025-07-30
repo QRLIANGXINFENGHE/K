@@ -89,14 +89,6 @@ loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\
 })
 
 player:AddButton({
-	Name = "自瞄",
-	Callback = function()
-loadstring(game:HttpGet("https://movefast.pythonanywhere.com/robloxscripts/hub"))()
-  	end
-})
-player:AddLabel("瞄准机器人、视觉 ESP、彩虹效果等")
-
-player:AddButton({
 	Name = "透视",
 	Callback = function()
       	local FillColor = Color3.fromRGB(175,25,255)
