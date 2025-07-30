@@ -1,7 +1,7 @@
 loadstring(game:HttpGet("https://pastebin.com/raw/6xQ5gtbj"))();
 loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))();
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/HuFfpTLX"))()
-local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "欢迎使用秋容脚本1.12", ConfigFolder = "欢迎使用"})
+local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "欢迎使用秋容脚本1.13", ConfigFolder = "欢迎使用"})
 
 local Tab = Window:MakeTab({
     Name = "👑脚本公告👑",
@@ -11,9 +11,9 @@ local Tab = Window:MakeTab({
 
 Tab:AddParagraph("UI作者","👑皇🇨🇳")
 Tab:AddLabel("明天将会有一次大更新")
-Tab:AddLabel("上次更新时间7月30日12点25分")
-Tab:AddLabel("本次更新时间7月30日18点10分")
-Tab:AddLabel("更新了一些新的脚本")
+Tab:AddLabel("上次更新时间7月30日20点10分")
+Tab:AddLabel("本次更新时间7月30日23点41分")
+Tab:AddLabel("更新了墨水游戏和飞行v3其他脚本等")
 Tab:AddLabel("缝合作者KS:Roblox[秋容]🤔")
 Tab:AddLabel("此脚本完全免费")
 Tab:AddLabel("私信ks秋容推荐脚本有机会添加到此缝合脚本里面哦")
@@ -80,11 +80,22 @@ player:AddTextbox({
 		game.Workspace.Gravity = Value
 	end
 })
-
 player:AddButton({
-	Name = "飞行v2",
+  Name = "甩飞+防甩飞",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+  end
+})
+player:AddButton({
+	Name = "飞行v3",
 	Callback = function()
-loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
+loadstring("https://pastebin.com/raw/LY9W7CPL")()
+  	end
+})
+player:AddButton({
+	Name = "踏空",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
   	end
 })
 
@@ -250,6 +261,39 @@ Tab:AddButton({
   end
 })
 Tab:AddLabel("自动伐木、复制、移植树木、自动购买、传送等")
+local Tab = Window:MakeTab({
+	Name = "墨水游戏",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "甩飞不会封禁600",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/inkgame.lua", true))()
+  end
+})
+Tab:AddLabel("Fling Aura是甩飞")
+Tab:AddButton({
+  Name = "Xa",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexScriptX/Ink-Game-Script/refs/heads/main/Ink%20Game%20by%20AlexScriptX.lua"))()
+  end
+})
+Tab:AddLabel("自动获胜、自动达尔戈纳、捉迷藏、玻璃视觉、跳绳等（无钥匙）")
+local Tab = Window:MakeTab({
+	Name = "被遗弃",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "loadstring(game:HttpGet('https://pastefy.app/J21E72hr/raw'))();",
+  Callback = function()
+    
+  end
+})
+Tab:AddLabel("绕过反作弊 | 无限耐力 | 速度转换器 | ESP | PC/移动端")
 --[[
 local Tab = Window:MakeTab({
 	Name = "",
