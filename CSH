@@ -288,9 +288,9 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "loadstring(game:HttpGet('https://pastefy.app/J21E72hr/raw'))();",
+  Name = "点击使用(功能如下)",
   Callback = function()
-    
+    loadstring(game:HttpGet('https://pastefy.app/J21E72hr/raw'))();
   end
 })
 Tab:AddLabel("绕过反作弊 | 无限耐力 | 速度转换器 | ESP | PC/移动端")
