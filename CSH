@@ -1,8 +1,16 @@
 loadstring(game:HttpGet("https://pastebin.com/raw/6xQ5gtbj"))();
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "检测更新时间";
+	Text = "2025年7月31日00:18:18"})
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "脚本版本";
+	Text = "1.14"})
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "更新公告";
+	Text = "添加新脚本修复飞行没效果"})
 loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))();
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/HuFfpTLX"))()
-local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "欢迎使用秋容脚本1.13", ConfigFolder = "欢迎使用"})
-
+local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "尊贵的用户欢迎使用秋容脚本"})
 local Tab = Window:MakeTab({
     Name = "👑脚本公告👑",
     Icon = "rbxassetid://7734068321",
@@ -10,14 +18,10 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddParagraph("UI作者","👑皇🇨🇳")
-Tab:AddLabel("明天将会有一次大更新")
-Tab:AddLabel("上次更新时间7月30日20点10分")
-Tab:AddLabel("本次更新时间7月30日23点41分")
-Tab:AddLabel("更新了墨水游戏和飞行v3其他脚本等")
 Tab:AddLabel("缝合作者KS:Roblox[秋容]🤔")
 Tab:AddLabel("此脚本完全免费")
-Tab:AddLabel("私信ks秋容推荐脚本有机会添加到此缝合脚本里面哦")
-
+Tab:AddLabel("私信ks秋容推荐脚本会添加到此缝合脚本里面哦")
+Tab:AddLabel("想要添加某个服务器脚本私信ks秋容说明你需要的服务器有时间会添加")
 Tab:AddButton({
 	Name = "忍者注入器(点击复制下载链接)",	
 	Callback = function(Value)
@@ -80,18 +84,21 @@ player:AddTextbox({
 		game.Workspace.Gravity = Value
 	end
 })
+
 player:AddButton({
   Name = "甩飞+防甩飞",
   Callback = function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
   end
 })
+
 player:AddButton({
 	Name = "飞行v3",
 	Callback = function()
 loadstring(game:HttpGet("https://pastebin.com/raw/LY9W7CPL"))()
   	end
 })
+
 player:AddButton({
 	Name = "踏空",
 	Callback = function()
