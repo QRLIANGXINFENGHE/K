@@ -1,7 +1,7 @@
 loadstring(game:HttpGet("https://pastebin.com/raw/6xQ5gtbj"))();
 loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))();
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/HuFfpTLX"))()
-local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "尊贵的用户欢迎使用秋容脚本1.1", ConfigFolder = "欢迎使用"})
+local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "欢迎使用秋容脚本1.12", ConfigFolder = "欢迎使用"})
 
 local Tab = Window:MakeTab({
     Name = "👑脚本公告👑",
@@ -10,6 +10,9 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddParagraph("UI作者","👑皇🇨🇳")
+Tab:AddLabel("上次更新时间7月30日12点25分")
+Tab:AddLabel("本次更新时间7月30日18点10分")
+Tab:AddLabel("更新了一些新的脚本")
 Tab:AddLabel("缝合作者KS:Roblox[秋容]🤔")
 Tab:AddLabel("此脚本完全免费")
 Tab:AddLabel("私信ks秋容推荐脚本有机会添加到此缝合脚本里面哦")
