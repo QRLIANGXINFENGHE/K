@@ -12,7 +12,7 @@ local Tab = Window:MakeTab({
 Tab:AddParagraph("UI作者","👑皇🇨🇳")
 Tab:AddLabel("上次更新时间7月30日12点25分")
 Tab:AddLabel("本次更新时间7月30日18点10分")
-Tab:AddLabel("更新了一些新的脚本")
+Tab:AddLabel("更新了一些新的脚本并且修复了一些语言")
 Tab:AddLabel("缝合作者KS:Roblox[秋容]🤔")
 Tab:AddLabel("此脚本完全免费")
 Tab:AddLabel("私信ks秋容推荐脚本有机会添加到此缝合脚本里面哦")
@@ -146,19 +146,19 @@ end)
 
 
 local Tab = Window:MakeTab({
-	Name = "99生存",
+	Name = "森林中的99夜",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
 
 Tab:AddButton({
-  Name = "99生存(和谐传送)",
+  Name = "森林中的99夜(和谐传送)",
   Callback = function()
     loadstring(game:HttpGet('https://api.exploitingis.fun/loader', true))()
   end
 })
 Tab:AddButton({
-  Name = "99生存(修复传送)",
+  Name = "森林中的99夜(修复传送)推荐使用",
   Callback = function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Nevcit/GOA_HUB/refs/heads/main/99%20Nights%20In%20The%20Forest"))()
   end
