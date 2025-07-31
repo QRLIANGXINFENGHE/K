@@ -294,7 +294,7 @@ Tab:AddButton({
   loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()
   end
 })
-Tab:AddLabel("建议两个脚本一起使用")
+Tab:AddLabel("只能用一个脚本UI多了将会卡住秋荣脚本导致无法去除退出")
 local Tab = Window:MakeTab({
 	Name = "被遗弃",
 	Icon = "rbxassetid://7734068321",
