@@ -5,10 +5,10 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 	Text = "2025年7月31日16:15:18"})
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "脚本版本";
-	Text = "1.16"})
+	Text = "1.17"})
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "更新公告";
-	Text = "更新墨水游戏脚本并添加红叶注释"})
+	Text = "修复了墨水游戏脚本已过期问题已更新新版本"})
 loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))();
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/HuFfpTLX"))()
 local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "尊贵的用户欢迎使用秋容脚本"})
@@ -284,17 +284,10 @@ local Tab = Window:MakeTab({
 Tab:AddButton({
   Name = "甩飞不会封禁600",
   Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/inkgame.lua", true))()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/script.lua"))()
   end
 })
-Tab:AddLabel("Fling Aura是甩飞")
-Tab:AddButton({
-  Name = "Xa",
-  Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexScriptX/Ink-Game-Script/refs/heads/main/Ink%20Game%20by%20AlexScriptX.lua"))()
-  end
-})
-Tab:AddLabel("自动获胜、自动达尔戈纳、捉迷藏、玻璃视觉、跳绳等（无钥匙）")
+Tab:AddLabel("Fling甩飞/自动获胜、自动达尔戈纳、捉迷藏、玻璃视觉、跳绳等")
 local Tab = Window:MakeTab({
 	Name = "被遗弃",
 	Icon = "rbxassetid://7734068321",
