@@ -282,7 +282,7 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "甩飞不会封禁600",
+  Name = "甩飞(已更新)",
   Callback = function()
   loadstring(game:HttpGet("https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/script.lua"))()
   end
