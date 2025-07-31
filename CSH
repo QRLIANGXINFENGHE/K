@@ -2,13 +2,13 @@ loadstring(game:HttpGet("https://pastebin.com/raw/6xQ5gtbj"))();
 loadstring(game:HttpGet("https://pastebin.com/raw/ns9JeMpW"))();
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "检测更新时间";
-	Text = "2025年7月31日16:15:18"})
+	Text = "2025年7月31日17:22:18"})
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "脚本版本";
-	Text = "1.17"})
+	Text = "1.171"})
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "更新公告";
-	Text = "修复了墨水游戏脚本已过期问题已更新新版本"})
+	Text = "添加了一个新的墨水游戏脚本两个一起使用更好用"})
 loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))();
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/HuFfpTLX"))()
 local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "尊贵的用户欢迎使用秋容脚本"})
@@ -288,6 +288,13 @@ Tab:AddButton({
   end
 })
 Tab:AddLabel("Fling甩飞/自动获胜、自动达尔戈纳、捉迷藏、玻璃视觉、跳绳等")
+Tab:AddButton({
+  Name = "实用脚本(推荐)",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()
+  end
+})
+Tab:AddLabel("建议两个脚本一起使用")
 local Tab = Window:MakeTab({
 	Name = "被遗弃",
 	Icon = "rbxassetid://7734068321",
