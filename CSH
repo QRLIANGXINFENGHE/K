@@ -2,13 +2,13 @@ loadstring(game:HttpGet("https://pastebin.com/raw/6xQ5gtbj"))();
 loadstring(game:HttpGet("https://pastebin.com/raw/ns9JeMpW"))();
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "检测更新时间";
-	Text = "2025年7月31日04:18:18"})
+	Text = "2025年7月31日16:15:18"})
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "脚本版本";
-	Text = "1.15"})
+	Text = "1.16"})
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "更新公告";
-	Text = "更新防挂机"})
+	Text = "更新墨水游戏脚本并添加红叶注释"})
 loadstring(game:HttpGet("https://raw.githubusercontent.com/boyscp/scriscriptsc/main/bbn.lua"))();
 local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/HuFfpTLX"))()
 local Window = OrionLib:MakeWindow({Name = "秋容缝合脚本", HidePremium = false, SaveConfig = false, IntroText = "尊贵的用户欢迎使用秋容脚本"})
@@ -198,26 +198,29 @@ local Tab = Window:MakeTab({
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
-
 Tab:AddButton({
   Name = "红叶需要解卡(推荐)",
   Callback = function()
     loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
   end
 })
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
 local Tab = Window:MakeTab({
 	Name = "鱼",
 	Icon = "rbxassetid://7734068321",
 	PremiumOnly = false
 })
-
 Tab:AddButton({
   Name = "红叶需要解卡(推荐)",
   Callback = function()
     loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
   end
 })
-
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
 local Tab = Window:MakeTab({
 	Name = "最强的战场",
 	Icon = "rbxassetid://7734068321",
@@ -249,6 +252,9 @@ Tab:AddButton({
     loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
   end
 })
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
 Tab:AddButton({
   Name = "Soluna",
   Callback = function()
@@ -302,6 +308,19 @@ Tab:AddButton({
   end
 })
 Tab:AddLabel("绕过反作弊 | 无限耐力 | 速度转换器 | ESP | PC/移动端")
+local Tab = Window:MakeTab({
+	Name = "Blox Fruits",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "点击使用(功能如下)",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/inkgame.lua", true))()
+  end
+})
+Tab:AddLabel("自动农场/自动获取果实/自动打击/自动升级")
 --[[
 local Tab = Window:MakeTab({
 	Name = "",
