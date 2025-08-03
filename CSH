@@ -342,3 +342,584 @@ Tab:AddButton({
 Tab:AddLabel("")
 --]]
 OrionLib:Init()
+player:AddTextbox({
+	Name = "跳跃高度",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+	end
+})
+
+player:AddTextbox({
+	Name = "重力设置",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Workspace.Gravity = Value
+	end
+})
+
+player:AddButton({
+  Name = "甩飞+防甩飞",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+  end
+})
+
+player:AddButton({
+	Name = "飞行v3",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/LY9W7CPL"))()
+  	end
+})
+
+player:AddButton({
+	Name = "踏空",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+  	end
+})
+player:AddButton({
+	Name = "防挂机",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/ns9JeMpW"))();
+  	end
+})
+player:AddButton({
+	Name = "透视",
+	Callback = function()
+      	local FillColor = Color3.fromRGB(175,25,255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
+
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
+    end
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+  	end
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "森林中的99夜",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "森林中的99夜(和谐传送)",
+  Callback = function()
+    loadstring(game:HttpGet('https://api.exploitingis.fun/loader', true))()
+  end
+})
+Tab:AddButton({
+  Name = "森林中的99夜(修复传送)推荐使用",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nevcit/GOA_HUB/refs/heads/main/99%20Nights%20In%20The%20Forest"))()
+  end
+})
+local Tab = Window:MakeTab({
+	Name = "内脏与黑火药",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "GB光环（脚本随时失效）",
+  Callback = function()
+   loadstring(game:HttpGet('https://raw.githubusercontent.com/QRCHISHANJIA/QR/refs/heads/main/%E7%9A%873.0%E6%BA%90%E7%A0%81.lua?token=GHSAT0AAAAAADIDGK3AC2HUWFKO33UDKLC62EF7USQ'))()
+  end
+})
+local Tab = Window:MakeTab({
+	Name = "死铁轨",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+Tab:AddButton({
+  Name = "红叶需要解卡(推荐)",
+  Callback = function()
+    loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
+  end
+})
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
+local Tab = Window:MakeTab({
+	Name = "鱼",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+Tab:AddButton({
+  Name = "红叶需要解卡(推荐)",
+  Callback = function()
+    loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
+  end
+})
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
+local Tab = Window:MakeTab({
+	Name = "最强的战场",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "VexonHub",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+  end
+})
+Tab:AddLabel("扔垃圾桶农场血量到1/4直接扔")
+Tab:AddLabel("防甩飞-自动连招非常多功能十分推荐")
+Tab:AddButton({
+  Name = "扔垃圾桶",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
+  end
+})
+local Tab = Window:MakeTab({
+	Name = "花园种植",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+Tab:AddButton({
+  Name = "红叶需要解卡(推荐)",
+  Callback = function()
+    loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
+  end
+})
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
+Tab:AddButton({
+  Name = "Soluna",
+  Callback = function()
+    loadstring(game:HttpGet("https://soluna-script.vercel.app/grow-a-garden.lua", true))()
+  end
+})
+Tab:AddLabel("花园种植 | 自动农场、自动购买、自动销售、自动种植、接受交易、防 Afk、传送等")
+local Tab = Window:MakeTab({
+	Name = "伐木大亨2",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "KronHub",
+  Callback = function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0'))("")
+  end
+})
+Tab:AddLabel("自动伐木、复制、移植树木、自动购买、传送等")
+local Tab = Window:MakeTab({
+	Name = "墨水游戏",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "甩飞(已更新)",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/script.lua"))()
+  end
+})
+Tab:AddLabel("Fling甩飞/自动获胜、自动达尔戈纳、捉迷藏、玻璃视觉、跳绳等")
+Tab:AddButton({
+  Name = "实用脚本(推荐)",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()
+  end
+})
+Tab:AddLabel("只能用一个脚本UI多了将会卡住秋荣脚本导致无法去除退出")
+local Tab = Window:MakeTab({
+	Name = "被遗弃",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "点击使用(功能如下)",
+  Callback = function()
+    loadstring(game:HttpGet('https://pastefy.app/J21E72hr/raw'))();
+  end
+})
+Tab:AddLabel("绕过反作弊 | 无限耐力 | 速度转换器 | ESP | PC/移动端")
+local Tab = Window:MakeTab({
+	Name = "Blox Fruits",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "点击使用(功能如下)",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/inkgame.lua", true))()
+  end
+})
+Tab:AddLabel("自动农场/自动获取果实/自动打击/自动升级")
+--[[
+local Tab = Window:MakeTab({
+	Name = "",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "",
+  Callback = function()
+    
+  end
+})
+Tab:AddLabel("")
+--]]
+OrionLib:Init()})
+Tab:AddButton({
+	Name = "RONIX注入器(点击复制下载链接)",	
+	Callback = function(Value)
+		setclipboard("https://ronixexecutors.com/")
+	end
+})
+Tab:AddButton({
+	Name = "Xeno注入器PC(点击复制下载链接)",	
+	Callback = function(Value)
+		setclipboard("http://Xeno-Executor.com")
+	end
+})
+Tab:AddButton({
+	Name = "神秘礼物点击领取复制粘贴到聊天有惊喜",	
+	Callback = function(Value)
+		setclipboard("看你马呢")
+	end
+})
+local player = Window:MakeTab({
+	Name = "👁玩家👁",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+player:AddTextbox({
+	Name = "移动速度",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+	end
+})
+
+player:AddTextbox({
+	Name = "跳跃高度",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+	end
+})
+
+player:AddTextbox({
+	Name = "重力设置",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Workspace.Gravity = Value
+	end
+})
+
+player:AddButton({
+  Name = "甩飞+防甩飞",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+  end
+})
+
+player:AddButton({
+	Name = "飞行v3",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/LY9W7CPL"))()
+  	end
+})
+
+player:AddButton({
+	Name = "踏空",
+	Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))()
+  	end
+})
+player:AddButton({
+	Name = "防挂机",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/ns9JeMpW"))();
+  	end
+})
+player:AddButton({
+	Name = "透视",
+	Callback = function()
+      	local FillColor = Color3.fromRGB(175,25,255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
+
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
+    end
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+  	end
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "森林中的99夜",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "森林中的99夜(和谐传送)",
+  Callback = function()
+    loadstring(game:HttpGet('https://api.exploitingis.fun/loader', true))()
+  end
+})
+Tab:AddButton({
+  Name = "森林中的99夜(修复传送)推荐使用",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nevcit/GOA_HUB/refs/heads/main/99%20Nights%20In%20The%20Forest"))()
+  end
+})
+local Tab = Window:MakeTab({
+	Name = "内脏与黑火药",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "GB光环（脚本随时失效）",
+  Callback = function()
+   loadstring(game:HttpGet('https://raw.githubusercontent.com/QRCHISHANJIA/QR/refs/heads/main/%E7%9A%873.0%E6%BA%90%E7%A0%81.lua?token=GHSAT0AAAAAADIDGK3AC2HUWFKO33UDKLC62EF7USQ'))()
+  end
+})
+local Tab = Window:MakeTab({
+	Name = "死铁轨",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+Tab:AddButton({
+  Name = "红叶需要解卡(推荐)",
+  Callback = function()
+    loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
+  end
+})
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
+local Tab = Window:MakeTab({
+	Name = "鱼",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+Tab:AddButton({
+  Name = "红叶需要解卡(推荐)",
+  Callback = function()
+    loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
+  end
+})
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
+local Tab = Window:MakeTab({
+	Name = "最强的战场",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "VexonHub",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub"))()
+  end
+})
+Tab:AddLabel("扔垃圾桶农场血量到1/4直接扔")
+Tab:AddLabel("防甩飞-自动连招非常多功能十分推荐")
+Tab:AddButton({
+  Name = "扔垃圾桶",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", true))()
+  end
+})
+local Tab = Window:MakeTab({
+	Name = "花园种植",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+Tab:AddButton({
+  Name = "红叶需要解卡(推荐)",
+  Callback = function()
+    loadstring(game:HttpGet("https://getnative.cc/script/loader"))()
+  end
+})
+Tab:AddLabel("为什么死铁鬼/鱼/种植花园/只有这一个红叶脚本？")
+Tab:AddLabel("原因:测试了大部分脚本就只有红叶脚本在死铁轨/鱼/种植花园中好用作者亲自测试过")
+Tab:AddLabel("坏处:虽然要解卡密但很简单并且你值得解卡密")
+Tab:AddButton({
+  Name = "Soluna",
+  Callback = function()
+    loadstring(game:HttpGet("https://soluna-script.vercel.app/grow-a-garden.lua", true))()
+  end
+})
+Tab:AddLabel("花园种植 | 自动农场、自动购买、自动销售、自动种植、接受交易、防 Afk、传送等")
+local Tab = Window:MakeTab({
+	Name = "伐木大亨2",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "KronHub",
+  Callback = function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0'))("")
+  end
+})
+Tab:AddLabel("自动伐木、复制、移植树木、自动购买、传送等")
+local Tab = Window:MakeTab({
+	Name = "墨水游戏",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "甩飞(已更新)",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/script.lua"))()
+  end
+})
+Tab:AddLabel("Fling甩飞/自动获胜、自动达尔戈纳、捉迷藏、玻璃视觉、跳绳等")
+Tab:AddButton({
+  Name = "实用脚本(推荐)",
+  Callback = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()
+  end
+})
+Tab:AddLabel("只能用一个脚本UI多了将会卡住秋荣脚本导致无法去除退出")
+local Tab = Window:MakeTab({
+	Name = "被遗弃",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "点击使用(功能如下)",
+  Callback = function()
+    loadstring(game:HttpGet('https://pastefy.app/J21E72hr/raw'))();
+  end
+})
+Tab:AddLabel("绕过反作弊 | 无限耐力 | 速度转换器 | ESP | PC/移动端")
+local Tab = Window:MakeTab({
+	Name = "Blox Fruits",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "点击使用(功能如下)",
+  Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/inkgame.lua", true))()
+  end
+})
+Tab:AddLabel("自动农场/自动获取果实/自动打击/自动升级")
+--[[
+local Tab = Window:MakeTab({
+	Name = "",
+	Icon = "rbxassetid://7734068321",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+  Name = "",
+  Callback = function()
+    
+  end
+})
+Tab:AddLabel("")
+--]]
+OrionLib:Init()
