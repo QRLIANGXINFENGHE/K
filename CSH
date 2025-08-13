@@ -291,13 +291,13 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "更新啦！2.1版本", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "更新啦！2.2版本", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "在玩家通用设置里面添加了秋容飞行(此飞行可以使用载具包括武器大部分游戏不会被检测到包括墨水)\n简洁优化了一些底层代码确保流畅性和无问题\n优化老玩家需要再次输入验证已更新成绕过验证直接到公告页面", 
+    local contentLabel = createLabel(noticeFrame, "更新了Doors两个脚本无需卡密(包括详情)", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1292,112 +1292,123 @@ end
 -- ====================== 飞行 ======================
 -- 新增：主菜单执行确认对话框
 -- 优化后的执行确认对话框（支持显示功能说明）
+-- 优化后的执行确认对话框（支持显示功能说明）
 local function createExecutionDialog(title, description, onConfirm)
     local localPlayer = Players.LocalPlayer
     if not localPlayer then return end
     local playerGui = localPlayer:FindFirstChild("PlayerGui")
     if not playerGui then return end
-
-    -- 对话框容器
     local dialogGui = Instance.new("ScreenGui")
     dialogGui.Name = "ExecutionDialog"
     dialogGui.IgnoreGuiInset = true
     dialogGui.Parent = playerGui
-
-    -- 半透明背景遮罩
+    -- 背景遮罩（防穿透）
     local overlay = Instance.new("Frame")
     overlay.Size = UDim2.new(1, 0, 1, 0)
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.7
     overlay.Parent = dialogGui
-
-    -- 对话框主体（扩大尺寸以容纳说明文字）
+    -- 对话框主框架：宽缩小1/5（0.7→0.56），高动态扩展
     local dialogFrame = Instance.new("Frame")
-    dialogFrame.Size = UDim2.new(0, 500 * UI_STATE.scale, 0, 320 * UI_STATE.scale)  -- 扩大高度
+    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0) -- 0.7 × (4/5) = 0.56
     dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
     dialogFrame.BackgroundTransparency = 0.3
     dialogFrame.Parent = overlay
     createCorner(dialogFrame, 12)
-
-    -- 标题
-    createLabel(dialogFrame, {
+    -- 标题栏：紧凑设计，文字适中
+    local titleLabel = createLabel(dialogFrame, {
         name = "DialogTitle",
-        size = UDim2.new(1, -20 * UI_STATE.scale, 0, 40 * UI_STATE.scale),
-        position = UDim2.new(0, 10 * UI_STATE.scale, 0, 15 * UI_STATE.scale),
+        size = UDim2.new(1, -40, 0, 35), -- 高度压缩（原45→35）
+        position = UDim2.new(0, 20, 0, 15), -- 上移贴边
         text = title or "执行确认",
         color = CONFIG.UI_COLORS.accent,
-        textSize = 20,
+        textSize = 20, -- 标题文字微缩（原24→20）
         font = Enum.Font.SourceSansBold,
         xAlign = Enum.TextXAlignment.Center
     })
-
-    -- 横线分隔
+    -- 分隔线：更细，贴近标题
     local line = Instance.new("Frame")
-    line.Size = UDim2.new(1, -40 * UI_STATE.scale, 0, 2 * UI_STATE.scale)
-    line.Position = UDim2.new(0, 20 * UI_STATE.scale, 0, 65 * UI_STATE.scale)
-    line.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
+    line.Size = UDim2.new(1, -40, 0, 1) -- 线宽1px，更精致
+    line.Position = UDim2.new(0, 20, 0, 55) -- 标题下方40px（15+35）
+    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180) -- 浅灰更柔和
     line.Parent = dialogFrame
-
-    -- 功能说明文本框（核心修改：显示原菜单中的说明文字）
-    local descLabel = createLabel(dialogFrame, {
+    -- 滚动容器：抢占中间80%空间，强制滚动
+    local scrollContainer = Instance.new("ScrollingFrame")
+    scrollContainer.Name = "ContentScroll"
+    scrollContainer.Size = UDim2.new(1, -40, 0, 300) -- 初始高度，动态扩展
+    scrollContainer.Position = UDim2.new(0, 20, 0, 65) -- 分隔线下方10px，极致紧凑
+    scrollContainer.BackgroundTransparency = 1
+    scrollContainer.ScrollBarThickness = 5 -- 细滚动条
+    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y -- 仅垂直滚动
+    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- 动态计算
+    scrollContainer.Parent = dialogFrame
+    createCorner(scrollContainer, 8)
+    -- 内容标签：文字放大，适配滚动区
+    local descLabel = createLabel(scrollContainer, {
         name = "DialogContent",
-        size = UDim2.new(1, -40 * UI_STATE.scale, 0, 180 * UI_STATE.scale),  -- 大尺寸文本区域
-        position = UDim2.new(0, 20 * UI_STATE.scale, 0, 80 * UI_STATE.scale),
+        size = UDim2.new(1, 0, 0, 0), -- 高度自适应
         text = description or "确认执行该功能？",
-        textSize = 14 * UI_STATE.scale,
+        textSize = 16, -- 内容文字放大（原14→16）
         xAlign = Enum.TextXAlignment.Left,
-        textWrapped = true,  -- 自动换行
-        bgColor = Color3.fromRGB(40, 40, 60),
-        bgTransparency = 0.8
+        textWrapped = true,
+        bgColor = Color3.fromRGB(30, 30, 50), -- 深色背景更突出
+        bgTransparency = 0.9
     })
-    createCorner(descLabel, 6)
-
-    -- 按钮容器
--- 按钮容器（替换原 btnContainer 及其子节点）
--- 按钮容器（保持原有容器配置，仅修改按钮和布局）
+    createCorner(descLabel, 8)
+    -- 按钮容器：底部紧凑布局，按钮对称分布
+-- 按钮容器：改为绝对定位，左右分离
 local btnContainer = Instance.new("Frame")
-btnContainer.Size = UDim2.new(1, -40 * UI_STATE.scale, 0, 45 * UI_STATE.scale)
-btnContainer.Position = UDim2.new(0, 20 * UI_STATE.scale, 1, -55 * UI_STATE.scale)
+btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
+btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
 btnContainer.BackgroundTransparency = 1
 btnContainer.Parent = dialogFrame
 
--- 关键优化：水平布局 + 按钮顺序调整（取消左，确定右）
-local btnLayout = Instance.new("UIListLayout")
-btnLayout.FillDirection = Enum.FillDirection.Horizontal -- 水平排列
-btnLayout.Padding = UDim.new(0, 15 * UI_STATE.scale)    -- 按钮间距
-btnLayout.SortOrder = Enum.SortOrder.LayoutOrder        -- 按创建顺序排序
-btnLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right -- 按钮组整体靠右（可选，若要贴边可删）
-btnLayout.Parent = btnContainer
-
--- 1. 取消按钮（左）
+-- 取消按钮：左对齐（保留原逻辑）
 createButton(btnContainer, {
     name = "CancelBtn",
-    size = UDim2.new(0.45, 0, 1, 0),
+    size = UDim2.new(0, 80, 1, 0), -- 固定宽度
+    position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
     text = "取消",
-    textSize = 14 * UI_STATE.scale,
-    bgColor = CONFIG.UI_COLORS.danger,
-    hoverColor = Color3.fromRGB(170, 70, 70),
-    onClick = function()
-        dialogGui:Destroy()
-    end
+    onClick = function() dialogGui:Destroy() end
 })
 
--- 2. 确定按钮（右）
+-- 确认按钮：右对齐（新增偏移量）
 createButton(btnContainer, {
     name = "ConfirmBtn",
-    size = UDim2.new(0.45, 0, 1, 0),
-    text = "确定执行",
-    textSize = 14 * UI_STATE.scale,
-    bgColor = CONFIG.UI_COLORS.success,
-    hoverColor = Color3.fromRGB(70, 110, 90),
+    size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
+    position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
+    anchor = Vector2.new(1, 0), -- 右锚点
+    text = "确认执行",
+    bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
     onClick = function()
         dialogGui:Destroy()
-        onConfirm() -- 执行功能
+        onConfirm()
     end
 })
 
+-- 新增：中间空隙（视觉分隔）
+local gap = Instance.new("Frame")
+gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
+gap.BackgroundTransparency = 1
+gap.Parent = btnContainer
+
+    -- 动态布局计算：让文字区占满中间
+    task.defer(function()
+        local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
+        local maxDialogHeight = screenHeight * 0.85 -- 高度扩展50%（原0.57→0.85）
+        local contentHeight = descLabel.TextBounds.Y + 20 -- 内容高度+内边距
+        -- 强制滚动容器高度最大化
+        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100)) -- 标题+按钮区占100px
+        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight) -- 滚动范围匹配内容
+        descLabel.Size = UDim2.new(1, 0, 0, contentHeight) -- 内容标签高度自适应
+        -- 调整对话框总高度
+        local totalHeight = 65 + -- 标题到滚动容器顶部：15+35+1+14=65（精确计算）
+                            scrollContainer.Size.Y.Offset + 
+                            35 -- 按钮区高度22 + 间距13
+        dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
+    end)
 end
 
 -- ====================== 执行脚本代码 ======================
@@ -1985,6 +1996,47 @@ local function createBloxFruitsContent(container)
 
     return function() end
 end
+local function createDoorsContent(container)
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "NullFire(进入游戏执行)",
+            url = "https://raw.githubusercontent.com/TeamNullFire/NullFire/main/loader.lua",
+            desc = "功能说明：\n主界面（Main）\n  杂项控制（Miscellaneous）\n  - 即时交互触发：快速响应机关\n  - 修复房间异常：修正重复房间BUG\n  - 跳过过场：直跳剧情动画\n  通知设置（Notifiers）\n  - 音效/聊天提示：自定义怪物生成通知与音效\n  自动化工具（Automation）\n  - 自动重开/回大厅：死亡/结束后自动操作\n  - 自动解谜/修电箱：破解图书馆、修复电力\n  光环系统（Auras）\n  - 战利品/门光环：高亮道具与可互动门，支持设置\n\n玩家控制（Player）\n  移动调控（Movement）\n  - 速度增幅/超级加速：突破移速限制，瞬间满速\n  - 飞行/传送（F/B键）：自由升空、远程位移（距离可调）\n  角色状态（Character）\n  - 穿墙/复活/重置：无视碰撞、付费复活、恢复初始状态\n  - 衣柜修复：解决卡衣柜问题\n\n作弊防护（Cheats）\n  实体屏蔽（Entity Removers）\n  - 静音尖叫怪/驱逐Timothy：阻止突袭与抽屉干扰\n  - 免疫Halt/Glitch/Eyes：不受指令、BUG、注视伤害\n  反制机制（Anti Entity）\n  - 干扰Seek/反复制/反束缚：让怪物难追踪，挣脱控制\n  - 心跳游戏必胜：自动通过心跳检测\n  规避策略（Avoiding）\n  - 自动躲Rush/反伏击：预判冲刺与隐藏突袭\n\n视觉增强（Visuals）\n  相机设置（Camera）\n  - 视野/无抖动/自由视角（U键）：扩大视角、稳定画面、脱离观察\n  透视系统（ESP Settings）\n  - 全类型ESP：高亮怪物（红）、玩家（白）、门（黄）等关键元素\n  画面调整（Visual Adjustments）\n  - 2.5D透视（G键）/第三人称/全亮：半透明穿墙、视角切换、全场景照明\n\n楼层管理（Floors）\n  楼层选择（Floor Navigation）\n  - 快速跳转： Rooms/Floor2/Outdoors场景\n  环境修改（Environment Tweaks）\n  - 无纪念碑：关闭地标，增加探索难度\n\n趣味功能（Fun）\n  互动玩法（Interactions）\n  - 舞蹈/破坏门：触发角色舞蹈、强制破门\n  字幕定制（Caption Text）\n  - 自定义显示文本：设置个性提示语\n\n界面设置（UI Settings）\n  主题配置（Themes）\n  - 颜色/字体定制：背景、主色、字体等视觉调整\n  - 主题管理：保存/加载/设为默认主题\n  配置管理（Configuration）\n  - 配置操作：创建、加载、覆盖、删除配置\n  - 自动加载：设置启动自动加载项，显示当前状态"
+        },    
+        {
+            name = "ProHax V3",
+            url = "https://raw.githubusercontent.com/TheHunterSolo1/Scripts/refs/heads/main/Protected_2809220311826785.lua.txt",
+            desc = "功能说明：\n无钥匙(功能效果比较多)\n\n主控制（Main Controls）\n  本地玩家（Local Player）\n  - 移动速度（WalkSpeed）：滑动条调节（0-21，当前16），更快逃离怪物\n  - 开启超级加速（Enable Speed Boost）：突破基础移速上限\n  - 开启跳跃（Enable Jump）：开关跳跃，可跳过障碍\n  - 无加速延迟（No Acceleration）：移动瞬间达最大速度\n  - 穿墙模式（Noclip，快捷键N）：无视墙壁/地板阻挡\n  自动化（Automation）\n  - 自动加载扩展库（Auto Library Code）：增强功能兼容性\n  - 事件自动提示（Notify Library Code）：怪物接近等关键事件推送提示\n  - 远程解锁距离（Unlock Padlock Distance）：设置距离（当前40/100），无需靠近破解机关\n\n怪物免疫（Entity Bypass）\n  - 屏蔽尖叫怪（Disables Screech）：阻止黑暗突袭\n  - 免疫恐惧怪（Disables Dread）：不受视野干扰（屏幕变黑、操作紊乱）\n  - 反电涌（Anti Surge）：抵抗地面电流伤害\n  - 反Figure听力（Anti Figure Hearing）：使其无法通过声音定位\n  - 反眼怪（Anti-Eyes）：规避凝视攻击（被看不掉血）\n\n视觉增强（Visual Tools）\n  ESP透视（ESP Options）\n  - ESP透视：高亮显示隐藏门、陷阱、怪物位置，提前预判危险\n  视觉调整（Visual Adjustments）\n  - 填充/轮廓透明度：控制高亮可见度（0=完全显示，1=完全透明）\n  - 文字/文字轮廓透明度：调整提示文字显示效果\n  - ESP消失延迟（ESP Fade Time）：怪物离开后，标记多停留几秒\n\n楼层设置（Floor Settings）\n  主楼层工具（Main Floor Tools）\n  - 反追逐障碍（Anti Seek Obstacles）：干扰Seek移动路径，使其更难追上\n  楼层怪物免疫（Floor Entity Bypass）\n  - 反A90（Anti A90）：对抗随机传送秒杀\n  - 反窥视怪（Anti Lookman）：抵抗窥视攻击\n  - 反陷阱束缚（Anti Snare）：避免束缚效果\n  - 反复制体（Anti Dupe）：干扰复制体机制\n  - 反香蕉怪（Anti Banana）：免疫彩蛋怪影响\n  - 反熔岩（Anti Lava）：抵抗熔岩灼烧伤害\n  - 反墙壁突袭（Anti ScaryWall）：规避突然攻击"
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "Doors" .. i,
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "Doors脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
 --=====================================================
 -- 其他游戏菜单内容创建函数（省略类似结构，按照上述模式实现）
 -- 内脏与黑火药
@@ -2103,6 +2155,8 @@ elseif menuName == "被遗弃" then
     updateCallback = createAbandonedContent(actionContainer)
 elseif menuName == "Blox Fruits" then
     updateCallback = createBloxFruitsContent(actionContainer)
+elseif menuName == "Doors" then
+    updateCallback = createDoorsContent(actionContainer)
 end
     panel:GetPropertyChangedSignal("Visible"):Connect(function()
         if updateCallback then
@@ -2355,6 +2409,7 @@ createMenu("伐木大亨2", 11)
 createMenu("墨水游戏", 12)
 createMenu("被遗弃", 13)
 createMenu("Blox Fruits", 14) -- 最后
+createMenu("Doors", 15) -- 最后
 updateLeftScroll()
 
     -- 立即激活当前菜单（无延迟）
