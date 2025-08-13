@@ -1,47 +1,93 @@
 -----------------------------------------------------------
--- 验证弹窗核心逻辑（LocalScript，StarterPlayerScripts）
+-- 秋容脚本验证核心逻辑（LocalScript，适配多注入器）
+-- 验证标记：注入器持久化目录下的"同意秋容脚本"文件夹
 -----------------------------------------------------------
+
+-- ================ 基础服务与变量 ================
 local Players = game:GetService("Players")
-local SoundService = game:GetService("SoundService")  -- 新增：音效服务
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local RunService = game:GetService("RunService")
+local Color3 = Color3
+local UDim2 = UDim2
+local Instance = Instance
+local task = task
+local Enum = Enum
 
------------------------------------------------------------
--- 通用工具函数（新增音效播放函数）
------------------------------------------------------------
--- 播放临时音效（自动销毁，避免残留）
--- 修复版：简化加载逻辑 + 更换父级 + 增加调试
-local function playTempSound(soundId)
-    -- 1. 验证音效ID格式
-    local fullSoundId = "rbxassetid://" .. tostring(soundId)
-    
-    -- 2. 创建音效实例，父级改为Workspace（兼容性更好）
-    local sound = Instance.new("Sound")
-    sound.SoundId = fullSoundId
-    sound.Volume = 1.0  -- 调至最大音量测试
-    sound.Parent = workspace  -- 避免SoundService权限问题
-    
-    -- 3. 简化播放逻辑：不依赖LoadAsync，Roblox会自动加载
-    pcall(function()
-        sound:Play()  -- 直接播放，自动处理加载
-        -- 播放完毕后销毁
-        sound.Ended:Connect(function()
-            sound:Destroy()
-        end)
-        -- 超时保护：5秒未播放则销毁（避免残留）
-        task.delay(5, function()
-            if sound.Parent then
-                sound:Destroy()
+-- 注入器文件操作兼容（核心：获取持久化路径）
+local readFunc, writeFunc, getPathFunc
+pcall(function()
+    -- 适配忍者/Delta/Synapse等注入器
+    if type(syn) == "table" then
+        readFunc = syn.readfile or readfile
+        writeFunc = syn.writefile or writefile
+        getPathFunc = syn.datapath  -- 忍者注入器获取沙盒路径
+    else
+        -- 其他注入器兼容
+        readFunc = readfile or readFile
+        writeFunc = writefile or writeFile
+        -- 尝试获取默认路径（如Krnl等）
+        getPathFunc = function() return "Roblox/Scripts" end
+    end
+end)
+
+
+-- ================ 验证文件夹核心逻辑 ================
+-- 获取持久化文件夹路径（跨注入器兼容）
+local function getVerifyFolderPath()
+    local basePath
+    if getPathFunc then
+        -- 优先使用注入器提供的沙盒路径（如忍者的syn.datapath()）
+        basePath = getPathFunc()
+    else
+        --  fallback路径（适配多数PC注入器）
+        basePath = "C:/RobloxScripts"  -- 可根据系统自动调整
+        pcall(function()
+            -- 尝试检测系统类型（Windows/macOS）
+            if game:GetService("RunService"):IsStudio() then
+                basePath = "Roblox/Scripts"  -- Studio环境
+            elseif string.find(game:GetService("MarketplaceService"):GetProductInfo(1).Name, "Mac") then
+                basePath = "~/Library/Roblox/Scripts"  -- macOS路径
             end
         end)
+    end
+    -- 拼接完整文件夹路径
+    return basePath .. "/同意秋容脚本"
+end
+
+-- 检查文件夹是否存在（跨注入器兼容）
+local function folderExists()
+    if not readFunc then return false end  -- 无文件操作能力则强制验证
+    local folderPath = getVerifyFolderPath()
+    -- 尝试读取文件夹（注入器通常通过检查路径是否可访问判断存在性）
+    local success = pcall(function()
+        -- 不同注入器判断方式可能不同，这里用"尝试读取"作为存在性检测
+        readFunc(folderPath .. "/.verify")  -- 读取文件夹内的标记文件
     end)
-    
-    -- 4. 调试信息（控制台可见）
-    print("尝试播放音效：" .. fullSoundId)
+    return success
+end
+
+-- 创建验证文件夹（跨注入器兼容）
+local function createTargetFolder()
+    if not writeFunc then return end  -- 无写入能力则跳过（不影响使用，仅下次仍需验证）
+    local folderPath = getVerifyFolderPath()
+    local success = pcall(function()
+        -- 1. 创建文件夹（注入器通常支持通过写入空文件创建文件夹）
+        writeFunc(folderPath .. "/.verify", "")  -- 写入空标记文件，自动创建父文件夹
+        print("验证文件夹创建成功：" .. folderPath)
+    end)
+    if not success then
+        -- 降级方案：若无法创建文件夹，临时用PlayerGui文件夹（仅当前会话有效）
+        local tempFolder = Instance.new("Folder")
+        tempFolder.Name = "同意秋容脚本"
+        tempFolder.Parent = PlayerGui
+        print("警告：持久化文件夹创建失败，使用临时文件夹（仅当前会话有效）")
+    end
 end
 
 
--- 其他通用工具函数（createScreenGui、createFrame等保持不变）
+-- ================ 通用UI工具函数 ================
+-- 创建屏幕GUI
 local function createScreenGui(name)
     local gui = Instance.new("ScreenGui")
     gui.Name = name
@@ -50,6 +96,7 @@ local function createScreenGui(name)
     return gui
 end
 
+-- 创建带圆角的框架
 local function createFrame(parent, size, position)
     local frame = Instance.new("Frame")
     frame.Size = size
@@ -65,6 +112,20 @@ local function createFrame(parent, size, position)
     return frame
 end
 
+-- 创建基础标签
+local function createBasicLabel(parent, text, size, position)
+    local label = Instance.new("TextLabel")
+    label.Text = text
+    label.Size = size
+    label.Position = position
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.TextSize = 16
+    label.BackgroundTransparency = 1
+    label.Parent = parent
+    return label
+end
+
+-- 创建普通标签
 local function createLabel(parent, text, size, position)
     local label = Instance.new("TextLabel")
     label.Text = text
@@ -77,6 +138,7 @@ local function createLabel(parent, text, size, position)
     return label
 end
 
+-- 创建按钮
 local function createButton(parent, text, size, position, callback)
     local btn = Instance.new("TextButton")
     btn.Text = text
@@ -89,10 +151,13 @@ local function createButton(parent, text, size, position, callback)
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 6)
     corner.Parent = btn
-    btn.MouseButton1Click:Connect(callback)
+    if callback then
+        btn.MouseButton1Click:Connect(callback)
+    end
     return btn
 end
 
+-- 创建点击输入框
 local function createClickToInput(parent, size, position, triggerText, placeholderText)
     local trigger = Instance.new("TextButton")
     trigger.Size = size
@@ -126,74 +191,79 @@ local function createClickToInput(parent, size, position, triggerText, placehold
         box.Visible = true
         box:CaptureFocus()
     end)
-
     return trigger, box
 end
 
------------------------------------------------------------
--- 弹窗1：验证快手号（保持不变）
------------------------------------------------------------
+-- 播放临时音效
+local function playTempSound(soundId)
+    local fullSoundId = "rbxassetid://" .. tostring(soundId)
+    local sound = Instance.new("Sound")
+    sound.SoundId = fullSoundId
+    sound.Volume = 1.0
+    sound.Parent = workspace
+    pcall(function()
+        sound:Play()
+        sound.Ended:Connect(function() sound:Destroy() end)
+        task.delay(5, function() if sound.Parent then sound:Destroy() end end)
+    end)
+end
+
+
+-- ================ 验证弹窗逻辑 ================
+-- 快手号验证
 local function Popup_VerifyKuaishou()
     local gui = createScreenGui("Popup_Kuaishou")
     local frame = createFrame(gui, UDim2.new(0, 420, 0, 240), UDim2.new(0.5, -210, 0.5, -120))
-
     createLabel(frame, "主播的快手号是什么？", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
-
+    
     local _, inputKuaishou = createClickToInput(
-        frame, 
-        UDim2.new(1, -50, 0, 45), 
-        UDim2.new(0, 25, 0, 75),
-        "点击输入快手号",
-        "请输入正确的快手号(乱输快手号或者不记得的活着干嘛)"
+        frame, UDim2.new(1, -50, 0, 45), UDim2.new(0, 25, 0, 75),
+        "点击输入快手号", "请输入正确的快手号"
     )
-
+    
     local statusLabel = createLabel(frame, "", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 135))
-
     local done = false
+    
     createButton(frame, "验证快手号", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 175), function()
         if inputKuaishou.Text == "CN_QRNBYYDS" then
             done = true
             gui:Destroy()
         else
-            statusLabel.Text = "作者快手号都不知道你活着干嘛配用这个脚本吗😡？"
+            statusLabel.Text = "作者快手号都不知道，配用这个脚本吗😡？"
             statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
         end
     end)
+    
     createButton(frame, "退出脚本", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.5, 0, 0, 175), function()
         gui:Destroy()
         error("用户主动退出，脚本停止运行")
     end)
-
+    
     while not done do task.wait() end
 end
 
------------------------------------------------------------
--- 弹窗2：验证QQ群（新增音效逻辑）
------------------------------------------------------------
+-- QQ群验证
 local function Popup_VerifyQQGroup()
     local gui = createScreenGui("Popup_QQGroup")
     local frame = createFrame(gui, UDim2.new(0, 420, 0, 260), UDim2.new(0.5, -210, 0.5, -130))
-
     createLabel(frame, "主播现在还有没有QQ群？", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
-
+    
     local _, inputQQGroup = createClickToInput(
-        frame, 
-        UDim2.new(1, -50, 0, 45), 
-        UDim2.new(0, 25, 0, 75),
-        "点击输入答案",
-        "请输入有或者没有输入其他的M没了"
+        frame, UDim2.new(1, -50, 0, 45), UDim2.new(0, 25, 0, 75),
+        "点击输入答案", "请输入有或者没有"
     )
-
+    
     local statusLabel = createLabel(frame, "", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 135))
-
     local exitCount = 0
     local done = false
+    
     createButton(frame, "确定回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
         statusLabel.Text = "你是废物吗？这都答不上来"
         statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
     end)
+    
     createButton(frame, "退出回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.5, 0, 0, 185), function()
-        exitCount = exitCount + 1
+        exitCount += 1
         if exitCount == 1 then
             statusLabel.Text = "废物玩意儿确定退出吗？真废物这都答不上来😂"
             statusLabel.TextColor3 = Color3.fromRGB(255, 220, 60)
@@ -202,35 +272,63 @@ local function Popup_VerifyQQGroup()
             gui:Destroy()
         end
     end)
-
+    
     while not done do task.wait() end
-
-    -- 最终提示弹窗（播放音效：ID 12222253）
+    
+    -- 最终提示
     local notifyGui = createScreenGui("Popup_FinalNotice")
     local notifyFrame = createFrame(notifyGui, UDim2.new(0, 340, 0, 120), UDim2.new(0.5, -170, 0.5, -60))
     createLabel(notifyFrame, "确实没有QQ群🤓", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 45))
-    
-    -- 关键：播放临时音效（ID 12222253）
-    -- 最终提示弹窗处
-print("准备播放音效...")  -- 确认是否执行到此处
-playTempSound("12222253")  -- 或测试ID
-
-    
-    task.wait(3)  -- 显示3秒后关闭
+    playTempSound("12222253")
+    task.wait(3)
     notifyGui:Destroy()
 end
 
------------------------------------------------------------
--- 执行验证流程
------------------------------------------------------------
-Popup_VerifyKuaishou()
-Popup_VerifyQQGroup()
 
------------------------------------------------------------
--- 以下粘贴原有脚本内容
------------------------------------------------------------
--- print("验证通过，执行原脚本...")
--- ...
+-- ================ 公告弹窗（公告文字缩小50%） ================
+local function showAnnouncement()
+    local noticeGui = createScreenGui("Popup_Announcement")
+    local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
+    
+    -- 标题（缩小50%：原22 → 11）
+    local titleLabel = createBasicLabel(noticeFrame, "更新啦！2.1版本", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
+    titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+    
+    -- 内容（缩小50%：原16 → 8）
+    local contentLabel = createLabel(noticeFrame, "在玩家通用设置里面添加了秋容飞行(此飞行可以使用载具包括武器大部分游戏不会被检测到包括墨水)\n简洁优化了一些底层代码确保流畅性和无问题\n优化老玩家需要再次输入验证已更新成绕过验证直接到公告页面", 
+        UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
+    contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
+    contentLabel.TextWrapped = true
+    contentLabel.TextXAlignment = Enum.TextXAlignment.Left
+    
+    -- 关闭按钮
+    local noticeDone = false
+    createButton(noticeFrame, "我知道了", UDim2.new(0.5, 0, 0, 40), UDim2.new(0.25, 0, 1, -50), function()
+        noticeDone = true
+        noticeGui:Destroy()
+    end)
+    
+    while not noticeDone do task.wait() end
+end
+
+
+-- ================ 执行流程 ================
+local isFirstUse = not folderExists()  -- 检测持久化文件夹是否存在
+
+if isFirstUse then
+    -- 首次使用：执行验证 → 创建持久化文件夹 → 显示公告
+    Popup_VerifyKuaishou()
+    Popup_VerifyQQGroup()
+    createTargetFolder()  -- 验证通过后创建文件夹（跨会话保留）
+    showAnnouncement()
+else
+    -- 非首次使用：直接显示公告（跳过验证）
+    print("检测到验证文件夹，跳过验证")
+    showAnnouncement()
+end
+
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local StarterGui = game:GetService("StarterGui")
@@ -1386,119 +1484,6 @@ end
 local function createPlayerFeaturesContent(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
 
-    -- 移动速度设置（无说明标签，直接交互）
-    local speedFrame = Instance.new("Frame")
-    speedFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-    speedFrame.LayoutOrder = 1
-    speedFrame.BackgroundTransparency = 1
-    speedFrame.Parent = container
-
-    createLabel(speedFrame, {
-        name = "SpeedLabel",
-        size = UDim2.new(0.4, 0, 1, 0),
-        text = "移动速度:",
-        textSize = 14,
-        xAlign = Enum.TextXAlignment.Right,
-        position = UDim2.new(0, 0, 0, 0)
-    })
-
-    local speedInput = Instance.new("TextBox")
-    speedInput.Name = "SpeedInput"
-    speedInput.Size = UDim2.new(0.5, 0, 1, -6 * UI_STATE.scale)
-    speedInput.Position = UDim2.new(0.45, 0, 0, 3 * UI_STATE.scale)
-    speedInput.PlaceholderText = "输入数值"
-    speedInput.TextSize = 14 * UI_STATE.scale
-    speedInput.BackgroundColor3 = CONFIG.UI_COLORS.secondary
-    speedInput.TextColor3 = Color3.new(1, 1, 1)
-    speedInput.Parent = speedFrame
-    createCorner(speedInput, 6)
-    speedInput.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            local value = tonumber(speedInput.Text)
-            if value then
-                local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.WalkSpeed = value
-                    showNotification("设置成功", "移动速度已设置为" .. value)
-                end
-            end
-        end
-    end)
-
-    -- 跳跃高度设置
-    local jumpFrame = Instance.new("Frame")
-    jumpFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-    jumpFrame.LayoutOrder = 2
-    jumpFrame.BackgroundTransparency = 1
-    jumpFrame.Parent = container
-
-    createLabel(jumpFrame, {
-        name = "JumpLabel",
-        size = UDim2.new(0.4, 0, 1, 0),
-        text = "跳跃高度:",
-        textSize = 14,
-        xAlign = Enum.TextXAlignment.Right,
-        position = UDim2.new(0, 0, 0, 0)
-    })
-
-    local jumpInput = Instance.new("TextBox")
-    jumpInput.Name = "JumpInput"
-    jumpInput.Size = UDim2.new(0.5, 0, 1, -6 * UI_STATE.scale)
-    jumpInput.Position = UDim2.new(0.45, 0, 0, 3 * UI_STATE.scale)
-    jumpInput.PlaceholderText = "输入数值"
-    jumpInput.TextSize = 14 * UI_STATE.scale
-    jumpInput.BackgroundColor3 = CONFIG.UI_COLORS.secondary
-    jumpInput.TextColor3 = Color3.new(1, 1, 1)
-    jumpInput.Parent = jumpFrame
-    createCorner(jumpInput, 6)
-    jumpInput.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            local value = tonumber(jumpInput.Text)
-            if value then
-                local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if humanoid then
-                    humanoid.JumpPower = value
-                    showNotification("设置成功", "跳跃高度已设置为" .. value)
-                end
-            end
-        end
-    end)
-
-    -- 重力设置
-    local gravityFrame = Instance.new("Frame")
-    gravityFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-    gravityFrame.LayoutOrder = 3
-    gravityFrame.BackgroundTransparency = 1
-    gravityFrame.Parent = container
-
-    createLabel(gravityFrame, {
-        name = "GravityLabel",
-        size = UDim2.new(0.4, 0, 1, 0),
-        text = "重力设置:",
-        textSize = 14,
-        xAlign = Enum.TextXAlignment.Right,
-        position = UDim2.new(0, 0, 0, 0)
-    })
-
-    local gravityInput = Instance.new("TextBox")
-    gravityInput.Name = "GravityInput"
-    gravityInput.Size = UDim2.new(0.5, 0, 1, -6 * UI_STATE.scale)
-    gravityInput.Position = UDim2.new(0.45, 0, 0, 3 * UI_STATE.scale)
-    gravityInput.PlaceholderText = "输入数值"
-    gravityInput.TextSize = 14 * UI_STATE.scale
-    gravityInput.BackgroundColor3 = CONFIG.UI_COLORS.secondary
-    gravityInput.TextColor3 = Color3.new(1, 1, 1)
-    gravityInput.Parent = gravityFrame
-    createCorner(gravityInput, 6)
-    gravityInput.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            local value = tonumber(gravityInput.Text)
-            if value then
-                game.Workspace.Gravity = value
-                showNotification("设置成功", "重力已设置为" .. value)
-            end
-        end
-    end)
 
     -- 功能按钮数据（含说明）
     local buttons = {
@@ -1507,6 +1492,11 @@ local function createPlayerFeaturesContent(container)
             url = "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub",
             desc = "功能说明：\n- 双重功能：既能甩飞对手也能防止被甩飞\n- 内置自动连招系统，无需手动操作\n- 适配多数战斗场景，稳定性强\n- 作者实测推荐，兼容性高"
         },
+        {
+            name = "作者飞行(推荐)", 
+            url = "https://pastebin.com/raw/zxD9Tv63",
+            desc = "功能说明：\n作者同款飞行适配墨水游戏包括所有可以拿起武器也可以使用载具"
+        },       
         {
             name = "飞行v3", 
             url = "https://pastebin.com/raw/LY9W7CPL",
@@ -2091,7 +2081,7 @@ elseif menuName == "传送玩家" then
     updateCallback = createMenu2Content(actionContainer)
 elseif menuName == "注入器下载" then
     updateCallback = createInjectorDownloadContent(actionContainer)
-elseif menuName == "👁玩家👁" then
+elseif menuName == "玩家通用" then
     updateCallback = createPlayerFeaturesContent(actionContainer)
 elseif menuName == "森林中的99夜" then
     updateCallback = create99NightsContent(actionContainer)
@@ -2352,7 +2342,7 @@ end
 -- 按此顺序创建，确保 LayoutOrder 从 1 开始递增
 createMenu("传送玩家", 1)    -- 首项
 createMenu("保存位置", 2)
-createMenu("👁玩家👁", 3)
+createMenu("玩家通用", 3)
 createMenu("注入器下载", 4)
 -- 游戏脚本（按功能分类，非 B 开头）
 createMenu("森林中的99夜", 5)
