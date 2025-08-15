@@ -1892,6 +1892,11 @@ local function createInkGameContent(container)
             desc = "功能说明：\n- 适配最新版本的甩飞功能\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
         },
         {
+            name = "Xa(旧)",
+            url = "https://raw.githubusercontent.com/Xingtaiduan/Script/refs/heads/main/Games/墨水游戏.lua",
+            desc = "功能说明：\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
+        },
+        {
             name = "实用脚本(推荐)",
             url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
             desc = "功能说明：\n- 轻量型实用脚本，低资源占用\n- 专注核心功能，减少冲突风险\n- 作者推荐：避免同时使用多个UI脚本\n- 防止脚本卡顿导致无法退出"
@@ -2007,7 +2012,7 @@ local function createDoorsContent(container)
             desc = "功能说明：\n主界面（Main）\n  杂项控制（Miscellaneous）\n  - 即时交互触发：快速响应机关\n  - 修复房间异常：修正重复房间BUG\n  - 跳过过场：直跳剧情动画\n  通知设置（Notifiers）\n  - 音效/聊天提示：自定义怪物生成通知与音效\n  自动化工具（Automation）\n  - 自动重开/回大厅：死亡/结束后自动操作\n  - 自动解谜/修电箱：破解图书馆、修复电力\n  光环系统（Auras）\n  - 战利品/门光环：高亮道具与可互动门，支持设置\n\n玩家控制（Player）\n  移动调控（Movement）\n  - 速度增幅/超级加速：突破移速限制，瞬间满速\n  - 飞行/传送（F/B键）：自由升空、远程位移（距离可调）\n  角色状态（Character）\n  - 穿墙/复活/重置：无视碰撞、付费复活、恢复初始状态\n  - 衣柜修复：解决卡衣柜问题\n\n作弊防护（Cheats）\n  实体屏蔽（Entity Removers）\n  - 静音尖叫怪/驱逐Timothy：阻止突袭与抽屉干扰\n  - 免疫Halt/Glitch/Eyes：不受指令、BUG、注视伤害\n  反制机制（Anti Entity）\n  - 干扰Seek/反复制/反束缚：让怪物难追踪，挣脱控制\n  - 心跳游戏必胜：自动通过心跳检测\n  规避策略（Avoiding）\n  - 自动躲Rush/反伏击：预判冲刺与隐藏突袭\n\n视觉增强（Visuals）\n  相机设置（Camera）\n  - 视野/无抖动/自由视角（U键）：扩大视角、稳定画面、脱离观察\n  透视系统（ESP Settings）\n  - 全类型ESP：高亮怪物（红）、玩家（白）、门（黄）等关键元素\n  画面调整（Visual Adjustments）\n  - 2.5D透视（G键）/第三人称/全亮：半透明穿墙、视角切换、全场景照明\n\n楼层管理（Floors）\n  楼层选择（Floor Navigation）\n  - 快速跳转： Rooms/Floor2/Outdoors场景\n  环境修改（Environment Tweaks）\n  - 无纪念碑：关闭地标，增加探索难度\n\n趣味功能（Fun）\n  互动玩法（Interactions）\n  - 舞蹈/破坏门：触发角色舞蹈、强制破门\n  字幕定制（Caption Text）\n  - 自定义显示文本：设置个性提示语\n\n界面设置（UI Settings）\n  主题配置（Themes）\n  - 颜色/字体定制：背景、主色、字体等视觉调整\n  - 主题管理：保存/加载/设为默认主题\n  配置管理（Configuration）\n  - 配置操作：创建、加载、覆盖、删除配置\n  - 自动加载：设置启动自动加载项，显示当前状态"
         },    
         {
-            name = "ProHax V3",
+            name = "ProHax V3(推荐)",
             url = "https://raw.githubusercontent.com/TheHunterSolo1/Scripts/refs/heads/main/Protected_2809220311826785.lua.txt",
             desc = "功能说明：\n无钥匙(功能效果比较多)\n\n主控制（Main Controls）\n  本地玩家（Local Player）\n  - 移动速度（WalkSpeed）：滑动条调节（0-21，当前16），更快逃离怪物\n  - 开启超级加速（Enable Speed Boost）：突破基础移速上限\n  - 开启跳跃（Enable Jump）：开关跳跃，可跳过障碍\n  - 无加速延迟（No Acceleration）：移动瞬间达最大速度\n  - 穿墙模式（Noclip，快捷键N）：无视墙壁/地板阻挡\n  自动化（Automation）\n  - 自动加载扩展库（Auto Library Code）：增强功能兼容性\n  - 事件自动提示（Notify Library Code）：怪物接近等关键事件推送提示\n  - 远程解锁距离（Unlock Padlock Distance）：设置距离（当前40/100），无需靠近破解机关\n\n怪物免疫（Entity Bypass）\n  - 屏蔽尖叫怪（Disables Screech）：阻止黑暗突袭\n  - 免疫恐惧怪（Disables Dread）：不受视野干扰（屏幕变黑、操作紊乱）\n  - 反电涌（Anti Surge）：抵抗地面电流伤害\n  - 反Figure听力（Anti Figure Hearing）：使其无法通过声音定位\n  - 反眼怪（Anti-Eyes）：规避凝视攻击（被看不掉血）\n\n视觉增强（Visual Tools）\n  ESP透视（ESP Options）\n  - ESP透视：高亮显示隐藏门、陷阱、怪物位置，提前预判危险\n  视觉调整（Visual Adjustments）\n  - 填充/轮廓透明度：控制高亮可见度（0=完全显示，1=完全透明）\n  - 文字/文字轮廓透明度：调整提示文字显示效果\n  - ESP消失延迟（ESP Fade Time）：怪物离开后，标记多停留几秒\n\n楼层设置（Floor Settings）\n  主楼层工具（Main Floor Tools）\n  - 反追逐障碍（Anti Seek Obstacles）：干扰Seek移动路径，使其更难追上\n  楼层怪物免疫（Floor Entity Bypass）\n  - 反A90（Anti A90）：对抗随机传送秒杀\n  - 反窥视怪（Anti Lookman）：抵抗窥视攻击\n  - 反陷阱束缚（Anti Snare）：避免束缚效果\n  - 反复制体（Anti Dupe）：干扰复制体机制\n  - 反香蕉怪（Anti Banana）：免疫彩蛋怪影响\n  - 反熔岩（Anti Lava）：抵抗熔岩灼烧伤害\n  - 反墙壁突袭（Anti ScaryWall）：规避突然攻击"
         }
