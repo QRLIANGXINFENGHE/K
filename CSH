@@ -297,7 +297,7 @@ local function showAnnouncement()
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新了墨水游戏甩飞的杀戮光环测试版", 
+    local contentLabel = createLabel(noticeFrame, "大更新了墨水游戏大甩飞的杀戮光环测试版包括一堆功能", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
