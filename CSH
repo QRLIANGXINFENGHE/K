@@ -291,13 +291,13 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "更新啦！2.2版本", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "更新啦！2.25版本", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新了Doors两个脚本无需卡密(包括详情)", 
+    local contentLabel = createLabel(noticeFrame, "更新了墨水游戏甩飞的杀戮光环测试版", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1887,8 +1887,8 @@ local function createInkGameContent(container)
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "甩飞(已更新)",
-            url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/script.lua",
+            name = "甩飞(测试版杀戮光环)",
+            url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
             desc = "功能说明：\n- 适配最新版本的甩飞功能\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
         },
         {
