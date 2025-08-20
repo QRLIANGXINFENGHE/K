@@ -291,13 +291,13 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "号被封了😡", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "更新啦！新脚本军事大亨", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
+    local contentLabel = createLabel(noticeFrame, "已更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1648,15 +1648,15 @@ local function create99NightsContent(container)
     return function() end
 end
 --=====================================================
-local function createGutsAndGunpowderContent(container)
+local function createMilitarytycoonContent(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "GB光环（脚本随时失效）",
-            url = "https://raw.githubusercontent.com/QRCHISHANJIA/QR/refs/heads/main/%E7%9A%873.0%E6%BA%90%E7%A0%81.lua?token=GHSAT0AAAAAADIDGK3AC2HUWFKO33UDKLC62EF7USQ",
-            desc = "功能说明：\n- 提供GB光环效果，增强角色能力\n- 包含伤害提升和防御加成\n- 注意：脚本可能因游戏更新失效\n- 失效后请等待作者更新"
+            name = "军事大亨全自动农场",
+            url = "https://gist.githubusercontent.com/1diamondpro1/3ed16f3c81f74aede9a895dcd1fd4ba4/raw/fa95332a2d6c2045b3d18f2018ae998955856b1d/gistfile1.txt",
+            desc = "功能说明：\n- 挂机即可"
         }
     }
 
@@ -1887,24 +1887,14 @@ local function createInkGameContent(container)
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "甩飞(测试版杀戮光环)",
+            name = "ink-game(测试版有杀戮光环)",
             url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
             desc = "功能说明：\n- 适配最新版本的甩飞功能\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
         },
         {
-            name = "甩飞(旧版)",
+            name = "ink-game(正常版)",
             url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/script.lua",
             desc = "功能说明：\n- 适配最新版本的甩飞功能\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
-        },
-        {
-            name = "Xa(旧)",
-            url = "https://raw.githubusercontent.com/Xingtaiduan/Script/refs/heads/main/Games/墨水游戏.lua",
-            desc = "功能说明：\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
-        },
-        {
-            name = "Xa(新版需要卡密)",
-            url = "https://raw.githubusercontent.com/Xingtaiduan/Script/refs/heads/main/Games/墨水游戏.lua",
-            desc = "功能说明：\n- 新版需要卡密并且需要绑定DC才可以去解卡密获取卡密需要的自行去解卡密谢谢"
         },
         {
             name = "实用脚本(推荐)",
@@ -2172,8 +2162,8 @@ elseif menuName == "玩家通用" then
     updateCallback = createPlayerFeaturesContent(actionContainer)
 elseif menuName == "森林中的99夜" then
     updateCallback = create99NightsContent(actionContainer)
-elseif menuName == "内脏与黑火药" then
-    updateCallback = createGutsAndGunpowderContent(actionContainer)
+elseif menuName == "军事大亨" then
+    updateCallback = createMilitarytycoonContent(actionContainer)
 elseif menuName == "死铁轨" then
     updateCallback = createDeadRailContent(actionContainer)
 elseif menuName == "鱼" then
@@ -2435,7 +2425,7 @@ createMenu("玩家通用", 3)
 createMenu("注入器下载", 4)
 -- 游戏脚本（按功能分类，非 B 开头）
 createMenu("森林中的99夜", 5)
-createMenu("内脏与黑火药", 6)
+createMenu("军事大亨", 6)
 createMenu("死铁轨", 7)
 createMenu("鱼", 8)
 createMenu("最强的战场", 9)
@@ -2445,6 +2435,7 @@ createMenu("墨水游戏", 12)
 createMenu("被遗弃", 13)
 createMenu("Blox Fruits", 14) -- 最后
 createMenu("Doors", 15) -- 最后
+
 updateLeftScroll()
 
     -- 立即激活当前菜单（无延迟）
