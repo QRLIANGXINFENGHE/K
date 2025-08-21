@@ -229,7 +229,7 @@ local function Popup_VerifyKuaishou()
             done = true
             gui:Destroy()
         else
-            statusLabel.Text = "作者快手号都不知道，配用这个脚本吗😡？"
+            statusLabel.Text = "作者快手号都不知道，配用这个脚本吗😡？快手号是CN_QRNBYYDS"
             statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
         end
     end)
@@ -291,13 +291,13 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "更新啦！新脚本军事大亨", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "2.5版本 公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "已更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1883,7 +1883,6 @@ end
 --=====================================================
 local function createInkGameContent(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
-    
     -- 按钮数据（含说明）
     local buttons = {
         {
@@ -1902,7 +1901,39 @@ local function createInkGameContent(container)
             desc = "功能说明：\n- 轻量型实用脚本，低资源占用\n- 专注核心功能，减少冲突风险\n- 作者推荐：避免同时使用多个UI脚本\n- 防止脚本卡顿导致无法退出"
         }
     }
-
+local injectors = {
+    {
+    name = "Xa老外脚本新版(点击复制脚本)",
+    url = [[script_key = "你的卡密"
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd856fc1c01736857d18b.lua"))()]],
+    desc = "脚本使用说明和介绍\n首先你复制完成之后点击下面解卡链接解完卡\n之后复制这个脚本然后弄到\n注入器里面输入自己的卡密执行即可"
+        },
+        {
+            name = "Xa老外脚本新版(点击复制解卡链接)",
+            url = "https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna",
+            desc = "点击去浏览器里面解卡密需要登录DC软件才可以解卡密"
+        }
+     }
+   for i, injector in ipairs(injectors) do
+        createButton(container, {
+            name = "InjectorBtn_" .. i,
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
+            text = injector.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "复制 " .. injector.name,
+                    injector.desc,
+                    function()
+                        setclipboard(injector.url)
+                        showNotification("链接已复制", "已将" .. injector.name .. "链接复制到剪贴板")
+                    end
+                )
+            end
+        })
+    end
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
