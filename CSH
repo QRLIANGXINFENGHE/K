@@ -2,7 +2,6 @@
 -- 秋容脚本验证核心逻辑（LocalScript，适配多注入器）
 -- 验证标记：注入器持久化目录下的"同意秋容脚本"文件夹
 -----------------------------------------------------------
-
 -- ================ 基础服务与变量 ================
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
@@ -13,7 +12,6 @@ local UDim2 = UDim2
 local Instance = Instance
 local task = task
 local Enum = Enum
-
 -- 注入器文件操作兼容（核心：获取持久化路径）
 local readFunc, writeFunc, getPathFunc
 pcall(function()
@@ -30,8 +28,6 @@ pcall(function()
         getPathFunc = function() return "Roblox/Scripts" end
     end
 end)
-
-
 -- ================ 验证文件夹核心逻辑 ================
 -- 获取持久化文件夹路径（跨注入器兼容）
 local function getVerifyFolderPath()
@@ -54,7 +50,6 @@ local function getVerifyFolderPath()
     -- 拼接完整文件夹路径
     return basePath .. "/同意秋容脚本"
 end
-
 -- 检查文件夹是否存在（跨注入器兼容）
 local function folderExists()
     if not readFunc then return false end  -- 无文件操作能力则强制验证
@@ -66,7 +61,6 @@ local function folderExists()
     end)
     return success
 end
-
 -- 创建验证文件夹（跨注入器兼容）
 local function createTargetFolder()
     if not writeFunc then return end  -- 无写入能力则跳过（不影响使用，仅下次仍需验证）
@@ -84,8 +78,6 @@ local function createTargetFolder()
         print("警告：持久化文件夹创建失败，使用临时文件夹（仅当前会话有效）")
     end
 end
-
-
 -- ================ 通用UI工具函数 ================
 -- 创建屏幕GUI
 local function createScreenGui(name)
@@ -95,7 +87,6 @@ local function createScreenGui(name)
     gui.Parent = PlayerGui
     return gui
 end
-
 -- 创建带圆角的框架
 local function createFrame(parent, size, position)
     local frame = Instance.new("Frame")
@@ -111,7 +102,6 @@ local function createFrame(parent, size, position)
     corner.Parent = frame
     return frame
 end
-
 -- 创建基础标签
 local function createBasicLabel(parent, text, size, position)
     local label = Instance.new("TextLabel")
@@ -124,7 +114,6 @@ local function createBasicLabel(parent, text, size, position)
     label.Parent = parent
     return label
 end
-
 -- 创建普通标签
 local function createLabel(parent, text, size, position)
     local label = Instance.new("TextLabel")
@@ -137,7 +126,6 @@ local function createLabel(parent, text, size, position)
     label.Parent = parent
     return label
 end
-
 -- 创建按钮
 local function createButton(parent, text, size, position, callback)
     local btn = Instance.new("TextButton")
@@ -156,7 +144,6 @@ local function createButton(parent, text, size, position, callback)
     end
     return btn
 end
-
 -- 创建点击输入框
 local function createClickToInput(parent, size, position, triggerText, placeholderText)
     local trigger = Instance.new("TextButton")
@@ -171,7 +158,6 @@ local function createClickToInput(parent, size, position, triggerText, placehold
     local cornerTrigger = Instance.new("UICorner")
     cornerTrigger.CornerRadius = UDim.new(0, 6)
     cornerTrigger.Parent = trigger
-
     local box = Instance.new("TextBox")
     box.Size = size
     box.Position = position
@@ -185,7 +171,6 @@ local function createClickToInput(parent, size, position, triggerText, placehold
     local cornerBox = Instance.new("UICorner")
     cornerBox.CornerRadius = UDim.new(0, 6)
     cornerBox.Parent = box
-
     trigger.MouseButton1Click:Connect(function()
         trigger.Visible = false
         box.Visible = true
@@ -193,7 +178,6 @@ local function createClickToInput(parent, size, position, triggerText, placehold
     end)
     return trigger, box
 end
-
 -- 播放临时音效
 local function playTempSound(soundId)
     local fullSoundId = "rbxassetid://" .. tostring(soundId)
@@ -207,8 +191,6 @@ local function playTempSound(soundId)
         task.delay(5, function() if sound.Parent then sound:Destroy() end end)
     end)
 end
-
-
 -- ================ 验证弹窗逻辑 ================
 -- 快手号验证
 local function Popup_VerifyKuaishou()
@@ -241,7 +223,6 @@ local function Popup_VerifyKuaishou()
     
     while not done do task.wait() end
 end
-
 -- QQ群验证
 local function Popup_VerifyQQGroup()
     local gui = createScreenGui("Popup_QQGroup")
@@ -283,21 +264,19 @@ local function Popup_VerifyQQGroup()
     task.wait(3)
     notifyGui:Destroy()
 end
-
-
 -- ================ 公告弹窗（公告文字缩小50%） ================
 local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "2.5版本 公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "2.51版本 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -312,11 +291,8 @@ local function showAnnouncement()
     
     while not noticeDone do task.wait() end
 end
-
-
 -- ================ 执行流程 ================
 local isFirstUse = not folderExists()  -- 检测持久化文件夹是否存在
-
 if isFirstUse then
     -- 首次使用：执行验证 → 创建持久化文件夹 → 显示公告
     Popup_VerifyKuaishou()
@@ -328,7 +304,6 @@ else
     print("检测到验证文件夹，跳过验证")
     showAnnouncement()
 end
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local StarterGui = game:GetService("StarterGui")
@@ -356,8 +331,8 @@ local CONFIG = {
 }
 local UI_STATE = {
     scale = CONFIG.UI_SCALE.default,  -- 当前UI缩放比例
-    activeMenu = "保存位置",          -- 初始激活菜单改为"保存位置"
-    menuPanels = {},                  -- 菜单面板缓存
+    activeMenu = "保存位置",          -- 初始激活菜单（面板标识，不可修改）
+    menuPanels = {},                  -- 菜单面板缓存（键：面板标识，值：面板实例）
     isRunning = true,                 -- 脚本运行状态
     isScaling = false,                -- 缩放中标记
     mainPanel = nil,                  -- 主面板引用
@@ -504,15 +479,6 @@ local function cleanupOldUI()
         UI_STATE.playerPositionLoop:Disconnect()
         UI_STATE.playerPositionLoop = nil
     end
-    -- 断开循环
-    if UI_STATE.coordinateLoop then
-        UI_STATE.coordinateLoop:Disconnect()
-        UI_STATE.coordinateLoop = nil
-    end
-    if UI_STATE.playerPositionLoop then
-        UI_STATE.playerPositionLoop:Disconnect()
-        UI_STATE.playerPositionLoop = nil
-    end
     -- 断开角色监听连接
     if UI_STATE.characterAddedConn then
         UI_STATE.characterAddedConn:Disconnect()
@@ -542,7 +508,6 @@ local function onCharacterRemoving()
     end
     showNotification("角色已销毁", "脚本已暂停，等待角色重生...")
 end
-
 -- 角色重生时的初始化函数
 local function onCharacterAdded(character)
     -- 等待角色加载完成
@@ -578,7 +543,6 @@ local function onCharacterAdded(character)
     
     showNotification("角色已加载", "脚本功能已恢复")
 end
-
 -- ====================== 右下角弹窗逻辑 ======================
 local NOTIFICATION_DATA = {
     maxCount = 5, -- 最大叠加数量
@@ -866,17 +830,16 @@ local function createFloatingButton()
         if (input.UserInputType == Enum.UserInputType.MouseButton1 or 
             input.UserInputType == Enum.UserInputType.Touch) and btnIsDragging then
             btnIsDragging = false
-            
         end
     end)
     print("悬浮窗创建成功（适配缩放）")
 end
 -- ====================== 菜单与内容创建 ======================
-local function createMenuItem(parent, menuName, layoutOrder, onSwitch)
+local function createMenuItem(parent, menuText, layoutOrder, onSwitch)
     local btn = createButton(parent, {
-        name = "MenuButton_" .. menuName,
+        name = "MenuButton_" .. menuText:gsub("%p", ""),
         size = UDim2.new(1, 0, 0, 50 * UI_STATE.scale),
-        text = menuName,
+        text = menuText,
         textSize = 16,
         bgColor = CONFIG.UI_COLORS.primary,
         hoverColor = Color3.fromRGB(70, 70, 120),
@@ -884,40 +847,23 @@ local function createMenuItem(parent, menuName, layoutOrder, onSwitch)
     })
     if not btn then return nil end
     btn.LayoutOrder = layoutOrder
-local function setActive(active)
-    -- 强制立即应用颜色，避免引擎延迟
-    btn.BackgroundColor3 = active and Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
-    -- 手动触发刷新（解决Roblox UI渲染延迟）
-    btn.BackgroundColor3 = btn.BackgroundColor3
-end
--- 初始化时强制同步状态
-setActive(UI_STATE.activeMenu == menuName)
-btn.MouseButton1Click:Connect(function()
-    if not UI_STATE.isDragging and not UI_STATE.isScrolling and btn:IsDescendantOf(game) then
-        -- 1. 立即更新活跃菜单状态（优先执行）
-        UI_STATE.activeMenu = menuName
-        
-        -- 2. 强制同步更新所有菜单按钮状态（使用spawn确保同步执行）
-        spawn(function()
-            -- 遍历父容器中所有菜单按钮，确保无遗漏
-            for _, child in ipairs(parent:GetChildren()) do
-                if child:IsA("TextButton") and child.Name:match("MenuButton_") then
-                    local childMenu = child.Name:gsub("MenuButton_", "")
-                    -- 直接设置颜色，不通过动画或延迟
-                    child.BackgroundColor3 = childMenu == UI_STATE.activeMenu and 
-                        Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
-                    -- 强制刷新UI（关键：解决Roblox引擎渲染延迟）
-                    child.BackgroundColor3 = child.BackgroundColor3
-                end
-            end
-        end)
-        
-        -- 3. 执行切换面板逻辑
-        onSwitch()
-        showNotification("菜单切换成功", "当前菜单：" .. menuName)
+    local function setActive(active)
+        -- 强制立即应用颜色，避免引擎延迟
+        btn.BackgroundColor3 = active and Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
+        -- 手动触发刷新（解决Roblox UI渲染延迟）
+        btn.BackgroundColor3 = btn.BackgroundColor3
     end
-end)
-    setActive(UI_STATE.activeMenu == menuName)
+    -- 初始化时强制同步状态（根据当前活跃面板标识匹配）
+    local currentActiveKey = UI_STATE.activeMenu
+    local isActive = (btn.Name:gsub("MenuButton_", "") == currentActiveKey:gsub("%p", ""))
+    setActive(isActive)
+    
+    btn.MouseButton1Click:Connect(function()
+        if not UI_STATE.isDragging and not UI_STATE.isScrolling and btn:IsDescendantOf(game) then
+            -- 执行切换面板逻辑
+            onSwitch()
+        end
+    end)
     return btn
 end
 local function createSavedCoordItem(parent, data, layoutOrder)
@@ -1287,11 +1233,9 @@ local function create2Content(container)
         end)
     end
 end
-
 -- 修改菜单3内容，添加执行按钮
 -- ====================== 飞行 ======================
 -- 新增：主菜单执行确认对话框
--- 优化后的执行确认对话框（支持显示功能说明）
 -- 优化后的执行确认对话框（支持显示功能说明）
 local function createExecutionDialog(title, description, onConfirm)
     local localPlayer = Players.LocalPlayer
@@ -1358,42 +1302,37 @@ local function createExecutionDialog(title, description, onConfirm)
     })
     createCorner(descLabel, 8)
     -- 按钮容器：底部紧凑布局，按钮对称分布
--- 按钮容器：改为绝对定位，左右分离
-local btnContainer = Instance.new("Frame")
-btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
-btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
-btnContainer.BackgroundTransparency = 1
-btnContainer.Parent = dialogFrame
-
--- 取消按钮：左对齐（保留原逻辑）
-createButton(btnContainer, {
-    name = "CancelBtn",
-    size = UDim2.new(0, 80, 1, 0), -- 固定宽度
-    position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
-    text = "取消",
-    onClick = function() dialogGui:Destroy() end
-})
-
--- 确认按钮：右对齐（新增偏移量）
-createButton(btnContainer, {
-    name = "ConfirmBtn",
-    size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
-    position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
-    anchor = Vector2.new(1, 0), -- 右锚点
-    text = "确认执行",
-    bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
-    onClick = function()
-        dialogGui:Destroy()
-        onConfirm()
-    end
-})
-
--- 新增：中间空隙（视觉分隔）
-local gap = Instance.new("Frame")
-gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
-gap.BackgroundTransparency = 1
-gap.Parent = btnContainer
-
+    local btnContainer = Instance.new("Frame")
+    btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
+    btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
+    btnContainer.BackgroundTransparency = 1
+    btnContainer.Parent = dialogFrame
+    -- 取消按钮：左对齐（保留原逻辑）
+    createButton(btnContainer, {
+        name = "CancelBtn",
+        size = UDim2.new(0, 80, 1, 0), -- 固定宽度
+        position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
+        text = "取消",
+        onClick = function() dialogGui:Destroy() end
+    })
+    -- 确认按钮：右对齐（新增偏移量）
+    createButton(btnContainer, {
+        name = "ConfirmBtn",
+        size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
+        position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
+        anchor = Vector2.new(1, 0), -- 右锚点
+        text = "确认执行",
+        bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
+        onClick = function()
+            dialogGui:Destroy()
+            onConfirm()
+        end
+    })
+    -- 新增：中间空隙（视觉分隔）
+    local gap = Instance.new("Frame")
+    gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
+    gap.BackgroundTransparency = 1
+    gap.Parent = btnContainer
     -- 动态布局计算：让文字区占满中间
     task.defer(function()
         local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
@@ -1410,7 +1349,6 @@ gap.Parent = btnContainer
         dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
     end)
 end
-
 -- ====================== 执行脚本代码 ======================
 local function executeUrlContent()
     local url = "https://pastebin.com/raw/LY9W7CPL"
@@ -1418,7 +1356,6 @@ local function executeUrlContent()
         -- 使用game:HttpGet获取内容
         return game:HttpGet(url)
     end)
-
     if success then
         -- 执行获取到的内容
         local execSuccess = pcall(function()
@@ -1433,7 +1370,6 @@ local function executeUrlContent()
         showNotification("获取失败", "无法获取内容: " .. tostring(contentOrErr))
     end
 end
-
 -- ====================== 脚本说明 ======================
 local function create3Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
@@ -1466,7 +1402,6 @@ local function create3Content(container)
             desc = "功能说明：\n- 特殊福利内容\n- 复制后在游戏聊天框粘贴\n- 可能获得隐藏奖励\n- 限时有效"
         }
     }
-
     -- 创建按钮（无菜单内说明标签）
     for i, injector in ipairs(injectors) do
         createButton(container, {
@@ -1494,8 +1429,6 @@ end
 -- 玩家功能菜单内容
 local function create4Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
-
-
     -- 功能按钮数据（含说明）
     local buttons = {
         {
@@ -1575,7 +1508,6 @@ local function create4Content(container)
             desc = "功能说明：\n- 显示其他玩家轮廓，穿透障碍物可见\n- 自定义颜色：紫色填充+白色边框\n- 自动追踪新加入玩家\n- 退出时自动清理，无残留"
         }
     }
-
     -- 创建功能按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1601,7 +1533,6 @@ local function create4Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1622,7 +1553,6 @@ local function create5Content(container)
             desc = "功能说明：\n- 修复版传送，解决原版卡顿问题\n- 增加防掉线机制\n- 包含自动探索和收集功能\n- 作者推荐版本，稳定性最佳"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1644,7 +1574,6 @@ local function create5Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1659,7 +1588,6 @@ local function create6Content(container)
             desc = "功能说明：\n- 挂机即可"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1681,7 +1609,6 @@ local function create6Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1696,7 +1623,6 @@ local function create7Content(container)
             desc = "功能说明：\n- 死铁轨专用脚本，支持核心玩法\n- 自动完成任务和收集\n- 需解卡密（简单验证，免费获取）\n- 作者实测唯一稳定可用脚本"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1718,7 +1644,6 @@ local function create7Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1733,7 +1658,6 @@ local function create8Content(container)
             desc = "功能说明：\n- 鱼类玩法专用脚本，支持自动钓鱼\n- 识别鱼类种类，优先高级鱼\n- 需解卡密（简单验证，免费获取）\n- 稳定兼容当前游戏版本"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1755,7 +1679,6 @@ local function create8Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1775,7 +1698,6 @@ local function create9Content(container)
             desc = "功能说明：\n- 专注垃圾桶投掷机制\n- 自动判断最佳投掷时机\n- 轻量化设计，低冲突\n- 适合仅需核心功能的玩家"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1797,7 +1719,6 @@ local function create9Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1817,7 +1738,6 @@ local function create10Content(container)
             desc = "功能说明：\n- 多功能花园辅助脚本\n- 支持自动农场、购买、销售、种植\n- 包含接受交易和防Afk功能\n- 无需解卡，直接使用"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1839,7 +1759,6 @@ local function create10Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1854,7 +1773,6 @@ local function create11Content(container)
             desc = "功能说明：\n- 伐木大亨2专用辅助\n- 核心功能：自动伐木、树木复制、移植\n- 支持自动购买工具和传送\n- 适配最新游戏版本，稳定无冲突"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1876,7 +1794,6 @@ local function create11Content(container)
             end
         })
     end
-
     -- 功能说明整合到弹窗，菜单内无标签
     return function() end
 end
@@ -1938,7 +1855,7 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd8
     for i, btn in ipairs(buttons) do
         createButton(container, {
             name = "12" .. i,
-            layoutOrder = i,
+            layoutOrder = i + #injectors, -- 排在注入器按钮后面
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
             bgColor = CONFIG.UI_COLORS.primary,
@@ -1955,7 +1872,6 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd8
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -1970,7 +1886,6 @@ local function create13Content(container)
             desc = "功能说明：\n- 绕过游戏反作弊检测\n- 核心功能：无限耐力、速度转换器\n- 包含ESP玩家透视\n- 同时支持PC和移动端"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -1992,7 +1907,6 @@ local function create13Content(container)
             end
         })
     end
-
     return function() end
 end
 --=====================================================
@@ -2007,7 +1921,6 @@ local function create14Content(container)
             desc = "功能说明：\n- Blox Fruits专用辅助脚本\n- 自动农场：自动打怪收集资源\n- 自动获取果实和升级\n- 支持自动打击目标，高效成长"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2029,9 +1942,9 @@ local function create14Content(container)
             end
         })
     end
-
     return function() end
 end
+--=====================================================
 local function create15Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2068,7 +1981,6 @@ local function create15Content(container)
             desc = "功能说明：\n无钥匙(功能效果比较多)\n\n主控制（Main Controls）\n  本地玩家（Local Player）\n  - 移动速度（WalkSpeed）：滑动条调节（0-21，当前16），更快逃离怪物\n  - 开启超级加速（Enable Speed Boost）：突破基础移速上限\n  - 开启跳跃（Enable Jump）：开关跳跃，可跳过障碍\n  - 无加速延迟（No Acceleration）：移动瞬间达最大速度\n  - 穿墙模式（Noclip，快捷键N）：无视墙壁/地板阻挡\n  自动化（Automation）\n  - 自动加载扩展库（Auto Library Code）：增强功能兼容性\n  - 事件自动提示（Notify Library Code）：怪物接近等关键事件推送提示\n  - 远程解锁距离（Unlock Padlock Distance）：设置距离（当前40/100），无需靠近破解机关\n\n怪物免疫（Entity Bypass）\n  - 屏蔽尖叫怪（Disables Screech）：阻止黑暗突袭\n  - 免疫恐惧怪（Disables Dread）：不受视野干扰（屏幕变黑、操作紊乱）\n  - 反电涌（Anti Surge）：抵抗地面电流伤害\n  - 反Figure听力（Anti Figure Hearing）：使其无法通过声音定位\n  - 反眼怪（Anti-Eyes）：规避凝视攻击（被看不掉血）\n\n视觉增强（Visual Tools）\n  ESP透视（ESP Options）\n  - ESP透视：高亮显示隐藏门、陷阱、怪物位置，提前预判危险\n  视觉调整（Visual Adjustments）\n  - 填充/轮廓透明度：控制高亮可见度（0=完全显示，1=完全透明）\n  - 文字/文字轮廓透明度：调整提示文字显示效果\n  - ESP消失延迟（ESP Fade Time）：怪物离开后，标记多停留几秒\n\n楼层设置（Floor Settings）\n  主楼层工具（Main Floor Tools）\n  - 反追逐障碍（Anti Seek Obstacles）：干扰Seek移动路径，使其更难追上\n  楼层怪物免疫（Floor Entity Bypass）\n  - 反A90（Anti A90）：对抗随机传送秒杀\n  - 反窥视怪（Anti Lookman）：抵抗窥视攻击\n  - 反陷阱束缚（Anti Snare）：避免束缚效果\n  - 反复制体（Anti Dupe）：干扰复制体机制\n  - 反香蕉怪（Anti Banana）：免疫彩蛋怪影响\n  - 反熔岩（Anti Lava）：抵抗熔岩灼烧伤害\n  - 反墙壁突袭（Anti ScaryWall）：规避突然攻击"
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2090,21 +2002,20 @@ local function create15Content(container)
             end
         })
     end
-
     return function() end
 end
+--=====================================================
 local function create16Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "",--名字
-            url = "",--脚本代码
-            desc = "功能说明：\n- "--功能说明
+            name = "全部杀死",--名字
+            url = "https://pastebin.com/raw/E2asdgUM",--脚本代码
+            desc = "功能说明：\n拿起手枪杀死所有玩家"--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2126,22 +2037,20 @@ local function create16Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create17Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "",--名字
-            url = "",--脚本代码
-            desc = "功能说明：\n- "--功能说明
+            name = "自动农场beta版",--名字
+            url = "https://pastebin.com/raw/0atsjhrf",--脚本代码
+            desc = "功能说明：\n自动传送并杀死怪物没有上帝模式！"--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2163,22 +2072,20 @@ local function create17Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create18Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "",--名字
-            url = "",--脚本代码
-            desc = "功能说明：\n- "--功能说明
+            name = "杀死所有近战光环自动农场完整版",--名字
+            url = "https://pastebin.com/raw/XsnqUquJ",--脚本代码
+            desc = "功能说明：\n--- 你可以将它用作你的集线器 -- 你需要一把 KnifeStandart（默认刀） -- 装备 KnifeStandart 并使用它 -- 完全绕过反作弊 -- ez 自动农场钻石"--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2200,10 +2107,9 @@ local function create18Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create19Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2215,7 +2121,6 @@ local function create19Content(container)--编号菜单
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2237,10 +2142,9 @@ local function create19Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create20Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2252,7 +2156,6 @@ local function create20Content(container)--编号菜单
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2274,10 +2177,9 @@ local function create20Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create21Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2289,7 +2191,6 @@ local function create21Content(container)--编号菜单
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2311,10 +2212,9 @@ local function create21Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create22Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2326,7 +2226,6 @@ local function create22Content(container)--编号菜单
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2348,10 +2247,9 @@ local function create22Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create23Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2363,7 +2261,6 @@ local function create23Content(container)--编号菜单
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2385,10 +2282,9 @@ local function create23Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
+--=====================================================
 local function create24Content(container)--编号菜单
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2400,7 +2296,6 @@ local function create24Content(container)--编号菜单
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2422,28 +2317,26 @@ local function create24Content(container)--编号菜单
             end
         })
     end
-
     return function() end
 end
-
 --=====================================================
 -- 其他游戏菜单内容创建函数（省略类似结构，按照上述模式实现）
 -- 内脏与黑火药
-local function createMenuContentPanel(rightPanel, menuName)
+local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
     if not rightPanel or not rightPanel:IsDescendantOf(game) then return nil end
     local panel = Instance.new("Frame")
-    panel.Name = "ContentPanel_" .. menuName
+    panel.Name = "ContentPanel_" .. menuKey:gsub("%p", "")
     panel.Size = UDim2.new(1, 0, 1, 0)
     panel.BackgroundTransparency = 1
     panel.Parent = rightPanel
     -- 直接根据当前活跃菜单设置可见性（无延迟）
-    panel.Visible = (menuName == UI_STATE.activeMenu)
+    panel.Visible = (menuKey == UI_STATE.activeMenu)
     panel.Active = false
     local title = createLabel(panel, {
         name = "PanelTitle",
         size = UDim2.new(1, -20 * UI_STATE.scale, 0, 36 * UI_STATE.scale),
         position = UDim2.new(0, 10 * UI_STATE.scale, 0, 15 * UI_STATE.scale),
-        text = menuName .. "内容",
+        text = panelTitle or (menuKey .. "内容"),
         color = CONFIG.UI_COLORS.accent,
         textSize = 18,
         font = Enum.Font.SourceSansBold,
@@ -2453,7 +2346,7 @@ local function createMenuContentPanel(rightPanel, menuName)
     })
     if title then createCorner(title, 6) end
     local scrollFrame = Instance.new("ScrollingFrame")
-    scrollFrame.Name = "ContentScroll_" .. menuName
+    scrollFrame.Name = "ContentScroll_" .. menuKey:gsub("%p", "")
     local titleHeight = title and (title.Position.Y.Offset + title.Size.Y.Offset + 15 * UI_STATE.scale) or 50
     scrollFrame.Size = UDim2.new(1, -20 * UI_STATE.scale, 1, -titleHeight)
     scrollFrame.Position = UDim2.new(0, 10 * UI_STATE.scale, 0, titleHeight)
@@ -2485,7 +2378,7 @@ local function createMenuContentPanel(rightPanel, menuName)
         end
     end)
     local actionContainer = Instance.new("Frame")
-    actionContainer.Name = "ActionContainer_" .. menuName
+    actionContainer.Name = "ActionContainer_" .. menuKey:gsub("%p", "")
     actionContainer.Size = UDim2.new(1, 0, 0, 0)
     actionContainer.BackgroundTransparency = 1
     actionContainer.Parent = scrollFrame
@@ -2516,64 +2409,50 @@ local function createMenuContentPanel(rightPanel, menuName)
     scrollFrame:GetPropertyChangedSignal("CanvasPosition"):Connect(updateScrollBar)
     scrollFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollBar)  -- 窗口大小变化时更新
     local updateCallback
-if menuName == "保存位置" then
-         updateCallback = create1Content(actionContainer)
-     elseif menuName == "传送玩家" then
-         updateCallback = create2Content(actionContainer)
-     elseif menuName == "注入器下载" then
-         updateCallback = create3Content(actionContainer)
-     elseif menuName == "玩家通用" then
-         updateCallback = create4Content(actionContainer)
-     elseif menuName == "森林中的99夜" then
-         updateCallback = create5Content(actionContainer)
-     elseif menuName == "军事大亨" then
-         updateCallback = create6Content(actionContainer)
-     elseif menuName == "死铁轨" then
-         updateCallback = create7Content(actionContainer)
-     elseif menuName == "鱼" then
-         updateCallback = create8Content(actionContainer)
-     elseif menuName == "最强的战场" then
-         updateCallback = create9Content(actionContainer)
-     elseif menuName == "花园种植" then
-         updateCallback = create10Content(actionContainer)
-     elseif menuName == "伐木大亨2" then
-         updateCallback = create11Content(actionContainer)
-     elseif menuName == "墨水游戏" then
-         updateCallback = create12Content(actionContainer)
-     elseif menuName == "被遗弃" then
-         updateCallback = create13Content(actionContainer)
-     elseif menuName == "Blox Fruits" then
-         updateCallback = create14Content(actionContainer)
-     elseif menuName == "Doors" then
-         updateCallback = create15Content(actionContainer)
-     -- 修复：空菜单名分支（16-24号）纳入统一链，删除多余 end
-     elseif menuName == "" then
-         updateCallback = create16Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create17Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create18Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create19Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create20Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create21Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create22Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create23Content(actionContainer)
-     elseif menuName == "" then
-         updateCallback = create24Content(actionContainer)
-     end  -- 修复：仅保留1个结尾 end，闭合整个 if-elseif 链
+    
+    -- 菜单内容映射：key=面板标识，value={contentFunc=内容创建函数, panelTitle=面板标题}
+    local menuConfig = {
+        ["传送玩家"] = {contentFunc = create2Content, panelTitle = "玩家传送管理"},
+        ["保存位置"] = {contentFunc = create1Content, panelTitle = "坐标保存与管理"},
+        ["玩家通用"] = {contentFunc = create4Content, panelTitle = "通用功能工具箱"},
+        ["注入器下载"] = {contentFunc = create3Content, panelTitle = "注入器资源下载"},
+        ["森林中的99夜"] = {contentFunc = create5Content, panelTitle = "森林99夜专属脚本"},
+        ["军事大亨"] = {contentFunc = create6Content, panelTitle = "军事大亨自动农场"},
+        ["死铁轨"] = {contentFunc = create7Content, panelTitle = "死铁轨专用脚本"},
+        ["鱼"] = {contentFunc = create8Content, panelTitle = "鱼类玩法辅助"},
+        ["最强的战场"] = {contentFunc = create9Content, panelTitle = "最强战场功能脚本"},
+        ["花园种植"] = {contentFunc = create10Content, panelTitle = "花园种植自动化"},
+        ["伐木大亨2"] = {contentFunc = create11Content, panelTitle = "伐木大亨2辅助"},
+        ["墨水游戏"] = {contentFunc = create12Content, panelTitle = "墨水游戏全功能脚本"},
+        ["被遗弃"] = {contentFunc = create13Content, panelTitle = "被遗弃游戏辅助"},
+        ["Blox Fruits"] = {contentFunc = create14Content, panelTitle = "Blox Fruits农场脚本"},
+        ["Doors"] = {contentFunc = create15Content, panelTitle = "Doors透视与生存辅助"},
+        ["保护总统"] = {contentFunc = create16Content, panelTitle = "保护总统专属功能"},
+        ["保护房屋免受怪物侵害"] = {contentFunc = create17Content, panelTitle = "房屋防护脚本"},
+        ["WARMIX"] = {contentFunc = create18Content, panelTitle = "WARMIX战斗辅助"},
+        ["菜单19"] = {contentFunc = create19Content, panelTitle = "未命名菜单19"},
+        ["菜单20"] = {contentFunc = create20Content, panelTitle = "未命名菜单20"},
+        ["菜单21"] = {contentFunc = create21Content, panelTitle = "未命名菜单21"},
+        ["菜单22"] = {contentFunc = create22Content, panelTitle = "未命名菜单22"},
+        ["菜单23"] = {contentFunc = create23Content, panelTitle = "未命名菜单23"},
+        ["菜单24"] = {contentFunc = create24Content, panelTitle = "未命名菜单24"}
+    }
+    
+    -- 根据面板标识匹配内容创建函数
+    local config = menuConfig[menuKey] or {}    updateCallback = config.contentFunc and config.contentFunc(actionContainer) or function() end
+    
+    -- 绑定面板可见性变化事件
     panel:GetPropertyChangedSignal("Visible"):Connect(function()
         if updateCallback then
             updateCallback(panel.Visible)
         end
     end)
+    
+    -- 初始可见时立即执行回调
     if panel.Visible and updateCallback then
         updateCallback(true)
     end
+    
     return panel
 end
 -- ====================== 主UI创建 ======================
@@ -2636,7 +2515,7 @@ local function createMainUI()
     createLabel(leftInfo, {
         name = "VersionLabel",
         size = UDim2.new(0, 0, 0, 24 * UI_STATE.scale),
-        text = "2.0版本",
+        text = "UI 2.0",
         color = Color3.fromRGB(255, 200, 100),
         textSize = 18,
         font = Enum.Font.SourceSansBold,
@@ -2738,13 +2617,12 @@ local function createMainUI()
     leftContainer.Size = UDim2.new(1, 0, 0, 0)
     leftContainer.BackgroundTransparency = 1
     leftContainer.Parent = leftScroll
-local leftLayout = Instance.new("UIListLayout")
-leftLayout.Parent = leftContainer
-leftLayout.FillDirection = Enum.FillDirection.Vertical
-leftLayout.Padding = UDim.new(0, 8 * UI_STATE.scale)
-leftLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-leftLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
+    local leftLayout = Instance.new("UIListLayout")
+    leftLayout.Parent = leftContainer
+    leftLayout.FillDirection = Enum.FillDirection.Vertical
+    leftLayout.Padding = UDim.new(0, 8 * UI_STATE.scale)
+    leftLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    leftLayout.SortOrder = Enum.SortOrder.LayoutOrder
     local leftPadding = Instance.new("UIPadding")
     leftPadding.PaddingTop = UDim.new(0, 8 * UI_STATE.scale)
     leftPadding.PaddingBottom = UDim.new(0, 8 * UI_STATE.scale)
@@ -2769,70 +2647,102 @@ leftLayout.SortOrder = Enum.SortOrder.LayoutOrder
     rightPanel.Parent = mainPanel
     createCorner(rightPanel, 12)
 -- 1. 提取“切换面板可见性”的通用逻辑
-local function setActivePanel(targetName)
+local function setActivePanel(targetKey)
     -- 1. 切换面板可见性
-    for name, panel in pairs(UI_STATE.menuPanels) do
+    for key, panel in pairs(UI_STATE.menuPanels) do
         if panel and panel:IsDescendantOf(game) then
-            panel.Visible = (name == targetName)
+            panel.Visible = (key == targetKey)
         end
     end
     -- 2. 强制同步更新所有菜单按钮状态（与面板切换严格同步）
     if leftContainer and leftContainer:IsDescendantOf(game) then
         for _, child in ipairs(leftContainer:GetChildren()) do
             if child:IsA("TextButton") and child.Name:match("MenuButton_") then
-                local childMenu = child.Name:gsub("MenuButton_", "")
-                child.BackgroundColor3 = childMenu == targetName and 
+                local btnMenuKey = child.Name:gsub("MenuButton_", "")
+                local targetKeyClean = targetKey:gsub("%p", "")
+                child.BackgroundColor3 = btnMenuKey == targetKeyClean and 
                     Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
                 -- 强制刷新
                 child.BackgroundColor3 = child.BackgroundColor3
             end
         end
     end
+    -- 3. 更新当前活跃菜单标识
+    UI_STATE.activeMenu = targetKey
 end
-
-
--- 2. 提取“创建菜单”的通用函数
-local function createMenu(name, level)
-    -- 创建面板
-    UI_STATE.menuPanels[name] = createMenuContentPanel(rightPanel, name)
-    -- 注册菜单项，绑定点击事件
-    createMenuItem(leftContainer, name, level, function()
-        setActivePanel(name) -- 复用切换逻辑
+-- 2. 菜单配置：左侧显示文本 + 面板标识 + 布局顺序 + 面板标题
+local menuList = {
+    {menuText = "玩家传送", menuKey = "传送玩家", layoutOrder = 1},
+    {menuText = "坐标管理", menuKey = "保存位置", layoutOrder = 2},
+    {menuText = "通用功能", menuKey = "玩家通用", layoutOrder = 3},
+    {menuText = "注入器下载", menuKey = "注入器下载", layoutOrder = 4},
+    {menuText = "森林99夜", menuKey = "森林中的99夜", layoutOrder = 5},
+    {menuText = "军事大亨", menuKey = "军事大亨", layoutOrder = 6},
+    {menuText = "死铁轨", menuKey = "死铁轨", layoutOrder = 7},
+    {menuText = "鱼类玩法", menuKey = "鱼", layoutOrder = 8},
+    {menuText = "最强战场", menuKey = "最强的战场", layoutOrder = 9},
+    {menuText = "花园种植", menuKey = "花园种植", layoutOrder = 10},
+    {menuText = "伐木大亨2", menuKey = "伐木大亨2", layoutOrder = 11},
+    {menuText = "墨水游戏", menuKey = "墨水游戏", layoutOrder = 12},
+    {menuText = "被遗弃", menuKey = "被遗弃", layoutOrder = 13},
+    {menuText = "Blox Fruits", menuKey = "Blox Fruits", layoutOrder = 14},
+    {menuText = "Doors", menuKey = "Doors", layoutOrder = 15},
+    {menuText = "保护总统", menuKey = "保护总统", layoutOrder = 16},
+    {menuText = "房屋防护", menuKey = "保护房屋免受怪物侵害", layoutOrder = 17},
+    {menuText = "WARMIX", menuKey = "WARMIX", layoutOrder = 18},
+    {menuText = "菜单19", menuKey = "菜单19", layoutOrder = 19},
+    {menuText = "菜单20", menuKey = "菜单20", layoutOrder = 20},
+    {menuText = "菜单21", menuKey = "菜单21", layoutOrder = 21},
+    {menuText = "菜单22", menuKey = "菜单22", layoutOrder = 22},
+    {menuText = "菜单23", menuKey = "菜单23", layoutOrder = 23},
+    {menuText = "菜单24", menuKey = "菜单24", layoutOrder = 24}
+}
+-- 3. 批量创建菜单（按钮 + 面板）
+local menuConfig = {
+    ["传送玩家"] = {contentFunc = create2Content, panelTitle = "玩家传送"},
+    ["保存位置"] = {contentFunc = create1Content, panelTitle = "坐标保存"},
+    ["玩家通用"] = {contentFunc = create4Content, panelTitle = "通用功能"},
+    ["注入器下载"] = {contentFunc = create3Content, panelTitle = "注入器下载网址"},
+    ["森林中的99夜"] = {contentFunc = create5Content, panelTitle = "服务器森林99夜"},
+    ["军事大亨"] = {contentFunc = create6Content, panelTitle = "服务器军事大亨"},
+    ["死铁轨"] = {contentFunc = create7Content, panelTitle = "服务器死铁轨"},
+    ["鱼"] = {contentFunc = create8Content, panelTitle = "服务器鱼"},
+    ["最强的战场"] = {contentFunc = create9Content, panelTitle = "服务器最强战场"},
+    ["花园种植"] = {contentFunc = create10Content, panelTitle = "服务器花园种植"},
+    ["伐木大亨2"] = {contentFunc = create11Content, panelTitle = "服务器伐木大亨2"},
+    ["墨水游戏"] = {contentFunc = create12Content, panelTitle = "服务器墨水游戏"},
+    ["被遗弃"] = {contentFunc = create13Content, panelTitle = "服务器被遗弃"},
+    ["Blox Fruits"] = {contentFunc = create14Content, panelTitle = "服务器Blox Fruits"},
+    ["Doors"] = {contentFunc = create15Content, panelTitle = "服务器Doors"},
+    ["保护总统"] = {contentFunc = create16Content, panelTitle = "服务器保护总统"},
+    ["保护房屋免受怪物侵害"] = {contentFunc = create17Content, panelTitle = "服务器房屋防护"},
+    ["WARMIX"] = {contentFunc = create18Content, panelTitle = "服务器WARMIX[PVP FPS 武器战斗射击枪]"},
+    ["菜单19"] = {contentFunc = create19Content, panelTitle = "看你妈呢还没弄未命名菜单19"},
+    ["菜单20"] = {contentFunc = create20Content, panelTitle = "看你妈呢还没弄未命名菜单20"},
+    ["菜单21"] = {contentFunc = create21Content, panelTitle = "看你妈呢还没弄未命名菜单21"},
+    ["菜单22"] = {contentFunc = create22Content, panelTitle = "看你妈呢还没弄未命名菜单22"},
+    ["菜单23"] = {contentFunc = create23Content, panelTitle = "看你妈呢还没弄未命名菜单23"},
+    ["菜单24"] = {contentFunc = create24Content, panelTitle = "看你妈呢还没弄未命名菜单24"}
+}
+-- 创建菜单按钮和面板
+for _, menu in ipairs(menuList) do
+    local config = menuConfig[menu.menuKey] or {}
+    -- 创建面板并缓存
+    UI_STATE.menuPanels[menu.menuKey] = createMenuContentPanel(rightPanel, menu.menuKey, config.panelTitle)
+    -- 创建菜单项并绑定切换事件
+    createMenuItem(leftContainer, menu.menuText, menu.layoutOrder, function()
+        setActivePanel(menu.menuKey)
+        showNotification("菜单切换成功", "当前菜单：" .. menu.menuText)
     end)
 end
-
--- 按此顺序创建，确保 LayoutOrder 从 1 开始递增
-createMenu("传送玩家", 1)    -- 首项
-createMenu("保存位置", 2)
-createMenu("玩家通用", 3)
-createMenu("注入器下载", 4)
--- 游戏脚本（按功能分类，非 B 开头）
-createMenu("森林中的99夜", 5)
-createMenu("军事大亨", 6)
-createMenu("死铁轨", 7)
-createMenu("鱼", 8)
-createMenu("最强的战场", 9)
-createMenu("花园种植", 10)
-createMenu("伐木大亨2", 11)
-createMenu("墨水游戏", 12)
-createMenu("被遗弃", 13)
-createMenu("Blox Fruits", 14) 
-createMenu("Doors", 15) 
-createMenu("", 16) 
-createMenu("", 17) 
-createMenu("", 18) 
-createMenu("", 19) 
-createMenu("", 20) 
-createMenu("", 21) 
-createMenu("", 22) 
-createMenu("", 23) 
-createMenu("", 24)
 updateLeftScroll()
-
-    -- 立即激活当前菜单（无延迟）
-    local activePanel = UI_STATE.menuPanels[UI_STATE.activeMenu]
-    if activePanel and activePanel:IsDescendantOf(game) then
-        activePanel.Visible = true
+    -- 立即激活初始菜单（无延迟）
+    local initActiveKey = UI_STATE.activeMenu
+    local initPanel = UI_STATE.menuPanels[initActiveKey]
+    if initPanel and initPanel:IsDescendantOf(game) then
+        initPanel.Visible = true
+        -- 同步激活对应菜单按钮
+        setActivePanel(initActiveKey)
     end
     -- 绑定拖动事件
     bindDragToElement(topBar, mainPanel)
@@ -2854,14 +2764,12 @@ updateLeftScroll()
         if (input.UserInputType == Enum.UserInputType.MouseButton1 or 
             input.UserInputType == Enum.UserInputType.Touch) and UI_STATE.isDragging then
             UI_STATE.isDragging = false
-            
         end
     end)
     createFloatingButton()
     UI_STATE.isScaling = false
     print("主UI创建成功")
 end
-
 local function initScript()
     local localPlayer = Players.LocalPlayer
     if not localPlayer then
@@ -2873,7 +2781,6 @@ local function initScript()
     end
     initCSVPath()
     -- 初始化角色监听
-    local localPlayer = Players.LocalPlayer
     -- 断开已有连接（防止重复监听）
     if UI_STATE.characterAddedConn then
         UI_STATE.characterAddedConn:Disconnect()
@@ -2948,8 +2855,6 @@ if not success then
         end
     end)
 end
-
-
 --[[local function create16Content(container)--编号菜单你只需要写这个数字
     if not container or not container:IsDescendantOf(game) then return function() end end
     
@@ -2961,7 +2866,6 @@ end
             desc = "功能说明：\n- "--功能说明
         }
     }
-
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
@@ -2983,6 +2887,8 @@ end
             end
         })
     end
-
     return function() end
 end]]
+
+   
+
