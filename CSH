@@ -1047,7 +1047,7 @@ local function createPlayerPositionItem(parent, playerName, position, isLocalPla
     })
     return frame
 end
-local function createMenu1Content(container)
+local function create1Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     local coordDisplay = Instance.new("Frame")
     coordDisplay.Name = "CoordDisplay"
@@ -1166,7 +1166,7 @@ local function createMenu1Content(container)
         end)
     end
 end
-local function createMenu2Content(container)
+local function create2Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     local controlFrame = Instance.new("Frame")
     controlFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
@@ -1435,7 +1435,7 @@ local function executeUrlContent()
 end
 
 -- ====================== 脚本说明 ======================
-local function createInjectorDownloadContent(container)
+local function create3Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明文字）
@@ -1470,7 +1470,7 @@ local function createInjectorDownloadContent(container)
     -- 创建按钮（无菜单内说明标签）
     for i, injector in ipairs(injectors) do
         createButton(container, {
-            name = "InjectorBtn_" .. i,
+            name = "3" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
             text = injector.name,
@@ -1492,7 +1492,7 @@ local function createInjectorDownloadContent(container)
 end
 --=====================================================
 -- 玩家功能菜单内容
-local function createPlayerFeaturesContent(container)
+local function create4Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
 
 
@@ -1579,7 +1579,7 @@ local function createPlayerFeaturesContent(container)
     -- 创建功能按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "PlayerFuncBtn_" .. i,
+            name = "4" .. i,
             layoutOrder = i + 3,  -- 排在3个输入框后面
             size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
             text = btn.name,
@@ -1606,7 +1606,7 @@ local function createPlayerFeaturesContent(container)
 end
 --=====================================================
 -- 森林中的99夜菜单内容
-local function create99NightsContent(container)
+local function create5Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1626,7 +1626,7 @@ local function create99NightsContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "99NightsBtn" .. i,
+            name = "5" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1648,7 +1648,7 @@ local function create99NightsContent(container)
     return function() end
 end
 --=====================================================
-local function createMilitarytycoonContent(container)
+local function create6Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1663,7 +1663,7 @@ local function createMilitarytycoonContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "GutsBtn" .. i,
+            name = "6" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1685,7 +1685,7 @@ local function createMilitarytycoonContent(container)
     return function() end
 end
 --=====================================================
-local function createDeadRailContent(container)
+local function create7Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1700,7 +1700,7 @@ local function createDeadRailContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "DeadRailBtn" .. i,
+            name = "7" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1712,7 +1712,7 @@ local function createDeadRailContent(container)
                     btn.desc .. "\n\n补充说明：\n- 为什么只有红叶脚本？作者测试多数脚本失效，仅该脚本可用\n- 解卡密流程简单，按提示操作即可",
                     function()
                         loadstring(game:HttpGet(btn.url))()
-                        showNotification("功能加载中", "红叶脚本执行中...")
+                        showNotification("功能加载中", "脚本执行中...")
                     end
                 )
             end
@@ -1722,7 +1722,7 @@ local function createDeadRailContent(container)
     return function() end
 end
 --=====================================================
-local function createFishContent(container)
+local function create8Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1737,7 +1737,7 @@ local function createFishContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "FishBtn" .. i,
+            name = "8" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1749,7 +1749,7 @@ local function createFishContent(container)
                     btn.desc .. "\n\n补充说明：\n- 为什么只有红叶脚本？测试多数脚本失效，仅该脚本适配鱼类玩法\n- 解卡密流程简单，按提示操作即可",
                     function()
                         loadstring(game:HttpGet(btn.url))()
-                        showNotification("功能加载中", "红叶脚本执行中...")
+                        showNotification("功能加载中", "脚本执行中...")
                     end
                 )
             end
@@ -1759,7 +1759,7 @@ local function createFishContent(container)
     return function() end
 end
 --=====================================================
-local function createStrongestBattlefieldContent(container)
+local function create9Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1779,7 +1779,7 @@ local function createStrongestBattlefieldContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "BattlefieldBtn" .. i,
+            name = "9" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1801,7 +1801,7 @@ local function createStrongestBattlefieldContent(container)
     return function() end
 end
 --=====================================================
-local function createGardenPlantingContent(container)
+local function create10Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1821,7 +1821,7 @@ local function createGardenPlantingContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "GardenBtn" .. i,
+            name = "10" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1843,7 +1843,7 @@ local function createGardenPlantingContent(container)
     return function() end
 end
 --=====================================================
-local function createLumberTycoon2Content(container)
+local function create11Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1858,7 +1858,7 @@ local function createLumberTycoon2Content(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "LumberBtn" .. i,
+            name = "11" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1881,7 +1881,7 @@ local function createLumberTycoon2Content(container)
     return function() end
 end
 --=====================================================
-local function createInkGameContent(container)
+local function create12Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     -- 按钮数据（含说明）
     local buttons = {
@@ -1916,7 +1916,7 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd8
      }
    for i, injector in ipairs(injectors) do
         createButton(container, {
-            name = "InjectorBtn_" .. i,
+            name = "3" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
             text = injector.name,
@@ -1937,7 +1937,7 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd8
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "InkBtn" .. i,
+            name = "12" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1959,7 +1959,7 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd8
     return function() end
 end
 --=====================================================
-local function createAbandonedContent(container)
+local function create13Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -1974,7 +1974,7 @@ local function createAbandonedContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "AbandonedBtn" .. i,
+            name = "13" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1986,7 +1986,7 @@ local function createAbandonedContent(container)
                     btn.desc,
                     function()
                         loadstring(game:HttpGet(btn.url))();
-                        showNotification("功能加载中", "被遗弃脚本执行中...")
+                        showNotification("功能加载中", "脚本执行中...")
                     end
                 )
             end
@@ -1996,7 +1996,7 @@ local function createAbandonedContent(container)
     return function() end
 end
 --=====================================================
-local function createBloxFruitsContent(container)
+local function create14Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -2011,7 +2011,7 @@ local function createBloxFruitsContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "BloxFruitsBtn" .. i,
+            name = "14" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -2023,7 +2023,7 @@ local function createBloxFruitsContent(container)
                     btn.desc,
                     function()
                         loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", "Blox Fruits脚本执行中...")
+                        showNotification("功能加载中", "脚本执行中...")
                     end
                 )
             end
@@ -2032,7 +2032,7 @@ local function createBloxFruitsContent(container)
 
     return function() end
 end
-local function createDoorsContent(container)
+local function create15Content(container)
     if not container or not container:IsDescendantOf(game) then return function() end end
     
     -- 按钮数据（含说明）
@@ -2072,7 +2072,7 @@ local function createDoorsContent(container)
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "Doors" .. i,
+            name = "15" .. i,
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -2084,7 +2084,7 @@ local function createDoorsContent(container)
                     btn.desc,
                     function()
                         loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", "Doors脚本执行中...")
+                        showNotification("功能加载中", "脚本执行中...")
                     end
                 )
             end
@@ -2093,6 +2093,339 @@ local function createDoorsContent(container)
 
     return function() end
 end
+local function create16Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "16" .. i,--仅修改前缀数字为16
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create17Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "17" .. i,--仅修改前缀数字为17
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create18Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "18" .. i,--仅修改前缀数字为18
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create19Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "19" .. i,--仅修改前缀数字为19
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create20Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "20" .. i,--仅修改前缀数字为20
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create21Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "21" .. i,--仅修改前缀数字为21
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create22Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "22" .. i,--仅修改前缀数字为22
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create23Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "23" .. i,--仅修改前缀数字为23
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
+local function create24Content(container)--编号菜单
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "24" .. i,--仅修改前缀数字为24
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end
+
 --=====================================================
 -- 其他游戏菜单内容创建函数（省略类似结构，按照上述模式实现）
 -- 内脏与黑火药
@@ -2184,36 +2517,55 @@ local function createMenuContentPanel(rightPanel, menuName)
     scrollFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollBar)  -- 窗口大小变化时更新
     local updateCallback
 if menuName == "保存位置" then
-    updateCallback = createMenu1Content(actionContainer)
-elseif menuName == "传送玩家" then
-    updateCallback = createMenu2Content(actionContainer)
-elseif menuName == "注入器下载" then
-    updateCallback = createInjectorDownloadContent(actionContainer)
-elseif menuName == "玩家通用" then
-    updateCallback = createPlayerFeaturesContent(actionContainer)
-elseif menuName == "森林中的99夜" then
-    updateCallback = create99NightsContent(actionContainer)
-elseif menuName == "军事大亨" then
-    updateCallback = createMilitarytycoonContent(actionContainer)
-elseif menuName == "死铁轨" then
-    updateCallback = createDeadRailContent(actionContainer)
-elseif menuName == "鱼" then
-    updateCallback = createFishContent(actionContainer)
-elseif menuName == "最强的战场" then
-    updateCallback = createStrongestBattlefieldContent(actionContainer)
-elseif menuName == "花园种植" then
-    updateCallback = createGardenPlantingContent(actionContainer)
-elseif menuName == "伐木大亨2" then
-    updateCallback = createLumberTycoon2Content(actionContainer)
-elseif menuName == "墨水游戏" then
-    updateCallback = createInkGameContent(actionContainer)
-elseif menuName == "被遗弃" then
-    updateCallback = createAbandonedContent(actionContainer)
-elseif menuName == "Blox Fruits" then
-    updateCallback = createBloxFruitsContent(actionContainer)
-elseif menuName == "Doors" then
-    updateCallback = createDoorsContent(actionContainer)
-end
+         updateCallback = create1Content(actionContainer)
+     elseif menuName == "传送玩家" then
+         updateCallback = create2Content(actionContainer)
+     elseif menuName == "注入器下载" then
+         updateCallback = create3Content(actionContainer)
+     elseif menuName == "玩家通用" then
+         updateCallback = create4Content(actionContainer)
+     elseif menuName == "森林中的99夜" then
+         updateCallback = create5Content(actionContainer)
+     elseif menuName == "军事大亨" then
+         updateCallback = create6Content(actionContainer)
+     elseif menuName == "死铁轨" then
+         updateCallback = create7Content(actionContainer)
+     elseif menuName == "鱼" then
+         updateCallback = create8Content(actionContainer)
+     elseif menuName == "最强的战场" then
+         updateCallback = create9Content(actionContainer)
+     elseif menuName == "花园种植" then
+         updateCallback = create10Content(actionContainer)
+     elseif menuName == "伐木大亨2" then
+         updateCallback = create11Content(actionContainer)
+     elseif menuName == "墨水游戏" then
+         updateCallback = create12Content(actionContainer)
+     elseif menuName == "被遗弃" then
+         updateCallback = create13Content(actionContainer)
+     elseif menuName == "Blox Fruits" then
+         updateCallback = create14Content(actionContainer)
+     elseif menuName == "Doors" then
+         updateCallback = create15Content(actionContainer)
+     -- 修复：空菜单名分支（16-24号）纳入统一链，删除多余 end
+     elseif menuName == "" then
+         updateCallback = create16Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create17Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create18Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create19Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create20Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create21Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create22Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create23Content(actionContainer)
+     elseif menuName == "" then
+         updateCallback = create24Content(actionContainer)
+     end  -- 修复：仅保留1个结尾 end，闭合整个 if-elseif 链
     panel:GetPropertyChangedSignal("Visible"):Connect(function()
         if updateCallback then
             updateCallback(panel.Visible)
@@ -2464,9 +2816,17 @@ createMenu("花园种植", 10)
 createMenu("伐木大亨2", 11)
 createMenu("墨水游戏", 12)
 createMenu("被遗弃", 13)
-createMenu("Blox Fruits", 14) -- 最后
-createMenu("Doors", 15) -- 最后
-
+createMenu("Blox Fruits", 14) 
+createMenu("Doors", 15) 
+createMenu("", 16) 
+createMenu("", 17) 
+createMenu("", 18) 
+createMenu("", 19) 
+createMenu("", 20) 
+createMenu("", 21) 
+createMenu("", 22) 
+createMenu("", 23) 
+createMenu("", 24)
 updateLeftScroll()
 
     -- 立即激活当前菜单（无延迟）
@@ -2588,3 +2948,41 @@ if not success then
         end
     end)
 end
+
+
+--[[local function create16Content(container)--编号菜单你只需要写这个数字
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "",--名字
+            url = "",--脚本代码
+            desc = "功能说明：\n- "--功能说明
+        }
+    }
+
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "16" .. i,--这里得填编号菜单你只需要写这个数字，然后其余的不变
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+
+    return function() end
+end]]
