@@ -276,7 +276,7 @@ local function showAnnouncement()
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -2116,9 +2116,9 @@ local function create19Content(container)--编号菜单
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "",--名字
-            url = "",--脚本代码
-            desc = "功能说明：\n- "--功能说明
+            name = "老外脚本(无卡密)",--名字
+            url = "\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\76\69\83\117\109\52\114\113",--脚本代码
+            desc = "功能说明：\n- 自行研究无功能说明"--功能说明
         }
     }
     -- 创建按钮
@@ -2430,7 +2430,7 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
         ["保护总统"] = {contentFunc = create16Content, panelTitle = "保护总统专属功能"},
         ["保护房屋免受怪物侵害"] = {contentFunc = create17Content, panelTitle = "房屋防护脚本"},
         ["WARMIX"] = {contentFunc = create18Content, panelTitle = "WARMIX战斗辅助"},
-        ["菜单19"] = {contentFunc = create19Content, panelTitle = "未命名菜单19"},
+        ["chain(内容已被删除)"] = {contentFunc = create19Content, panelTitle = "chain(内容已被删除)"},
         ["菜单20"] = {contentFunc = create20Content, panelTitle = "未命名菜单20"},
         ["菜单21"] = {contentFunc = create21Content, panelTitle = "未命名菜单21"},
         ["菜单22"] = {contentFunc = create22Content, panelTitle = "未命名菜单22"},
@@ -2690,7 +2690,7 @@ local menuList = {
     {menuText = "保护总统", menuKey = "保护总统", layoutOrder = 16},
     {menuText = "房屋防护", menuKey = "保护房屋免受怪物侵害", layoutOrder = 17},
     {menuText = "WARMIX", menuKey = "WARMIX", layoutOrder = 18},
-    {menuText = "菜单19", menuKey = "菜单19", layoutOrder = 19},
+    {menuText = "chain(内容已被删除)", menuKey = "chain(内容已被删除)", layoutOrder = 19},
     {menuText = "菜单20", menuKey = "菜单20", layoutOrder = 20},
     {menuText = "菜单21", menuKey = "菜单21", layoutOrder = 21},
     {menuText = "菜单22", menuKey = "菜单22", layoutOrder = 22},
@@ -2717,7 +2717,7 @@ local menuConfig = {
     ["保护总统"] = {contentFunc = create16Content, panelTitle = "服务器保护总统"},
     ["保护房屋免受怪物侵害"] = {contentFunc = create17Content, panelTitle = "服务器房屋防护"},
     ["WARMIX"] = {contentFunc = create18Content, panelTitle = "服务器WARMIX[PVP FPS 武器战斗射击枪]"},
-    ["菜单19"] = {contentFunc = create19Content, panelTitle = "看你妈呢还没弄未命名菜单19"},
+    ["chain(内容已被删除)"] = {contentFunc = create19Content, panelTitle = "服务器chain"},
     ["菜单20"] = {contentFunc = create20Content, panelTitle = "看你妈呢还没弄未命名菜单20"},
     ["菜单21"] = {contentFunc = create21Content, panelTitle = "看你妈呢还没弄未命名菜单21"},
     ["菜单22"] = {contentFunc = create22Content, panelTitle = "看你妈呢还没弄未命名菜单22"},
