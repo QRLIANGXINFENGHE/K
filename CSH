@@ -270,13 +270,13 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "2.51版本 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "3.0汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n晚上凌晨直播说我疑似诈骗直接三天😭逗我笑呢🤬都去关注这个快手号qiuliangyuoliangxin", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1806,6 +1806,11 @@ local function create12Content(container)
             name = "ink-game(测试版有杀戮光环)",
             url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
             desc = "功能说明：\n- 适配最新版本的甩飞功能\n- 包含自动获胜、自动达尔戈纳小游戏\n- 支持捉迷藏模式和玻璃视觉\n- 新增跳绳辅助，全面覆盖玩法"
+        },
+        {
+            name = "RINGTA汉化",
+            url = "https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/%E6%B1%89%E5%8C%96",
+            desc = "秋容汉化你值得拥有🤝"
         },
         {
             name = "ink-game(正常版)",
