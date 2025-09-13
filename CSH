@@ -224,13 +224,7 @@ local function Popup_VerifyKuaishou()
     while not done do task.wait() end
 end
     -- 最终提示
-    local notifyGui = createScreenGui("Popup_FinalNotice")
-    local notifyFrame = createFrame(notifyGui, UDim2.new(0, 340, 0, 120), UDim2.new(0.5, -170, 0.5, -60))
-    createLabel(notifyFrame, "QQ验证已经删除了因为有太多傻逼", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 45))
-    playTempSound("12222253")
-    task.wait(3)
-    notifyGui:Destroy()
-end
+
 -- ================ 公告弹窗（公告文字缩小50%） ================
 local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
@@ -2840,6 +2834,18 @@ end
                 createExecutionDialog(
                     "执行 " .. btn.name,
                     btn.desc,
+                    function()
+                        loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+    return function() end
+end]]
+
+   
                     function()
                         loadstring(game:HttpGet(btn.url, true))()
                         showNotification("功能加载中", "脚本执行中...")
