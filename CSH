@@ -223,43 +223,10 @@ local function Popup_VerifyKuaishou()
     
     while not done do task.wait() end
 end
--- QQ群验证
-local function Popup_VerifyQQGroup()
-    local gui = createScreenGui("Popup_QQGroup")
-    local frame = createFrame(gui, UDim2.new(0, 420, 0, 260), UDim2.new(0.5, -210, 0.5, -130))
-    createLabel(frame, "主播现在还有没有QQ群？", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
-    
-    local _, inputQQGroup = createClickToInput(
-        frame, UDim2.new(1, -50, 0, 45), UDim2.new(0, 25, 0, 75),
-        "点击输入答案", "请输入有或者没有"
-    )
-    
-    local statusLabel = createLabel(frame, "", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 135))
-    local exitCount = 0
-    local done = false
-    
-    createButton(frame, "确定回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
-        statusLabel.Text = "你是废物吗？这都答不上来"
-        statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
-    end)
-    
-    createButton(frame, "退出回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.5, 0, 0, 185), function()
-        exitCount += 1
-        if exitCount == 1 then
-            statusLabel.Text = "废物玩意儿确定退出吗？真废物这都答不上来😂"
-            statusLabel.TextColor3 = Color3.fromRGB(255, 220, 60)
-        elseif exitCount >= 2 then
-            done = true
-            gui:Destroy()
-        end
-    end)
-    
-    while not done do task.wait() end
-    
     -- 最终提示
     local notifyGui = createScreenGui("Popup_FinalNotice")
     local notifyFrame = createFrame(notifyGui, UDim2.new(0, 340, 0, 120), UDim2.new(0.5, -170, 0.5, -60))
-    createLabel(notifyFrame, "确实没有QQ群🤓", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 45))
+    createLabel(notifyFrame, "QQ验证已经删除了因为有太多傻逼", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 45))
     playTempSound("12222253")
     task.wait(3)
     notifyGui:Destroy()
@@ -296,7 +263,6 @@ local isFirstUse = not folderExists()  -- 检测持久化文件夹是否存在
 if isFirstUse then
     -- 首次使用：执行验证 → 创建持久化文件夹 → 显示公告
     Popup_VerifyKuaishou()
-    Popup_VerifyQQGroup()
     createTargetFolder()  -- 验证通过后创建文件夹（跨会话保留）
     showAnnouncement()
 else
@@ -1804,7 +1770,7 @@ local function create12Content(container)
     local buttons = {
         {
             name = "ink-game(测试版汉化版)",
-            url = "https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/%E7%AC%AC%E4%BA%8C%E4%B8%AA",
+            url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
             desc = "秋容汉化你值得拥有🤝🤓👆"
         },
         {
