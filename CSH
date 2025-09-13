@@ -276,7 +276,7 @@ local function showAnnouncement()
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天", 
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1803,14 +1803,19 @@ local function create12Content(container)
     -- 按钮数据（含说明）
     local buttons = {
         {
+            name = "一键汉化😱(装b让你飞起来禁止拿去圈💰)",
+            url = "https://github.com/QRLIANGXINFENGHE/K/blob/main/548125425",
+            desc = "秋容汉化你值得拥有🤝🤓👆使用教程先执行你需要汉化的脚本如RINGTA等它加载完成UI，点击右上角汉化界面即可"
+        },
+        {
             name = "ink-game(测试版)",
             url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
-            desc = "全面取消汉化🤝🤓👆"
+            desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
         },
         {
             name = "RINGTA",
             url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
-            desc = "全面取消汉化🤝🤓👆"
+            desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
         }
     }
 local injectors = {
@@ -2876,6 +2881,17 @@ end
                     btn.desc,
                     function()
                         loadstring(game:HttpGet(btn.url, true))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+    return function() end
+end]]
+
+   
+
                         showNotification("功能加载中", "脚本执行中...")
                     end
                 )
