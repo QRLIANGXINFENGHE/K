@@ -1804,7 +1804,7 @@ local function create12Content(container)
     local buttons = {
         {
             name = "一键汉化😱(装b让你飞起来禁止拿去圈💰)",
-            url = "https://github.com/QRLIANGXINFENGHE/K/blob/main/548125425",
+            url = "https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425",
             desc = "秋容汉化你值得拥有🤝🤓👆使用教程先执行你需要汉化的脚本如RINGTA等它加载完成UI，点击右上角汉化界面即可"
         },
         {
@@ -2881,17 +2881,6 @@ end
                     btn.desc,
                     function()
                         loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    return function() end
-end]]
-
-   
-
                         showNotification("功能加载中", "脚本执行中...")
                     end
                 )
