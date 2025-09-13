@@ -223,8 +223,47 @@ local function Popup_VerifyKuaishou()
     
     while not done do task.wait() end
 end
+-- QQ群验证
+local function Popup_VerifyQQGroup()
+    local gui = createScreenGui("Popup_QQGroup")
+    local frame = createFrame(gui, UDim2.new(0, 420, 0, 260), UDim2.new(0.5, -210, 0.5, -130))
+    createLabel(frame, "主播现在还有没有QQ群？", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
+    
+    local _, inputQQGroup = createClickToInput(
+        frame, UDim2.new(1, -50, 0, 45), UDim2.new(0, 25, 0, 75),
+        "点击输入答案", "请输入有或者没有"
+    )
+    
+    local statusLabel = createLabel(frame, "", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 135))
+    local exitCount = 0
+    local done = false
+    
+    createButton(frame, "确定回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
+        statusLabel.Text = "你是废物吗？这都答不上来"
+        statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
+    end)
+    
+    createButton(frame, "退出回答(进入脚本)", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.5, 0, 0, 185), function()
+        exitCount += 1
+        if exitCount == 1 then
+            statusLabel.Text = "废物玩意儿确定退出吗？真废物这都答不上来😂"
+            statusLabel.TextColor3 = Color3.fromRGB(255, 220, 60)
+        elseif exitCount >= 2 then
+            done = true
+            gui:Destroy()
+        end
+    end)
+    
+    while not done do task.wait() end
+    
     -- 最终提示
-
+    local notifyGui = createScreenGui("Popup_FinalNotice")
+    local notifyFrame = createFrame(notifyGui, UDim2.new(0, 340, 0, 120), UDim2.new(0.5, -170, 0.5, -60))
+    createLabel(notifyFrame, "确实没有QQ群🤓", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 45))
+    playTempSound("12222253")
+    task.wait(3)
+    notifyGui:Destroy()
+end
 -- ================ 公告弹窗（公告文字缩小50%） ================
 local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
@@ -237,7 +276,7 @@ local function showAnnouncement()
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
     -- 内容（缩小50%：原16 → 8）
-    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化", 
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天", 
         UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -257,6 +296,7 @@ local isFirstUse = not folderExists()  -- 检测持久化文件夹是否存在
 if isFirstUse then
     -- 首次使用：执行验证 → 创建持久化文件夹 → 显示公告
     Popup_VerifyKuaishou()
+    Popup_VerifyQQGroup()
     createTargetFolder()  -- 验证通过后创建文件夹（跨会话保留）
     showAnnouncement()
 else
@@ -1763,21 +1803,21 @@ local function create12Content(container)
     -- 按钮数据（含说明）
     local buttons = {
         {
-            name = "ink-game(测试版汉化版)",
+            name = "ink-game(测试版)",
             url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
-            desc = "秋容汉化你值得拥有🤝🤓👆"
+            desc = "全面取消汉化🤝🤓👆"
         },
         {
-            name = "RINGTA汉化",
-            url = "https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/%E6%B1%89%E5%8C%96",
-            desc = "秋容汉化你值得拥有🤝🤓👆"
+            name = "RINGTA",
+            url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
+            desc = "全面取消汉化🤝🤓👆"
         }
     }
 local injectors = {
     {
     name = "Xa老外脚本新版(点击复制脚本)",
     url = [[script_key = "你的卡密"
-loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7d1430f0e85fd856fc1c01736857d18b.lua"))()]],
+loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua"))()]],
     desc = "脚本使用说明和介绍\n首先你复制完成之后点击下面解卡链接解完卡\n之后复制这个脚本然后弄到\n注入器里面输入自己的卡密执行即可"
         },
         {
@@ -2846,3 +2886,4 @@ end
 end]]
 
    
+
