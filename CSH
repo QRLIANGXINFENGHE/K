@@ -2846,16 +2846,3 @@ end
 end]]
 
    
-                    function()
-                        loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    return function() end
-end]]
-
-   
-
