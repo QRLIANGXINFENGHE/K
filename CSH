@@ -1804,7 +1804,7 @@ local function create12Content(container)
     local buttons = {
         {
             name = "ink-game(测试版汉化版)",
-            url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
+            url = "https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/%E7%AC%AC%E4%BA%8C%E4%B8%AA",
             desc = "秋容汉化你值得拥有🤝🤓👆"
         },
         {
