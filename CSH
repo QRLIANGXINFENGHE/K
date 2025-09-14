@@ -265,10 +265,9 @@ local function Popup_VerifyQQGroup()
     notifyGui:Destroy()
 end
 -- ================ 公告弹窗（公告文字缩小50%） ================
--- ================ 公告弹窗（添加滚动功能） ================
 local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
-    local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
+    local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 250), UDim2.new(0.5, -200, 0.5, -125))
     
     -- 标题（缩小50%：原22 → 11）
     local titleLabel = createBasicLabel(noticeFrame, "3.1汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
@@ -276,28 +275,12 @@ local function showAnnouncement()
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
-    -- 创建滚动框架
-    local scrollFrame = Instance.new("ScrollingFrame")
-    scrollFrame.Name = "AnnouncementScroll"
-    scrollFrame.Size = UDim2.new(1, -20, 0, 180)
-    scrollFrame.Position = UDim2.new(0, 10, 0, 60)
-    scrollFrame.BackgroundTransparency = 1
-    scrollFrame.ScrollBarThickness = 8
-    scrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
-    scrollFrame.Parent = noticeFrame
-    
-    -- 内容标签（放在滚动框架内）
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日01:52更新了公告滚动条后续将会添加更多汉化脚本", 
-        UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
+    -- 内容（缩小50%：原16 → 8）
+    local contentLabel = createLabel(noticeFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单", 
+        UDim2.new(1, -40, 0, 140), UDim2.new(0, 20, 0, 60))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
     contentLabel.TextXAlignment = Enum.TextXAlignment.Left
-    contentLabel.AutomaticSize = Enum.AutomaticSize.Y
-    
-    -- 设置滚动框架的CanvasSize
-    contentLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
-        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentLabel.TextBounds.Y + 10)
-    end)
     
     -- 关闭按钮
     local noticeDone = false
