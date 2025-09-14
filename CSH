@@ -2112,8 +2112,8 @@ local menuList = {
     {menuText = "死铁轨", menuKey = "死铁轨", layoutOrder = 5},
     {menuText = "最坚强的战场", menuKey = "最坚强的战场", layoutOrder = 6},
     {menuText = "伐木大亨2", menuKey = "伐木大亨2", layoutOrder = 7},
-    {menuText = "墨水游戏", menuKey = "墨水游戏", layoutOrder = 8}
-    {menuText = "鱼", menuKey = "鱼", layoutOrder = 9},
+    {menuText = "墨水游戏", menuKey = "墨水游戏", layoutOrder = 8},
+    {menuText = "鱼", menuKey = "鱼", layoutOrder = 9}
 }
 -- 3. 批量创建菜单（按钮 + 面板）
 local menuConfig = {
