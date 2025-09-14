@@ -1552,7 +1552,7 @@ local function create10Content(container)
             onClick = function()
                 createExecutionDialog(
                     "执行 " .. btn.name,
-                    btn.desc .. "\n\n补充说明：\n- 为什么只有红叶脚本？测试多数脚本失效，仅该脚本适配鱼类玩法\n- 解卡密流程简单，按提示操作即可",
+                    btn.desc .. "",
                     function()
                         loadstring(game:HttpGet(btn.url))()
                         showNotification("功能加载中", "脚本执行中...")
