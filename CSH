@@ -1500,7 +1500,41 @@ local function create5Content(container)
         {
             name = "红叶需要解卡(推荐)",
             url = "https://getnative.cc/script/loader",
-            desc = "功能说明：\n- 鱼类玩法专用脚本，支持自动钓鱼\n- 识别鱼类种类，优先高级鱼\n- 需解卡密（简单验证，免费获取）\n- 稳定兼容当前游戏版本"
+            desc = "自行解卡"
+        }
+    }
+    -- 创建按钮
+    for i, btn in ipairs(buttons) do
+        createButton(container, {
+            name = "8" .. i,
+            layoutOrder = i,
+            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+            text = btn.name,
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                createExecutionDialog(
+                    "执行 " .. btn.name,
+                    btn.desc .. "\n\n补充说明：\n- 为什么只有红叶脚本？测试多数脚本失效，仅该脚本适配鱼类玩法\n- 解卡密流程简单，按提示操作即可",
+                    function()
+                        loadstring(game:HttpGet(btn.url))()
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                )
+            end
+        })
+    end
+    return function() end
+end
+local function create9Content(container)
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "红叶需要解卡(推荐)",
+            url = "https://getnative.cc/script/loader",
+            desc = "自行解卡"
         }
     }
     -- 创建按钮
@@ -1775,6 +1809,7 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
         ["最坚强的战场"] = {contentFunc = create6Content, panelTitle = "最坚强的战场"},
         ["伐木大亨2"] = {contentFunc = create7Content, panelTitle = "伐木大亨2"},
         ["墨水游戏"] = {contentFunc = create8Content, panelTitle = "墨水游戏"},
+        ["鱼"] = {contentFunc = create9Content, panelTitle = "鱼"},
     }
     
     -- 根据面板标识匹配内容创建函数
@@ -2078,6 +2113,7 @@ local menuList = {
     {menuText = "最坚强的战场", menuKey = "最坚强的战场", layoutOrder = 6},
     {menuText = "伐木大亨2", menuKey = "伐木大亨2", layoutOrder = 7},
     {menuText = "墨水游戏", menuKey = "墨水游戏", layoutOrder = 8}
+    {menuText = "鱼", menuKey = "鱼", layoutOrder = 9},
 }
 -- 3. 批量创建菜单（按钮 + 面板）
 local menuConfig = {
@@ -2089,6 +2125,7 @@ local menuConfig = {
     ["最坚强的战场"] = {contentFunc = create6Content, panelTitle = "最坚强的战场"},
     ["伐木大亨2"] = {contentFunc = create7Content, panelTitle = "伐木大亨2"},
     ["墨水游戏"] = {contentFunc = create8Content, panelTitle = "墨水游戏"},
+    ["鱼"] = {contentFunc = create9Content, panelTitle = "鱼"},
 }
 -- 创建菜单按钮和面板
 for _, menu in ipairs(menuList) do
