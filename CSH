@@ -1531,19 +1531,20 @@ local function create10Content(container)
     
     -- 按钮数据（含说明）
     local buttons = {
-    {
-    name = "ky3-nol😎", 
-    func = function()
-        getfenv().ADittoKey = "NOL_FRERKEY"
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
-    end,
-    desc = "建议搭配一键汉化"
+        {
+            name = "ky3-nol😎", 
+            func = function()
+                getfenv().ADittoKey = "NOL_FRERKEY"
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
+            end,
+            desc = "建议搭配一键汉化"
+        }
     }
-    }
+    
     -- 创建按钮
     for i, btn in ipairs(buttons) do
         createButton(container, {
-            name = "8" .. i,
+            name = "10" .. i, -- 修改为正确的编号
             layoutOrder = i,
             size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
             text = btn.name,
@@ -1552,9 +1553,14 @@ local function create10Content(container)
             onClick = function()
                 createExecutionDialog(
                     "执行 " .. btn.name,
-                    btn.desc .. "",
+                    btn.desc,
                     function()
-                        loadstring(game:HttpGet(btn.url))()
+                        -- 直接执行 func 而不是通过 URL
+                        if btn.func then
+                            btn.func()
+                        else
+                            loadstring(game:HttpGet(btn.url))()
+                        end
                         showNotification("功能加载中", "脚本执行中...")
                     end
                 )
