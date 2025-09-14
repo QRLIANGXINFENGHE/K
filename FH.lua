@@ -1,4 +1,5 @@
-local staticText = {
+return {
+staticText = {
 ["Peabert"] = "皮伯特（功能/角色名，保留标识）",
 ["Search"] = "搜索",
 ["Player Info"] = "玩家信息",
@@ -5121,8 +5122,7 @@ local staticText = {
 ["Bullets Per Fire"] = "每次射击子弹数",
 ["Spread"] = "散布",
 }
--- 1.2 按钮专属汉化表（TextButton类型文本）
-local btnText = {
+btnText = {
 ["Enable Aimlock"] = "启用瞄准锁",
 ["Teleport to Random Player"] = "传送到随机玩家",
 ["Unlock"] = "取消锁定",
@@ -5131,16 +5131,16 @@ local btnText = {
 ["Select color:"] = "选择颜色：",
 ["Show Players"] = "显示玩家",
 }
--- 1.3 ESP专用汉化表（透视类文本）
-local espText = {
+
+
+espText = {
 ["Corner Box Esp"] = "角落方框透视",
 }
--- 1.4 动态前缀文本表（"前缀+数值"型，英文前缀带": "）
-local dynamicPrefixText = {
+
+dynamicPrefixText = {
 }
 
--- 1.5 特殊动态文本规则（固定格式，用正则）
-local specialDynamicText = {
+specialDynamicText = {
 {pattern = "Player wood to use:", replace = "使用的玩家木材："},
 {pattern = "Player base to build:", replace = "要建造的玩家基地："},
 {pattern = "(%d+%.?%d*) seconds/3 seconds", replace = "%1秒/3秒"},
@@ -5156,4 +5156,4 @@ local specialDynamicText = {
 {pattern = "Teleport Delay: (%d+%.?%d*)%%", replace = "传送延迟：%1%%"},
 {pattern = "Return Delay %(sec%)%s*:%s*(%d+%.?%d*)", replace = "返回延迟（秒）：%1"},
 }
-
+}
