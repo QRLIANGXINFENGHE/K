@@ -286,7 +286,7 @@ local function showAnnouncement()
     scrollFrame.Parent = noticeFrame
     
     -- 内容标签（放在滚动框架内）
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -2060,7 +2060,7 @@ local translateButton = createButton(leftInfo, {
     onClick = function()
         createExecutionDialog(
             "一键汉化",
-            "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)--AX脚本\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02\ndoors:NullFire\n偷走脑红",
+            "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)--AX脚本\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02\ndoors:NullFire\n偷走脑红:Chilli",
             function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425"))()
                 showNotification("汉化功能已激活", "一键汉化脚本执行中...")
