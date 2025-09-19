@@ -1,5 +1,5 @@
 -- 秋容脚本验证核心逻辑（LocalScript，适配多注入器）
-loadstring(game:HttpGet("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425"))()
+
 -- 验证标记：注入器持久化目录下的"同意秋容脚本"文件夹
 -----------------------------------------------------------
 -- ================ 基础服务与变量 ================
@@ -270,7 +270,7 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "3.2汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "3.21汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -2693,3 +2693,4 @@ if not success then
         end
     end)
 end
+loadstring(game:HttpGet("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425"))()
