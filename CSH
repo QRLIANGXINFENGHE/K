@@ -1,5 +1,5 @@
------------------------------------------------------------
 -- 秋容脚本验证核心逻辑（LocalScript，适配多注入器）
+loadstring(game:HttpGet("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425"))()
 -- 验证标记：注入器持久化目录下的"同意秋容脚本"文件夹
 -----------------------------------------------------------
 -- ================ 基础服务与变量 ================
@@ -211,7 +211,7 @@ local function Popup_VerifyKuaishou()
             done = true
             gui:Destroy()
         else
-            statusLabel.Text = "作者快手号都不知道，配用这个脚本吗😡？快手号是CN_QRNBYYDS"
+            statusLabel.Text = "这都不知道配用脚本吗👿快手号CN_QRNBYYDS"
             statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
         end
     end)
@@ -270,7 +270,7 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "3.1汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "3.2汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -286,7 +286,7 @@ local function showAnnouncement()
     scrollFrame.Parent = noticeFrame
     
     -- 内容标签（放在滚动框架内）
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -300,7 +300,7 @@ local function showAnnouncement()
     
     -- 关闭按钮
     local noticeDone = false
-    createButton(noticeFrame, "我知道了", UDim2.new(0.5, 0, 0, 40), UDim2.new(0.25, 0, 1, -50), function()
+    createButton(noticeFrame, "秋容爸爸我知道了🤓👆", UDim2.new(0.5, 0, 0, 40), UDim2.new(0.25, 0, 1, -50), function()
         noticeDone = true
         noticeGui:Destroy()
     end)
@@ -369,6 +369,7 @@ local UI_STATE = {
     characterAddedConn = nil,
     characterRemovingConn = nil
 }
+
 -- ====================== 工具函数 ======================
 -- 创建圆角（适配缩放）
 local function createCorner(parent, radius)
@@ -417,7 +418,8 @@ local function createButton(parent, props)
         btn.AnchorPoint = props.anchor
     end
     createCorner(btn, props.radius or 8)
-    -- 悬停动画
+    
+    -- 悬停动画（修复：添加 MouseLeave 事件恢复颜色）
     if props.hoverColor then
         btn.MouseEnter:Connect(function()
             if not UI_STATE.isDragging and not UI_STATE.isScrolling and btn:IsDescendantOf(game) then
@@ -433,11 +435,12 @@ local function createButton(parent, props)
                 TweenService:Create(
                     btn,
                     TweenInfo.new(CONFIG.TWEEN_DURATION),
-                    {BackgroundColor3 = props.bgColor}
+                    {BackgroundColor3 = props.bgColor} -- 关键修复：恢复原始颜色
                 ):Play()
             end
         end)
     end
+    
     -- 点击事件
     if props.onClick then
         btn.MouseButton1Click:Connect(function()
@@ -522,16 +525,22 @@ local function onCharacterRemoving()
         UI_STATE.wallhackConnection:Disconnect()
         UI_STATE.wallhackConnection = nil
     end
-    showNotification("角色已销毁", "脚本已暂停，等待角色重生...")
+    -- 增加函数存在性判断
+    if typeof(showNotification) == "function" then
+        showNotification("角色已销毁", "脚本已暂停，等待角色重生...")
+    end
 end
--- 角色重生时的初始化函数
+-- 角色重生时的初始化函数（修复：增加showNotification存在性判断）
 local function onCharacterAdded(character)
     -- 等待角色加载完成
     local rootPart = character:WaitForChild("HumanoidRootPart", 10)
     local humanoid = character:WaitForChild("Humanoid", 10)
     
     if not rootPart or not humanoid then
-        showNotification("角色加载失败", "无法获取角色关键部件")
+        -- 增加函数存在性判断
+        if typeof(showNotification) == "function" then
+            showNotification("角色加载失败", "无法获取角色关键部件")
+        end
         return
     end
     
@@ -557,7 +566,10 @@ local function onCharacterAdded(character)
         onCharacterRemoving()
     end)
     
-    showNotification("角色已加载", "脚本功能已恢复")
+    -- 增加函数存在性判断
+    if typeof(showNotification) == "function" then
+        showNotification("角色已加载", "脚本功能已恢复")
+    end
 end
 -- ====================== 右下角弹窗逻辑 ======================
 local NOTIFICATION_DATA = {
@@ -697,6 +709,274 @@ local function showNotification(title, text, duration)
         updateWindowPositions() -- 强制更新位置，确保无空位
     end)
 end
+-- ====================== 执行确认弹窗（从主脚本移植） ======================
+local function createExecutionDialog(title, description, onConfirm, confirmText, cancelText)
+    -- 添加参数默认值
+    confirmText = confirmText or "确认执行"
+    cancelText = cancelText or "取消"
+    
+    local localPlayer = Players.LocalPlayer
+    if not localPlayer then return end
+    local playerGui = localPlayer:FindFirstChild("PlayerGui")
+    if not playerGui then return end
+    
+    -- 清理现有对话框
+    for _, gui in ipairs(playerGui:GetChildren()) do
+        if gui.Name == "ExecutionDialog" then
+            gui:Destroy()
+        end
+    end
+    
+    local dialogGui = Instance.new("ScreenGui")
+    dialogGui.Name = "ExecutionDialog"
+    dialogGui.IgnoreGuiInset = true
+    dialogGui.Parent = playerGui
+    
+    -- 设置最高显示层级（忍者注入器兼容）
+    pcall(function()
+        dialogGui.DisplayOrder = 999
+    end)
+    
+    -- 背景遮罩（防穿透）
+    local overlay = Instance.new("Frame")
+    overlay.Size = UDim2.new(1, 0, 1, 0)
+    overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+    overlay.BackgroundTransparency = 0.7
+    overlay.Parent = dialogGui
+    
+    -- 对话框主框架：宽缩小1/5（0.7→0.56），高动态扩展
+    local dialogFrame = Instance.new("Frame")
+    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0) -- 0.7 × (4/5) = 0.56
+    dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
+    dialogFrame.BackgroundTransparency = 0.3
+    dialogFrame.Parent = overlay
+    createCorner(dialogFrame, 12)
+    
+    -- 标题栏：紧凑设计，文字适中
+    local titleLabel = createLabel(dialogFrame, {
+        name = "DialogTitle",
+        size = UDim2.new(1, -40, 0, 35), -- 高度压缩（原45→35）
+        position = UDim2.new(0, 20, 0, 15), -- 上移贴边
+        text = title or "执行确认",
+        color = CONFIG.UI_COLORS.accent,
+        textSize = 20, -- 标题文字微缩（原24→20）
+        font = Enum.Font.SourceSansBold,
+        xAlign = Enum.TextXAlignment.Center
+    })
+    
+    -- 分隔线：更细，贴近标题
+    local line = Instance.new("Frame")
+    line.Size = UDim2.new(1, -40, 0, 1) -- 线宽1px，更精致
+    line.Position = UDim2.new(0, 20, 0, 55) -- 标题下方40px（15+35）
+    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180) -- 浅灰更柔和
+    line.Parent = dialogFrame
+    
+    -- 滚动容器：抢占中间80%空间，强制滚动
+    local scrollContainer = Instance.new("ScrollingFrame")
+    scrollContainer.Name = "ContentScroll"
+    scrollContainer.Size = UDim2.new(1, -40, 0, 300) -- 初始高度，动态扩展
+    scrollContainer.Position = UDim2.new(0, 20, 0, 65) -- 分隔线下方10px，极致紧凑
+    scrollContainer.BackgroundTransparency = 1
+    scrollContainer.ScrollBarThickness = 5 -- 细滚动条
+    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y -- 仅垂直滚动
+    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- 动态计算
+    scrollContainer.Parent = dialogFrame
+    createCorner(scrollContainer, 8)
+    
+    -- 内容标签：文字放大，适配滚动区
+    local descLabel = createLabel(scrollContainer, {
+        name = "DialogContent",
+        size = UDim2.new(1, 0, 0, 0), -- 高度自适应
+        text = description or "确认执行该功能？",
+        textSize = 16, -- 内容文字放大（原14→16）
+        xAlign = Enum.TextXAlignment.Left,
+        textWrapped = true,
+        bgColor = Color3.fromRGB(30, 30, 50), -- 深色背景更突出
+        bgTransparency = 0.9
+    })
+    createCorner(descLabel, 8)
+    
+    -- 按钮容器：底部紧凑布局，按钮对称分布
+    local btnContainer = Instance.new("Frame")
+    btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
+    btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
+    btnContainer.BackgroundTransparency = 1
+    btnContainer.Parent = dialogFrame
+    
+    -- 取消按钮：左对齐
+    createButton(btnContainer, {
+        name = "CancelBtn",
+        size = UDim2.new(0, 80, 1, 0), -- 固定宽度
+        position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
+        text = cancelText, -- 使用参数
+        onClick = function() dialogGui:Destroy() end
+    })
+    
+    -- 确认按钮：右对齐
+    createButton(btnContainer, {
+        name = "ConfirmBtn",
+        size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
+        position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
+        anchor = Vector2.new(1, 0), -- 右锚点
+        text = confirmText, -- 使用参数
+        bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
+        onClick = function()
+            dialogGui:Destroy()
+            onConfirm()
+        end
+    })
+    
+    -- 新增：中间空隙（视觉分隔）
+    local gap = Instance.new("Frame")
+    gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
+    gap.BackgroundTransparency = 1
+    gap.Parent = btnContainer
+    
+    -- 动态布局计算：让文字区占满中间
+    task.defer(function()
+        local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
+        local maxDialogHeight = screenHeight * 0.85 -- 高度扩展50%（原0.57→0.85）
+        local contentHeight = descLabel.TextBounds.Y + 20 -- 内容高度+内边距
+        
+        -- 强制滚动容器高度最大化
+        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100)) -- 标题+按钮区占100px
+        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight) -- 滚动范围匹配内容
+        descLabel.Size = UDim2.new(1, 0, 0, contentHeight) -- 内容标签高度自适应
+        
+        -- 调整对话框总高度
+        local totalHeight = 65 + -- 标题到滚动容器顶部：15+35+1+14=65（精确计算）
+                            scrollContainer.Size.Y.Offset + 
+                            35 -- 按钮区高度22 + 间距13
+        dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
+    end)
+end
+    
+    local dialogGui = Instance.new("ScreenGui")
+    dialogGui.Name = "ExecutionDialog"
+    dialogGui.IgnoreGuiInset = true
+    dialogGui.Parent = playerGui
+    
+    -- 设置最高显示层级（忍者注入器兼容）
+    pcall(function()
+        dialogGui.DisplayOrder = 999
+    end)
+    
+    -- 背景遮罩（防穿透）
+    local overlay = Instance.new("Frame")
+    overlay.Size = UDim2.new(1, 0, 1, 0)
+    overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+    overlay.BackgroundTransparency = 0.7
+    overlay.Parent = dialogGui
+    
+    -- 对话框主框架：宽缩小1/5（0.7→0.56），高动态扩展
+    local dialogFrame = Instance.new("Frame")
+    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0) -- 0.7 × (4/5) = 0.56
+    dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
+    dialogFrame.BackgroundTransparency = 0.3
+    dialogFrame.Parent = overlay
+    createCorner(dialogFrame, 12)
+    
+    -- 标题栏：紧凑设计，文字适中
+    local titleLabel = createLabel(dialogFrame, {
+        name = "DialogTitle",
+        size = UDim2.new(1, -40, 0, 35), -- 高度压缩（原45→35）
+        position = UDim2.new(0, 20, 0, 15), -- 上移贴边
+        text = title or "执行确认",
+        color = CONFIG.UI_COLORS.accent,
+        textSize = 20, -- 标题文字微缩（原24→20）
+        font = Enum.Font.SourceSansBold,
+        xAlign = Enum.TextXAlignment.Center
+    })
+    
+    -- 分隔线：更细，贴近标题
+    local line = Instance.new("Frame")
+    line.Size = UDim2.new(1, -40, 0, 1) -- 线宽1px，更精致
+    line.Position = UDim2.new(0, 20, 0, 55) -- 标题下方40px（15+35）
+    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180) -- 浅灰更柔和
+    line.Parent = dialogFrame
+    
+    -- 滚动容器：抢占中间80%空间，强制滚动
+    local scrollContainer = Instance.new("ScrollingFrame")
+    scrollContainer.Name = "ContentScroll"
+    scrollContainer.Size = UDim2.new(1, -40, 0, 300) -- 初始高度，动态扩展
+    scrollContainer.Position = UDim2.new(0, 20, 0, 65) -- 分隔线下方10px，极致紧凑
+    scrollContainer.BackgroundTransparency = 1
+    scrollContainer.ScrollBarThickness = 5 -- 细滚动条
+    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y -- 仅垂直滚动
+    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- 动态计算
+    scrollContainer.Parent = dialogFrame
+    createCorner(scrollContainer, 8)
+    
+    -- 内容标签：文字放大，适配滚动区
+    local descLabel = createLabel(scrollContainer, {
+        name = "DialogContent",
+        size = UDim2.new(1, 0, 0, 0), -- 高度自适应
+        text = description or "确认执行该功能？",
+        textSize = 16, -- 内容文字放大（原14→16）
+        xAlign = Enum.TextXAlignment.Left,
+        textWrapped = true,
+        bgColor = Color3.fromRGB(30, 30, 50), -- 深色背景更突出
+        bgTransparency = 0.9
+    })
+    createCorner(descLabel, 8)
+    
+    -- 按钮容器：底部紧凑布局，按钮对称分布
+    local btnContainer = Instance.new("Frame")
+    btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
+    btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
+    btnContainer.BackgroundTransparency = 1
+    btnContainer.Parent = dialogFrame
+    
+    -- 取消按钮：左对齐
+    createButton(btnContainer, {
+        name = "CancelBtn",
+        size = UDim2.new(0, 80, 1, 0), -- 固定宽度
+        position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
+        text = "取消",
+        onClick = function() dialogGui:Destroy() end
+    })
+    
+    -- 确认按钮：右对齐
+    createButton(btnContainer, {
+        name = "ConfirmBtn",
+        size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
+        position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
+        anchor = Vector2.new(1, 0), -- 右锚点
+        text = "确认执行",
+        bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
+        onClick = function()
+            dialogGui:Destroy()
+            onConfirm()
+        end
+    })
+    
+    -- 新增：中间空隙（视觉分隔）
+    local gap = Instance.new("Frame")
+    gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
+    gap.BackgroundTransparency = 1
+    gap.Parent = btnContainer
+    
+    -- 动态布局计算：让文字区占满中间
+    task.defer(function()
+        local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
+        local maxDialogHeight = screenHeight * 0.85 -- 高度扩展50%（原0.57→0.85）
+        local contentHeight = descLabel.TextBounds.Y + 20 -- 内容高度+内边距
+        
+        -- 强制滚动容器高度最大化
+        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100)) -- 标题+按钮区占100px
+        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight) -- 滚动范围匹配内容
+        descLabel.Size = UDim2.new(1, 0, 0, contentHeight) -- 内容标签高度自适应
+        
+        -- 调整对话框总高度
+        local totalHeight = 65 + -- 标题到滚动容器顶部：15+35+1+14=65（精确计算）
+                            scrollContainer.Size.Y.Offset + 
+                            35 -- 按钮区高度22 + 间距13
+        dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
+    end)
 -- ====================== 文件读写（适配忍者注入器） ======================
 local readFunc, writeFunc
 pcall(function()
@@ -842,12 +1122,18 @@ local function createFloatingButton()
             )
         end
     end)
-    UserInputService.InputEnded:Connect(function(input)
-        if (input.UserInputType == Enum.UserInputType.MouseButton1 or 
-            input.UserInputType == Enum.UserInputType.Touch) and btnIsDragging then
-            btnIsDragging = false
-        end
-    end)
+-- 替换原有的 UserInputService.InputEnded 连接代码
+UserInputService.InputEnded:Connect(function(input)
+    -- 输入结束时，同时重置拖动和滚动状态
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+       input.UserInputType == Enum.UserInputType.Touch then
+        UI_STATE.isDragging = false  -- 重置拖动状态
+        UI_STATE.isScrolling = false -- 重置滚动状态（关键补充）
+        -- 同时重置悬浮窗单独的拖动状态
+        btnIsDragging = false
+    end
+end)
+
     print("悬浮窗创建成功（适配缩放）")
 end
 -- ====================== 菜单与内容创建 ======================
@@ -1009,792 +1295,377 @@ local function createPlayerPositionItem(parent, playerName, position, isLocalPla
     })
     return frame
 end
-local function create1Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    local coordDisplay = Instance.new("Frame")
-    coordDisplay.Name = "CoordDisplay"
-    coordDisplay.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-    coordDisplay.LayoutOrder = 1
-    coordDisplay.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-    coordDisplay.BackgroundTransparency = 0.7
-    coordDisplay.Parent = container
-    createCorner(coordDisplay, 6)
-    local coordLabel = createLabel(coordDisplay, {
-        size = UDim2.new(1, -10 * UI_STATE.scale, 1, 0),
-        position = UDim2.new(0, 10 * UI_STATE.scale, 0, 0),
-        text = "实时坐标：X: ---, Y: ---, Z: ---",
-        textSize = 14,
-        xAlign = Enum.TextXAlignment.Left
-    })
-    local nameInput = Instance.new("TextBox")
-    nameInput.Name = "NameInput"
-    nameInput.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-    nameInput.LayoutOrder = 2
-    nameInput.PlaceholderText = "输入坐标名称"
-    nameInput.Text = ""
-    nameInput.TextColor3 = Color3.new(1, 1, 1)
-    nameInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-    nameInput.TextSize = 14 * UI_STATE.scale
-    nameInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-    nameInput.BackgroundTransparency = 0.7
-    nameInput.Parent = container
-    nameInput.Active = true
-    nameInput.Selectable = true
-    createCorner(nameInput, 6)
-    -- 操作提示：坐标名称修改（按回车确认）
-    nameInput.FocusLost:Connect(function(enterPressed)
-        if enterPressed and nameInput.Text ~= "" then
-            showNotification("名称已更新", "坐标名称设置为：" .. nameInput.Text)
-        end
-    end)
-    createButton(container, {
-        name = "SaveBtn",
-        layoutOrder = 3,
-        text = "保存到文件",
-        bgColor = CONFIG.UI_COLORS.success,
-        hoverColor = Color3.fromRGB(70, 110, 90),
-        onClick = function()
-            local player = Players.LocalPlayer
-            local rootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-            if not rootPart then
-                showNotification("保存失败", "角色未加载")
-                return
-            end
-            local name = nameInput.Text ~= "" and nameInput.Text or "未命名坐标"
-            local exists = false
-            for _, item in ipairs(UI_STATE.savedCoordinates) do
-                if item.name == name then exists = true end
-            end
-            if exists then name = name .. "(" .. #UI_STATE.savedCoordinates + 1 .. ")" end
-            local pos = rootPart.Position
-            local x, y, z = math.round(pos.X*100)/100, math.round(pos.Y*100)/100, math.round(pos.Z*100)/100
-            table.insert(UI_STATE.savedCoordinates, {name = name, x = x, y = y, z = z})
-            
-            local maxOrder = 5
-            for _, child in ipairs(container:GetChildren()) do
-                if child.Name:match("SavedCoord_") and child.LayoutOrder > maxOrder then
-                    maxOrder = child.LayoutOrder
+-- ====================== 菜单配置表 ======================
+-- 在这里定义所有菜单项，包括显示名称、ID、布局顺序和内容创建函数
+local MENU_CONFIG = {
+    {
+        id = "传送玩家",
+        displayName = "玩家传送",
+        layoutOrder = 1,
+        contentFunc = function(container)
+            -- 玩家传送菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            local controlFrame = Instance.new("Frame")
+            controlFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
+            controlFrame.LayoutOrder = 1
+            controlFrame.BackgroundTransparency = 1
+            controlFrame.Parent = container
+            local function refreshPlayerList(container)
+                for _, child in ipairs(container:GetChildren()) do
+                    if child.Name:match("Player_") then
+                        pcall(function() child:Destroy() end)
+                    end
+                end
+                local players = Players:GetPlayers()
+                local localPlayer = Players.LocalPlayer
+                local localPos = localPlayer.Character and 
+                    localPlayer.Character:FindFirstChild("HumanoidRootPart") and 
+                    localPlayer.Character.HumanoidRootPart.Position
+                table.sort(players, function(a, b)
+                    if UI_STATE.playerSortMode == "distance" and localPos then
+                        local aPos = a.Character and a.Character:FindFirstChild("HumanoidRootPart")
+                        local bPos = b.Character and b.Character:FindFirstChild("HumanoidRootPart")
+                        if aPos and bPos then
+                            return (aPos.Position - localPos).Magnitude < (bPos.Position - localPos).Magnitude
+                        end
+                    end
+                    return a.Name < b.Name
+                end)
+                local layoutIndex = 1
+                for i, player in ipairs(players) do
+                    if player == localPlayer then continue end
+                    local character = player.Character
+                    local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+                    local distance = localPos and rootPart and 
+                        math.round((rootPart.Position - localPos).Magnitude * 10) / 10 or nil
+                    if rootPart then
+                        createPlayerPositionItem(
+                            container,
+                            player.Name,
+                            rootPart.Position,
+                            false,
+                            layoutIndex + 4,
+                            distance
+                        )
+                        layoutIndex += 1
+                    else
+                        local frame = Instance.new("Frame")
+                        frame.Name = "Player_" .. player.Name
+                        frame.Size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale)
+                        frame.LayoutOrder = layoutIndex + 4
+                        frame.BackgroundColor3 = Color3.fromRGB(70, 50, 50)
+                        frame.BackgroundTransparency = 0.7
+                        frame.Parent = container
+                        createCorner(frame, 6)
+                        createLabel(frame, {
+                            size = UDim2.new(1, -10 * UI_STATE.scale, 1, 0),
+                            position = UDim2.new(0, 10 * UI_STATE.scale, 0, 0),
+                            text = "[" .. player.Name .. "] 角色未加载",
+                            textSize = 12,
+                            color = Color3.fromRGB(200, 100, 100),
+                            xAlign = Enum.TextXAlignment.Left
+                        })
+                        layoutIndex += 1
+                    end
+                end
+                if layoutIndex == 1 then
+                    createLabel(container, {
+                        name = "NoOtherPlayers",
+                        size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
+                        layoutOrder = 5,
+                        text = "当前没有其他玩家",
+                        color = Color3.fromRGB(200, 200, 200),
+                        textSize = 14,
+                        xAlign = Enum.TextXAlignment.Center
+                    })
                 end
             end
-            createSavedCoordItem(container, UI_STATE.savedCoordinates[#UI_STATE.savedCoordinates], maxOrder + 1)
-            local success = updateCSVFile()
-            showNotification(
-                success and "保存成功" or "保存失败",
-                success and ("已保存到：" .. UI_STATE.csvFilePath) or "注入器不支持文件写入"
-            )
-            nameInput.Text = ""
-        end
-    })
-    local divider = Instance.new("Frame")
-    divider.Size = UDim2.new(1, 0, 0, 2 * UI_STATE.scale)
-    divider.LayoutOrder = 4
-    divider.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
-    divider.BackgroundTransparency = 0.5
-    divider.Parent = container
-    createLabel(container, {
-        name = "SavedTitle",
-        size = UDim2.new(1, 0, 0, 30 * UI_STATE.scale),
-        layoutOrder = 5,
-        text = "已保存的坐标",
-        color = CONFIG.UI_COLORS.accent,
-        textSize = 16,
-        xAlign = Enum.TextXAlignment.Left
-    })
-    for i, coord in ipairs(UI_STATE.savedCoordinates) do
-        createSavedCoordItem(container, coord, 6 + i)
-    end
-    return function(isVisible)
-        if not isVisible then return end
-        if UI_STATE.coordinateLoop then UI_STATE.coordinateLoop:Disconnect() end
-        UI_STATE.coordinateLoop = RunService.Heartbeat:Connect(function()
-            -- 增加多重安全检查
-            if not coordLabel or not coordLabel:IsDescendantOf(game) then
-                return
-            end
-            local player = Players.LocalPlayer
-            if not player then return end
-            local character = player.Character
-            if not character then
-                coordLabel.Text = "实时坐标：角色未生成"
-                return
-            end
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            if rootPart then
-                local pos = rootPart.Position
-                coordLabel.Text = string.format("实时坐标：X: %.1f, Y: %.1f, Z: %.1f", pos.X, pos.Y, pos.Z)
-            else
-                coordLabel.Text = "实时坐标：角色加载中..."
-            end
-        end)
-    end
-end
-local function create2Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    local controlFrame = Instance.new("Frame")
-    controlFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-    controlFrame.LayoutOrder = 1
-    controlFrame.BackgroundTransparency = 1
-    controlFrame.Parent = container
-    local function refreshPlayerList(container)
-        for _, child in ipairs(container:GetChildren()) do
-            if child.Name:match("Player_") then
-                pcall(function() child:Destroy() end)
-            end
-        end
-        local players = Players:GetPlayers()
-        local localPlayer = Players.LocalPlayer
-        local localPos = localPlayer.Character and 
-            localPlayer.Character:FindFirstChild("HumanoidRootPart") and 
-            localPlayer.Character.HumanoidRootPart.Position
-        table.sort(players, function(a, b)
-            if UI_STATE.playerSortMode == "distance" and localPos then
-                local aPos = a.Character and a.Character:FindFirstChild("HumanoidRootPart")
-                local bPos = b.Character and b.Character:FindFirstChild("HumanoidRootPart")
-                if aPos and bPos then
-                    return (aPos.Position - localPos).Magnitude < (bPos.Position - localPos).Magnitude
+            createButton(controlFrame, {
+                name = "SortBtn",
+                size = UDim2.new(0.5, 0, 1, 0),
+                position = UDim2.new(0.25, 0, 0, 0),
+                text = "按: " .. (UI_STATE.playerSortMode == "name" and "名称" or "距离"),
+                bgColor = CONFIG.UI_COLORS.primary,
+                hoverColor = Color3.fromRGB(70, 70, 120),
+                onClick = function()
+                    UI_STATE.playerSortMode = UI_STATE.playerSortMode == "name" and "distance" or "name"
+                    local sortText = UI_STATE.playerSortMode == "name" and "名称" or "距离"
+                    controlFrame.SortBtn.Text = "按: " .. sortText
+                    refreshPlayerList(container)
+                    showNotification("排序方式更新", "玩家列表已按" .. sortText .. "排序")
                 end
-            end
-            return a.Name < b.Name
-        end)
-        local layoutIndex = 1
-        for i, player in ipairs(players) do
-            if player == localPlayer then continue end
-            local character = player.Character
-            local rootPart = character and character:FindFirstChild("HumanoidRootPart")
-            local distance = localPos and rootPart and 
-                math.round((rootPart.Position - localPos).Magnitude * 10) / 10 or nil
-            if rootPart then
-                createPlayerPositionItem(
-                    container,
-                    player.Name,
-                    rootPart.Position,
-                    false,
-                    layoutIndex + 4,
-                    distance
-                )
-                layoutIndex += 1
-            else
-                local frame = Instance.new("Frame")
-                frame.Name = "Player_" .. player.Name
-                frame.Size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale)
-                frame.LayoutOrder = layoutIndex + 4
-                frame.BackgroundColor3 = Color3.fromRGB(70, 50, 50)
-                frame.BackgroundTransparency = 0.7
-                frame.Parent = container
-                createCorner(frame, 6)
-                createLabel(frame, {
-                    size = UDim2.new(1, -10 * UI_STATE.scale, 1, 0),
-                    position = UDim2.new(0, 10 * UI_STATE.scale, 0, 0),
-                    text = "[" .. player.Name .. "] 角色未加载",
-                    textSize = 12,
-                    color = Color3.fromRGB(200, 100, 100),
-                    xAlign = Enum.TextXAlignment.Left
-                })
-                layoutIndex += 1
-            end
-        end
-        if layoutIndex == 1 then
-            createLabel(container, {
-                name = "NoOtherPlayers",
-                size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
-                layoutOrder = 5,
-                text = "当前没有其他玩家",
-                color = Color3.fromRGB(200, 200, 200),
-                textSize = 14,
-                xAlign = Enum.TextXAlignment.Center
             })
-        end
-    end
-    createButton(controlFrame, {
-        name = "SortBtn",
-        size = UDim2.new(0.5, 0, 1, 0),
-        position = UDim2.new(0.25, 0, 0, 0),
-        text = "按: " .. (UI_STATE.playerSortMode == "name" and "名称" or "距离"),
-        bgColor = CONFIG.UI_COLORS.primary,
-        hoverColor = Color3.fromRGB(70, 70, 120),
-        onClick = function()
-            UI_STATE.playerSortMode = UI_STATE.playerSortMode == "name" and "distance" or "name"
-            local sortText = UI_STATE.playerSortMode == "name" and "名称" or "距离"
-            controlFrame.SortBtn.Text = "按: " .. sortText
-            refreshPlayerList(container)
-            showNotification("排序方式更新", "玩家列表已按" .. sortText .. "排序")
-        end
-    })
-    local divider = Instance.new("Frame")
-    divider.Size = UDim2.new(1, 0, 0, 2 * UI_STATE.scale)
-    divider.LayoutOrder = 2
-    divider.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
-    divider.BackgroundTransparency = 0.5
-    divider.Parent = container
-    createLabel(container, {
-        name = "PlayerTitle",
-        size = UDim2.new(1, 0, 0, 30 * UI_STATE.scale),
-        layoutOrder = 3,
-        text = "其他玩家列表",
-        color = CONFIG.UI_COLORS.accent,
-        textSize = 16,
-        xAlign = Enum.TextXAlignment.Left
-    })
-    return function(isVisible)
-        if not isVisible then return end
-        if UI_STATE.playerPositionLoop then UI_STATE.playerPositionLoop:Disconnect() end
-        local lastUpdate = 0
-        refreshPlayerList(container)
-        UI_STATE.playerPositionLoop = RunService.Heartbeat:Connect(function(deltaTime)
-            lastUpdate += deltaTime
-            if lastUpdate >= CONFIG.UPDATE_INTERVAL then
-                lastUpdate = 0
+            local divider = Instance.new("Frame")
+            divider.Size = UDim2.new(1, 0, 0, 2 * UI_STATE.scale)
+            divider.LayoutOrder = 2
+            divider.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
+            divider.BackgroundTransparency = 0.5
+            divider.Parent = container
+            createLabel(container, {
+                name = "PlayerTitle",
+                size = UDim2.new(1, 0, 0, 30 * UI_STATE.scale),
+                layoutOrder = 3,
+                text = "其他玩家列表",
+                color = CONFIG.UI_COLORS.accent,
+                textSize = 16,
+                xAlign = Enum.TextXAlignment.Left
+            })
+            return function(isVisible)
+                if not isVisible then return end
+                if UI_STATE.playerPositionLoop then UI_STATE.playerPositionLoop:Disconnect() end
+                local lastUpdate = 0
                 refreshPlayerList(container)
-            end
-        end)
-    end
-end
--- 修改菜单3内容，添加执行按钮
--- ====================== 飞行 ======================
--- 新增：主菜单执行确认对话框
--- 优化后的执行确认对话框（支持显示功能说明）
-local function createExecutionDialog(title, description, onConfirm)
-    local localPlayer = Players.LocalPlayer
-    if not localPlayer then return end
-    local playerGui = localPlayer:FindFirstChild("PlayerGui")
-    if not playerGui then return end
-    local dialogGui = Instance.new("ScreenGui")
-    dialogGui.Name = "ExecutionDialog"
-    dialogGui.IgnoreGuiInset = true
-    dialogGui.Parent = playerGui
-    -- 背景遮罩（防穿透）
-    local overlay = Instance.new("Frame")
-    overlay.Size = UDim2.new(1, 0, 1, 0)
-    overlay.BackgroundColor3 = Color3.new(0, 0, 0)
-    overlay.BackgroundTransparency = 0.7
-    overlay.Parent = dialogGui
-    -- 对话框主框架：宽缩小1/5（0.7→0.56），高动态扩展
-    local dialogFrame = Instance.new("Frame")
-    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0) -- 0.7 × (4/5) = 0.56
-    dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
-    dialogFrame.BackgroundTransparency = 0.3
-    dialogFrame.Parent = overlay
-    createCorner(dialogFrame, 12)
-    -- 标题栏：紧凑设计，文字适中
-    local titleLabel = createLabel(dialogFrame, {
-        name = "DialogTitle",
-        size = UDim2.new(1, -40, 0, 35), -- 高度压缩（原45→35）
-        position = UDim2.new(0, 20, 0, 15), -- 上移贴边
-        text = title or "执行确认",
-        color = CONFIG.UI_COLORS.accent,
-        textSize = 20, -- 标题文字微缩（原24→20）
-        font = Enum.Font.SourceSansBold,
-        xAlign = Enum.TextXAlignment.Center
-    })
-    -- 分隔线：更细，贴近标题
-    local line = Instance.new("Frame")
-    line.Size = UDim2.new(1, -40, 0, 1) -- 线宽1px，更精致
-    line.Position = UDim2.new(0, 20, 0, 55) -- 标题下方40px（15+35）
-    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180) -- 浅灰更柔和
-    line.Parent = dialogFrame
-    -- 滚动容器：抢占中间80%空间，强制滚动
-    local scrollContainer = Instance.new("ScrollingFrame")
-    scrollContainer.Name = "ContentScroll"
-    scrollContainer.Size = UDim2.new(1, -40, 0, 300) -- 初始高度，动态扩展
-    scrollContainer.Position = UDim2.new(0, 20, 0, 65) -- 分隔线下方10px，极致紧凑
-    scrollContainer.BackgroundTransparency = 1
-    scrollContainer.ScrollBarThickness = 5 -- 细滚动条
-    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y -- 仅垂直滚动
-    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- 动态计算
-    scrollContainer.Parent = dialogFrame
-    createCorner(scrollContainer, 8)
-    -- 内容标签：文字放大，适配滚动区
-    local descLabel = createLabel(scrollContainer, {
-        name = "DialogContent",
-        size = UDim2.new(1, 0, 0, 0), -- 高度自适应
-        text = description or "确认执行该功能？",
-        textSize = 16, -- 内容文字放大（原14→16）
-        xAlign = Enum.TextXAlignment.Left,
-        textWrapped = true,
-        bgColor = Color3.fromRGB(30, 30, 50), -- 深色背景更突出
-        bgTransparency = 0.9
-    })
-    createCorner(descLabel, 8)
-    -- 按钮容器：底部紧凑布局，按钮对称分布
-    local btnContainer = Instance.new("Frame")
-    btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
-    btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
-    btnContainer.BackgroundTransparency = 1
-    btnContainer.Parent = dialogFrame
-    -- 取消按钮：左对齐（保留原逻辑）
-    createButton(btnContainer, {
-        name = "CancelBtn",
-        size = UDim2.new(0, 80, 1, 0), -- 固定宽度
-        position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
-        text = "取消",
-        onClick = function() dialogGui:Destroy() end
-    })
-    -- 确认按钮：右对齐（新增偏移量）
-    createButton(btnContainer, {
-        name = "ConfirmBtn",
-        size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
-        position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
-        anchor = Vector2.new(1, 0), -- 右锚点
-        text = "确认执行",
-        bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
-        onClick = function()
-            dialogGui:Destroy()
-            onConfirm()
-        end
-    })
-    -- 新增：中间空隙（视觉分隔）
-    local gap = Instance.new("Frame")
-    gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
-    gap.BackgroundTransparency = 1
-    gap.Parent = btnContainer
-    -- 动态布局计算：让文字区占满中间
-    task.defer(function()
-        local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
-        local maxDialogHeight = screenHeight * 0.85 -- 高度扩展50%（原0.57→0.85）
-        local contentHeight = descLabel.TextBounds.Y + 20 -- 内容高度+内边距
-        -- 强制滚动容器高度最大化
-        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100)) -- 标题+按钮区占100px
-        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight) -- 滚动范围匹配内容
-        descLabel.Size = UDim2.new(1, 0, 0, contentHeight) -- 内容标签高度自适应
-        -- 调整对话框总高度
-        local totalHeight = 65 + -- 标题到滚动容器顶部：15+35+1+14=65（精确计算）
-                            scrollContainer.Size.Y.Offset + 
-                            35 -- 按钮区高度22 + 间距13
-        dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
-    end)
-end
--- ====================== 执行脚本代码 ======================
-local function executeUrlContent()
-    local url = "https://pastebin.com/raw/LY9W7CPL"
-    local success, contentOrErr = pcall(function()
-        -- 使用game:HttpGet获取内容
-        return game:HttpGet(url)
-    end)
-    if success then
-        -- 执行获取到的内容
-        local execSuccess = pcall(function()
-            loadstring(contentOrErr)()
-        end)
-        if execSuccess then
-            showNotification("执行成功", "祝你使用愉快！")
-        else
-            showNotification("执行失败", "请联系KS秋容修复问题")
-        end
-    else
-        showNotification("获取失败", "无法获取内容: " .. tostring(contentOrErr))
-    end
-end
--- ====================== 脚本说明 ======================
-local function create3Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明文字）
-    local injectors = {
-        {
-            name = "忍者注入器(点击复制下载链接)",
-            url = "http://DeltaExploits.com",
-            desc = "功能说明：\n- 兼容多数Roblox版本\n- 支持主流脚本加载\n- 稳定性强，更新及时\n- 复制链接后在浏览器打开下载"
-        },
-        {
-            name = "Krnl注入器(点击复制下载链接)",
-            url = "http://Krnl.vip",
-            desc = "功能说明：\n- 高性能注入器\n- 支持复杂脚本解析\n- 内置防检测机制\n- 复制链接后在浏览器打开下载"
-        },
-        {
-            name = "RONIX注入器(点击复制下载链接)",
-            url = "https://ronixexecutors.com/",
-            desc = "功能说明：\n- 轻量级设计\n- 低资源占用\n- 适合低配设备\n- 复制链接后在浏览器打开下载"
-        },
-        {
-            name = "Xeno注入器PC(点击复制下载链接)",
-            url = "http://Xeno-Executor.com",
-            desc = "功能说明：\n- PC端专用\n- 支持多线程加载\n- 兼容最新Roblox更新\n- 复制链接后在浏览器打开下载"
-        },
-        {
-            name = "神秘礼物点击领取",
-            url = "你好",
-            desc = "功能说明：\n- 特殊福利内容\n- 复制后在游戏聊天框粘贴\n- 可能获得隐藏奖励\n- 限时有效"
-        }
-    }
-    -- 创建按钮（无菜单内说明标签）
-    for i, injector in ipairs(injectors) do
-        createButton(container, {
-            name = "3" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
-            text = injector.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "复制 " .. injector.name,
-                    injector.desc,
-                    function()
-                        setclipboard(injector.url)
-                        showNotification("链接已复制", "已将" .. injector.name .. "链接复制到剪贴板")
+                UI_STATE.playerPositionLoop = RunService.Heartbeat:Connect(function(deltaTime)
+                    lastUpdate += deltaTime
+                    if lastUpdate >= CONFIG.UPDATE_INTERVAL then
+                        lastUpdate = 0
+                        refreshPlayerList(container)
                     end
-                )
+                end)
             end
-        })
-    end
-    return function() end
-end
---=====================================================
--- 玩家功能菜单内容
-local function create4Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    -- 功能按钮数据（含说明）
-    local buttons = {
-        {
-            name = "作者飞行(推荐)", 
-            url = "https://pastebin.com/raw/zxD9Tv63",
-            desc = "功能说明：\n作者同款飞行适配墨水游戏包括所有可以拿起武器也可以使用载具"
-        },       
-        {
-            name = "飞行v3", 
-            url = "https://pastebin.com/raw/LY9W7CPL",
-            desc = "功能说明：\n- 第三代飞行系统，优化操控体验\n- 支持高度调节和速度控制\n- 抗干扰模式，减少场景冲突\n- 兼容绝大多数游戏地图"
-        },
-        {
-            name = "防挂机", 
-            url = "https://pastebin.com/raw/ns9JeMpW",
-            desc = "功能说明：\n- 自动模拟玩家操作，避免被系统判定为挂机\n- 低频率动作，不影响正常游戏\n- 适用于需要长时间在线的场景\n- 隐蔽性强，不易被检测"
-        }
-    }
-    -- 创建功能按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "4" .. i,
-            layoutOrder = i + 3,  -- 排在3个输入框后面
-            size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        if btn.url then
-                            loadstring(game:HttpGet(btn.url))()
-                        else
-                            btn.func()
+        end,
+        panelTitle = "玩家传送管理"
+    },
+    {
+        id = "保存位置",
+        displayName = "坐标管理",
+        layoutOrder = 2,
+        contentFunc = function(container)
+            -- 坐标管理菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            local coordDisplay = Instance.new("Frame")
+            coordDisplay.Name = "CoordDisplay"
+            coordDisplay.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
+            coordDisplay.LayoutOrder = 1
+            coordDisplay.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+            coordDisplay.BackgroundTransparency = 0.7
+            coordDisplay.Parent = container
+            createCorner(coordDisplay, 6)
+            local coordLabel = createLabel(coordDisplay, {
+                size = UDim2.new(1, -10 * UI_STATE.scale, 1, 0),
+                position = UDim2.new(0, 10 * UI_STATE.scale, 0, 0),
+                text = "实时坐标：X: ---, Y: ---, Z: ---",
+                textSize = 14,
+                xAlign = Enum.TextXAlignment.Left
+            })
+            local nameInput = Instance.new("TextBox")
+            nameInput.Name = "NameInput"
+            nameInput.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
+            nameInput.LayoutOrder = 2
+            nameInput.PlaceholderText = "输入坐标名称"
+            nameInput.Text = ""
+            nameInput.TextColor3 = Color3.new(1, 1, 1)
+            nameInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+            nameInput.TextSize = 14 * UI_STATE.scale
+            nameInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+            nameInput.BackgroundTransparency = 0.7
+            nameInput.Parent = container
+            nameInput.Active = true
+            nameInput.Selectable = true
+            createCorner(nameInput, 6)
+            -- 操作提示：坐标名称修改（按回车确认）
+            nameInput.FocusLost:Connect(function(enterPressed)
+                if enterPressed and nameInput.Text ~= "" then
+                    showNotification("名称已更新", "坐标名称设置为：" .. nameInput.Text)
+                end
+            end)
+            createButton(container, {
+                name = "SaveBtn",
+                layoutOrder = 3,
+                text = "保存到文件",
+                bgColor = CONFIG.UI_COLORS.success,
+                hoverColor = Color3.fromRGB(70, 110, 90),
+                onClick = function()
+                    local player = Players.LocalPlayer
+                    local rootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+                    if not rootPart then
+                        showNotification("保存失败", "角色未加载")
+                        return
+                    end
+                    local name = nameInput.Text ~= "" and nameInput.Text or "未命名坐标"
+                    local exists = false
+                    for _, item in ipairs(UI_STATE.savedCoordinates) do
+                        if item.name == name then exists = true end
+                    end
+                    if exists then name = name .. "(" .. #UI_STATE.savedCoordinates + 1 .. ")" end
+                    local pos = rootPart.Position
+                    local x, y, z = math.round(pos.X*100)/100, math.round(pos.Y*100)/100, math.round(pos.Z*100)/100
+                    table.insert(UI_STATE.savedCoordinates, {name = name, x = x, y = y, z = z})
+                    
+                    local maxOrder = 5
+                    for _, child in ipairs(container:GetChildren()) do
+                        if child.Name:match("SavedCoord_") and child.LayoutOrder > maxOrder then
+                            maxOrder = child.LayoutOrder
                         end
-                        showNotification("功能已激活", btn.name .. "已执行")
                     end
-                )
+                    createSavedCoordItem(container, UI_STATE.savedCoordinates[#UI_STATE.savedCoordinates], maxOrder + 1)
+                    local success = updateCSVFile()
+                    showNotification(
+                        success and "保存成功" or "保存失败",
+                        success and ("已保存到：" .. UI_STATE.csvFilePath) or "注入器不支持文件写入"
+                    )
+                    nameInput.Text = ""
+                end
+            })
+            local divider = Instance.new("Frame")
+            divider.Size = UDim2.new(1, 0, 0, 2 * UI_STATE.scale)
+            divider.LayoutOrder = 4
+            divider.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
+            divider.BackgroundTransparency = 0.5
+            divider.Parent = container
+            createLabel(container, {
+                name = "SavedTitle",
+                size = UDim2.new(1, 0, 0, 30 * UI_STATE.scale),
+                layoutOrder = 5,
+                text = "已保存的坐标",
+                color = CONFIG.UI_COLORS.accent,
+                textSize = 16,
+                xAlign = Enum.TextXAlignment.Left
+            })
+            for i, coord in ipairs(UI_STATE.savedCoordinates) do
+                createSavedCoordItem(container, coord, 6 + i)
             end
-        })
-    end
-    return function() end
-end
---=====================================================
--- 森林中的99夜菜单内容
-local function create5Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "红叶需要解卡(推荐)",
-            url = "https://getnative.cc/script/loader",
-            desc = "自行解卡"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "8" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc .. "\n\n补充说明：\n- 为什么只有红叶脚本？测试多数脚本失效，仅该脚本适配鱼类玩法\n- 解卡密流程简单，按提示操作即可",
-                    function()
-                        loadstring(game:HttpGet(btn.url))()
-                        showNotification("功能加载中", "脚本执行中...")
+            return function(isVisible)
+                if not isVisible then return end
+                if UI_STATE.coordinateLoop then UI_STATE.coordinateLoop:Disconnect() end
+                UI_STATE.coordinateLoop = RunService.Heartbeat:Connect(function()
+                    -- 增加多重安全检查
+                    if not coordLabel or not coordLabel:IsDescendantOf(game) then
+                        return
                     end
-                )
-            end
-        })
-    end
-    return function() end
-end
-local function create10Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "ky3-nol😎", 
-            func = function()
-                getfenv().ADittoKey = "NOL_FRERKEY"
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
-            end,
-            desc = "建议搭配一键汉化"
-        }
-    }
-    
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "10" .. i, -- 修改为正确的编号
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        -- 直接执行 func 而不是通过 URL
-                        if btn.func then
-                            btn.func()
-                        else
-                            loadstring(game:HttpGet(btn.url))()
-                        end
-                        showNotification("功能加载中", "脚本执行中...")
+                    local player = Players.LocalPlayer
+                    if not player then return end
+                    local character = player.Character
+                    if not character then
+                        coordLabel.Text = "实时坐标：角色未生成"
+                        return
                     end
-                )
+                    local rootPart = character:FindFirstChild("HumanoidRootPart")
+                    if rootPart then
+                        local pos = rootPart.Position
+                        coordLabel.Text = string.format("实时坐标：X: %.1f, Y: %.1f, Z: %.1f", pos.X, pos.Y, pos.Z)
+                    else
+                        coordLabel.Text = "实时坐标：角色加载中..."
+                    end              
+                end)
             end
-        })
-    end
-    return function() end
-end
-local function create9Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "红叶需要解卡(推荐)",
-            url = "https://getnative.cc/script/loader",
-            desc = "自行解卡"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "8" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc .. "\n\n补充说明：\n- 为什么只有红叶脚本？测试多数脚本失效，仅该脚本适配鱼类玩法\n- 解卡密流程简单，按提示操作即可",
-                    function()
-                        loadstring(game:HttpGet(btn.url))()
-                        showNotification("功能加载中", "脚本执行中...")
+        end,
+        panelTitle = "坐标保存与管理"
+    },
+    {
+        id = "玩家通用",
+        displayName = "通用功能",
+        layoutOrder = 3,
+        contentFunc = function(container)
+            -- 通用功能菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            -- 功能按钮数据（含说明）
+            local buttons = {
+                {
+                    name = "作者飞行(推荐)", 
+                    url = "https://pastebin.com/raw/zxD9Tv63",
+                    desc = "功能说明：\n作者同款飞行适配墨水游戏包括所有可以拿起武器也可以使用载具"
+                },       
+                {
+                    name = "飞行v3", 
+                    url = "https://pastebin.com/raw/LY9W7CPL",
+                    desc = "禁止在有检测的游戏中使用包括墨水或被遗弃等否则将会直接永久封禁600服务器无法进入"
+                },
+                {
+                    name = "防挂机", 
+                    url = "https://pastebin.com/raw/ns9JeMpW",
+                    desc = "功能说明：\n- 自动模拟玩家操作，避免被系统判定为挂机\n- 低频率动作，不影响正常游戏\n- 适用于需要长时间在线的场景\n- 隐蔽性强，不易被检测"
+                }
+            }
+            -- 创建功能按钮
+            for i, btn in ipairs(buttons) do
+                createButton(container, {
+                    name = "4" .. i,
+                    layoutOrder = i + 3,  -- 排在3个输入框后面
+                    size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
+                    text = btn.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                            function()
+                                if btn.url then
+                                    loadstring(game:HttpGet(btn.url))()
+                                else
+                                    btn.func()
+                                end
+                                showNotification("功能已激活", btn.name .. "已执行")
+                            end
+                        )
                     end
-                )
+                })
             end
-        })
-    end
-    return function() end
-end
---=====================================================
-local function create6Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "VexonHub",
-            url = "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub",
-            desc = "功能说明：\n- 全能型脚本，适合战场玩法\n- 核心功能：扔垃圾桶农场（血量1/4自动扔出）\n- 包含防甩飞和自动连招\n- 多场景适配，功能全面稳定"
-        },
-        {
-            name = "扔垃圾桶",
-            url = "https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man",
-            desc = "功能说明：\n- 专注垃圾桶投掷机制\n- 自动判断最佳投掷时机\n- 轻量化设计，低冲突\n- 适合仅需核心功能的玩家"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "9" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", btn.name .. "脚本执行中...")
+            return function() end
+        end,
+        panelTitle = "通用功能工具箱"
+    },
+    {
+        id = "红叶脚本",--菜单名称
+        displayName = "红叶脚本",--菜单名称
+        layoutOrder = 4,--菜单编号顺序
+        contentFunc = function(container)
+            -- 偷走脑红菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 按钮数据（含说明）
+            local buttons = {
+                {
+                    name = "鱼",--脚本名称
+                    url = "https://getnative.cc/script/loader",--脚本链接
+                    desc = "建议搭配一键汉化"--详情注释
+                },
+                {
+                    name = "99生存",--脚本名称
+                    url = "https://getnative.cc/script/loader",--脚本链接
+                    desc = "建议搭配一键汉化"--详情注释
+                },
+                {
+                    name = "死铁轨",--脚本名称
+                    url = "https://getnative.cc/script/loader",--脚本链接
+                    desc = "建议搭配一键汉化"--详情注释
+                }
+            }
+            -- 创建按钮
+            for i, btn in ipairs(buttons) do
+                createButton(container, {
+                    name = "11" .. i,
+                    layoutOrder = i,
+                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                    text = btn.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                            function()
+                                loadstring(game:HttpGet(btn.url))("")
+                                showNotification("功能加载中", btn.name .. "脚本执行中...")
+                            end
+                        )
                     end
-                )
+                })
             end
-        })
-    end
-    return function() end
-end
---=====================================================
-local function create11Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "虚空脚本",
-            url = "https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/nightsintheforest.lua",
-            desc = "搭配一件汉化"
-        },
-        {
-            name = "DarkEsc Hub v1.02",
-            url = "https://raw.githubusercontent.com/DarkenedEssence/DarkEsc/refs/heads/main/Loader.lua",
-            desc = "搭配一键汉化"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "9" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", btn.name .. "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    return function() end
-end
-
---=====================================================
-local function create7Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "KronHub",
-            url = "https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0",
-            desc = "功能说明：\n- 伐木大亨2专用辅助\n- 核心功能：自动伐木、树木复制、移植\n- 支持自动购买工具和传送\n- 适配最新游戏版本，稳定无冲突"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "11" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url))("")
-                        showNotification("功能加载中", btn.name .. "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    -- 功能说明整合到弹窗，菜单内无标签
-    return function() end
-end
-local function create13Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "Chilli",
-            url = "https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua",
-            desc = "建议搭配一键汉化"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "11" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url))("")
-                        showNotification("功能加载中", btn.name .. "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    -- 功能说明整合到弹窗，菜单内无标签
-    return function() end
-end
---=====================================================
-local function create12Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "NullFire",
-            url = "https://raw.githubusercontent.com/TeamNullFire/NullFire/main/loader.lua",
-            desc = "建议搭配一键汉化"
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "11" .. i,
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url))("")
-                        showNotification("功能加载中", btn.name .. "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    -- 功能说明整合到弹窗，菜单内无标签
-    return function() end
-end
---=====================================================
-local function create8Content(container)
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    -- 按钮数据（含说明）
+            -- 功能说明整合到弹窗，菜单内无标签
+            return function() end
+        end,
+        panelTitle = "红叶脚本"--内容名称
+    },
+{
+    id = "墨水游戏",
+    displayName = "墨水游戏",
+    layoutOrder = 5,
+    contentFunc = function(container)
+        if not container or not container:IsDescendantOf(game) then return function() end end
+        
+        -- 按钮数据（含说明）
     local buttons = {
         {
             name = "ink-game(测试版)",
@@ -1807,66 +1678,481 @@ local function create8Content(container)
             desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
         }
     }
-local injectors = {
-    {
-    name = "Xa老外脚本新版(点击复制脚本)",
-    url = [[script_key = "你的卡密"
-loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua"))()]],
-    desc = "脚本使用说明和介绍\n首先你复制完成之后点击下面解卡链接解完卡\n之后复制这个脚本然后弄到\n注入器里面输入自己的卡密执行即可"
-        },
-        {
-            name = "Xa老外脚本新版(点击复制解卡链接)",
-            url = "https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna",
-            desc = "点击去浏览器里面解卡密需要登录DC软件才可以解卡密"
+        -- AX登录卡密部分
+        local axButtons = {
+            {
+                name = "AX新版(无汉化)",
+                func = function(key)
+                    script_key = key or ""
+                    loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua"))()
+                end,
+                desc = "脚本使用说明和介绍\n首先在下方输入卡密，然后点击执行\n需要先到解卡链接获取卡密"
+            }
         }
-     }
-   for i, injector in ipairs(injectors) do
+        
+        -- 创建AX执行按钮（放在最前面）
+        for i, btn in ipairs(axButtons) do
+            createButton(container, {
+                name = "AX" .. i,
+                layoutOrder = i, -- 放在最前面
+                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                text = btn.name,
+                bgColor = CONFIG.UI_COLORS.primary,
+                hoverColor = Color3.fromRGB(70, 70, 120),
+                onClick = function()
+                    createExecutionDialog(
+                        "执行 " .. btn.name,
+                        btn.desc,
+                        function()
+                            if btn.func then
+                                -- 创建卡密输入弹窗（完全居中版本）
+                                local localPlayer = Players.LocalPlayer
+                                if not localPlayer then return end
+                                local playerGui = localPlayer:FindFirstChild("PlayerGui")
+                                if not playerGui then return end
+                                
+                                local keyInputGui = Instance.new("ScreenGui")
+                                keyInputGui.Name = "AXKeyInputDialog"
+                                keyInputGui.IgnoreGuiInset = true
+                                keyInputGui.Parent = playerGui
+                                
+                                -- 设置最高显示层级（忍者注入器兼容）
+                                pcall(function()
+                                    keyInputGui.DisplayOrder = 1000
+                                end)
+                                
+                                local overlay = Instance.new("Frame")
+                                overlay.Size = UDim2.new(1, 0, 1, 0)
+                                overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+                                overlay.BackgroundTransparency = 0.7
+                                overlay.Parent = keyInputGui
+                                
+                                -- 对话框框架（完全居中）
+                                local dialogFrame = Instance.new("Frame")
+                                dialogFrame.Size = UDim2.new(0, 350, 0, 220)
+                                dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+                                dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+                                dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
+                                dialogFrame.BackgroundTransparency = 0.3
+                                dialogFrame.Parent = overlay
+                                createCorner(dialogFrame, 12)
+                                
+                                -- 标题（居中）
+                                local titleLabel = createLabel(dialogFrame, {
+                                    name = "KeyInputTitle",
+                                    size = UDim2.new(1, -40, 0, 40),
+                                    position = UDim2.new(0.5, 0, 0, 15),
+                                    anchor = Vector2.new(0.5, 0),
+                                    text = "输入AX卡密",
+                                    color = CONFIG.UI_COLORS.accent,
+                                    textSize = 18,
+                                    xAlign = Enum.TextXAlignment.Center
+                                })
+                                
+                                -- 输入框（完全居中）
+                                local keyInput = Instance.new("TextBox")
+                                keyInput.Name = "AXKeyInput"
+                                keyInput.Size = UDim2.new(0.8, 0, 0, 40)
+                                keyInput.Position = UDim2.new(0.5, 0, 0.5, -10)
+                                keyInput.AnchorPoint = Vector2.new(0.5, 0.5)
+                                keyInput.PlaceholderText = "请输入AX卡密"
+                                keyInput.Text = ""
+                                keyInput.TextColor3 = Color3.new(1, 1, 1)
+                                keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+                                keyInput.TextSize = 16
+                                keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+                                keyInput.BackgroundTransparency = 0.7
+                                keyInput.TextXAlignment = Enum.TextXAlignment.Center
+                                keyInput.Parent = dialogFrame
+                                createCorner(keyInput, 6)
+                                
+                                -- 按钮容器（完全居中）
+                                local buttonContainer = Instance.new("Frame")
+                                buttonContainer.Size = UDim2.new(0.8, 0, 0, 40)
+                                buttonContainer.Position = UDim2.new(0.5, 0, 0.8, 0)
+                                buttonContainer.AnchorPoint = Vector2.new(0.5, 0.5)
+                                buttonContainer.BackgroundTransparency = 1
+                                buttonContainer.Parent = dialogFrame
+                                
+                                -- 确认执行按钮
+                                createButton(buttonContainer, {
+                                    name = "ConfirmKeyBtn",
+                                    size = UDim2.new(0.45, 0, 1, 0),
+                                    position = UDim2.new(0, 0, 0, 0),
+                                    text = "确认执行",
+                                    bgColor = CONFIG.UI_COLORS.success,
+                                    onClick = function()
+                                        if keyInput.Text == "" then
+                                            showNotification("输入错误", "请输入有效的卡密", 2)
+                                            return
+                                        end
+                                        btn.func(keyInput.Text)
+                                        keyInputGui:Destroy()
+                                        showNotification("功能加载中", "脚本执行中...")
+                                    end
+                                })
+                                
+                                -- 退出按钮
+                                createButton(buttonContainer, {
+                                    name = "CancelBtn",
+                                    size = UDim2.new(0.45, 0, 1, 0),
+                                    position = UDim2.new(0.55, 0, 0, 0),
+                                    text = "退出",
+                                    bgColor = CONFIG.UI_COLORS.danger,
+                                    onClick = function()
+                                        keyInputGui:Destroy()
+                                        showNotification("已取消", "AX脚本执行已取消", 2)
+                                    end
+                                })
+                                
+                                -- 自动聚焦到输入框
+                                task.spawn(function()
+                                    wait(0.1)
+                                    if keyInput and keyInput:IsDescendantOf(game) then
+                                        keyInput:CaptureFocus()
+                                    end
+                                end)
+                                
+                                -- 支持回车键确认
+                                keyInput.FocusLost:Connect(function(enterPressed)
+                                    if enterPressed then
+                                        if keyInput.Text ~= "" then
+                                            btn.func(keyInput.Text)
+                                            keyInputGui:Destroy()
+                                            showNotification("功能加载中", "脚本执行中...")
+                                        end
+                                    end
+                                end)
+                            else
+                                loadstring(game:HttpGet(btn.url))()
+                            end
+                        end
+                    )
+                end
+            })
+        end
+        
+        -- 创建解卡链接按钮（放在AX按钮下方）
         createButton(container, {
-            name = "3" .. i,
-            layoutOrder = i,
+            name = "解卡链接",
+            layoutOrder = #axButtons + 1,
             size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
-            text = injector.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
+            text = "点击获取AX卡密（需要登录DC）",
+            bgColor = CONFIG.UI_COLORS.accent,
+            hoverColor = Color3.fromRGB(90, 60, 60),
             onClick = function()
-                createExecutionDialog(
-                    "复制 " .. injector.name,
-                    injector.desc,
-                    function()
-                        setclipboard(injector.url)
-                        showNotification("链接已复制", "已将" .. injector.name .. "链接复制到剪贴板")
-                    end
-                )
+                setclipboard("https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna")
+                showNotification("链接已复制", "已复制解卡链接到剪贴板，请在浏览器中打开")
             end
         })
-    end
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "12" .. i,
-            layoutOrder = i + #injectors, -- 排在注入器按钮后面
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url))()
-                        showNotification("功能加载中", btn.name .. "脚本执行中...")
+        
+        -- 创建分隔线
+        local separator = Instance.new("Frame")
+        separator.Name = "Separator"
+        separator.Size = UDim2.new(1, -20, 0, 2)
+        separator.Position = UDim2.new(0, 10, 0, 0)
+        separator.LayoutOrder = #axButtons + 2
+        separator.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        separator.BorderSizePixel = 0
+        separator.Parent = container
+        
+        -- 创建普通脚本按钮
+        for i, btn in ipairs(buttons) do
+            createButton(container, {
+                name = "Script" .. i,
+                layoutOrder = #axButtons + 2 + i, -- 放在分隔线下面
+                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                text = btn.name,
+                bgColor = CONFIG.UI_COLORS.primary,
+                hoverColor = Color3.fromRGB(70, 70, 120),
+                onClick = function()
+                    createExecutionDialog(
+                        "执行 " .. btn.name,
+                        btn.desc,
+                        function()
+                            loadstring(game:HttpGet(btn.url))()
+                            showNotification("功能加载中", btn.name .. "脚本执行中...")
+                        end
+                    )
+                end
+            })
+        end
+        
+        return function() end
+    end,
+    panelTitle = "墨水游戏"
+},
+    {
+        id = "99生存",--菜单名称
+        displayName = "99生存",--菜单名称
+        layoutOrder = 6,--菜单编号顺序
+        contentFunc = function(container)
+            -- 偷走脑红菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 按钮数据（含说明）
+        local buttons = {
+            {
+                name = "虚空脚本",
+                url = "https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/nightsintheforest.lua",
+                desc = "搭配一件汉化"
+            },
+            {
+                name = "DarkEsc Hub v1.02",
+                url = "https://raw.githubusercontent.com/DarkenedEssence/DarkEsc/refs/heads/main/Loader.lua",
+                desc = "搭配一键汉化"
+            },
+            {
+                name = "RINGTA",
+                url = "https://raw.githubusercontent.com/wefwef127382/99daysloader.github.io/refs/heads/main/ringta.lua",
+                desc = "搭配一键汉化"
+            }
+        }        
+            -- 创建按钮
+            for i, btn in ipairs(buttons) do
+                createButton(container, {
+                    name = "11" .. i,
+                    layoutOrder = i,
+                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                    text = btn.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                            function()
+                                loadstring(game:HttpGet(btn.url))("")
+                                showNotification("功能加载中", btn.name .. "脚本执行中...")
+                            end
+                        )
                     end
-                )
+                })
             end
-        })
-    end
-    return function() end
-end
---=====================================================
--- 其他游戏菜单内容创建函数（省略类似结构，按照上述模式实现）
--- 内脏与黑火药
-local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
+            -- 功能说明整合到弹窗，菜单内无标签
+            return function() end
+        end,
+        panelTitle = "99生存"--内容名称
+    },
+    {
+        id = "被遗弃",--菜单名称
+        displayName = "被遗弃",--菜单名称
+        layoutOrder = 7,--菜单编号顺序
+        contentFunc = function(container)
+            -- 偷走脑红菜单内容
+    if not container or not container:IsDescendantOf(game) then return function() end end
+    
+    -- 按钮数据（含说明）
+    local buttons = {
+        {
+            name = "ky3-nol😎", 
+            func = function()
+                getfenv().ADittoKey = "NOL_FRERKEY"
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
+            end,
+            desc = "建议搭配一键汉化"
+        }
+    }    
+            -- 创建按钮
+            for i, btn in ipairs(buttons) do
+                createButton(container, {
+                    name = "11" .. i,
+                    layoutOrder = i,
+                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                    text = btn.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                    function()
+                        -- 直接执行 func 而不是通过 URL
+                        if btn.func then
+                            btn.func()
+                        else
+                            loadstring(game:HttpGet(btn.url))()
+                        end
+                        showNotification("功能加载中", "脚本执行中...")
+                    end
+                        )
+                    end
+                })
+            end
+            -- 功能说明整合到弹窗，菜单内无标签
+            return function() end
+        end,
+        panelTitle = "被遗弃"--内容名称
+    },
+-- 在 MENU_CONFIG 中找到 "被遗弃" 菜单的配置，修改 contentFunc 部分
+--[[
+{
+    id = "被遗弃",
+    displayName = "被遗弃",
+    layoutOrder = 7,
+    contentFunc = function(container)
+        if not container or not container:IsDescendantOf(game) then return function() end end
+        
+        -- 按钮数据（含说明）
+        local buttons = {
+            {
+                name = "ky3-nol😎", 
+                func = function(key)
+                    getfenv().ADittoKey = key
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
+                end,
+                desc = "建议搭配一键汉化\n需要输入卡密"
+            }
+        }
+        
+        -- 创建卡密输入框
+        local keyInputFrame = Instance.new("Frame")
+        keyInputFrame.Name = "KeyInputFrame"
+        keyInputFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
+        keyInputFrame.LayoutOrder = 1
+        keyInputFrame.BackgroundTransparency = 1
+        keyInputFrame.Parent = container
+        
+        local keyInput = Instance.new("TextBox")
+        keyInput.Name = "KeyInput"
+        keyInput.Size = UDim2.new(0.7, 0, 1, 0)
+        keyInput.Position = UDim2.new(0.15, 0, 0, 0)
+        keyInput.PlaceholderText = "这里输入卡密"
+        keyInput.Text = ""
+        keyInput.TextColor3 = Color3.new(1, 1, 1)
+        keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+        keyInput.TextSize = 14 * UI_STATE.scale
+        keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+        keyInput.BackgroundTransparency = 0.7
+        keyInput.Parent = keyInputFrame
+        createCorner(keyInput, 6)
+        
+        -- 创建按钮
+        for i, btn in ipairs(buttons) do
+            createButton(container, {
+                name = "11" .. i,
+                layoutOrder = i + 1, -- 放在输入框下面
+                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                text = btn.name,
+                bgColor = CONFIG.UI_COLORS.primary,
+                hoverColor = Color3.fromRGB(70, 70, 120),
+                onClick = function()
+                    createExecutionDialog(
+                        "执行 " .. btn.name,
+                        btn.desc,
+                        function()
+                            -- 直接执行 func 而不是通过 URL
+                            if btn.func then
+                                btn.func(keyInput.Text)
+                            else
+                                loadstring(game:HttpGet(btn.url))()
+                            end
+                            showNotification("功能加载中", "脚本执行中...")
+                        end
+                    )
+                end
+            })
+        end
+        
+        return function() end
+    end,
+    panelTitle = "被遗弃"
+},
+]]
+    {
+        id = "最强的战场",--菜单名称
+        displayName = "最强的战场",--菜单名称
+        layoutOrder = 8,--菜单编号顺序
+        contentFunc = function(container)
+            -- 偷走脑红菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 按钮数据（含说明）
+            local buttons = {
+                {
+                    name = "VexonHub",--脚本名称
+                    url = "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub",--脚本链接
+                    desc = "建议搭配一键汉化"--详情注释
+                },
+                {
+                    name = "扔垃圾桶",--脚本名称
+                    url = "https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man",--脚本链接
+                    desc = "cs脚本家里还在的不要用"--详情注释
+                }             
+            }
+            -- 创建按钮
+            for i, btn in ipairs(buttons) do
+                createButton(container, {
+                    name = "11" .. i,
+                    layoutOrder = i,
+                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                    text = btn.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                            function()
+                                loadstring(game:HttpGet(btn.url))("")
+                                showNotification("功能加载中", btn.name .. "脚本执行中...")
+                            end
+                        )
+                    end
+                })
+            end
+            -- 功能说明整合到弹窗，菜单内无标签
+            return function() end
+        end,
+        panelTitle = "最强的战场"--内容名称
+    },
+   }
+--[[
+    {
+        id = "541888869999",--菜单名称
+        displayName = "541888869999",--菜单名称
+        layoutOrder = ,--菜单编号顺序
+        contentFunc = function(container)
+            -- 偷走脑红菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 按钮数据（含说明）
+            local buttons = {
+                {
+                    name = "541888869999",--脚本名称
+                    url = "",--脚本链接
+                    desc = "建议搭配一键汉化"--详情注释
+                }
+            }
+            -- 创建按钮
+            for i, btn in ipairs(buttons) do
+                createButton(container, {
+                    name = "11" .. i,
+                    layoutOrder = i,
+                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                    text = btn.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                            function()
+                                loadstring(game:HttpGet(btn.url))("")
+                                showNotification("功能加载中", btn.name .. "脚本执行中...")
+                            end
+                        )
+                    end
+                })
+            end
+            -- 功能说明整合到弹窗，菜单内无标签
+            return function() end
+        end,
+        panelTitle = "541888869999"--内容名称
+    },
+]]
+-- ====================== 菜单内容面板创建 ======================
+local function createMenuContentPanel(rightPanel, menuKey, panelTitle, contentFunc)
     if not rightPanel or not rightPanel:IsDescendantOf(game) then return nil end
     local panel = Instance.new("Frame")
     panel.Name = "ContentPanel_" .. menuKey:gsub("%p", "")
@@ -1876,6 +2162,7 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
     -- 直接根据当前活跃菜单设置可见性（无延迟）
     panel.Visible = (menuKey == UI_STATE.activeMenu)
     panel.Active = false
+    
     local title = createLabel(panel, {
         name = "PanelTitle",
         size = UDim2.new(1, -20 * UI_STATE.scale, 0, 36 * UI_STATE.scale),
@@ -1889,6 +2176,7 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
         xAlign = Enum.TextXAlignment.Center
     })
     if title then createCorner(title, 6) end
+    
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Name = "ContentScroll_" .. menuKey:gsub("%p", "")
     local titleHeight = title and (title.Position.Y.Offset + title.Size.Y.Offset + 15 * UI_STATE.scale) or 50
@@ -1898,34 +2186,33 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
     scrollFrame.Parent = panel
     scrollFrame.ClipsDescendants = true
     createCorner(scrollFrame, 6)
+    
     -- 优化滚动逻辑：确保内容过多时可滚动到底部
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)  -- 初始化为0，动态更新
-    scrollFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-           input.UserInputType == Enum.UserInputType.Touch then
-            UI_STATE.isScrolling = true
-            UI_STATE.scrollStartPositions[scrollFrame] = scrollFrame.CanvasPosition
-        end
-    end)
-    scrollFrame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or 
-           input.UserInputType == Enum.UserInputType.Touch then
-            if UI_STATE.isScrolling then UI_STATE.isDragging = false end
-        end
-    end)
-    scrollFrame.InputEnded:Connect(function(input)
-        if (input.UserInputType == Enum.UserInputType.MouseButton1 or 
-            input.UserInputType == Enum.UserInputType.Touch) and UI_STATE.isScrolling then
-            UI_STATE.isScrolling = false
-            UI_STATE.scrollStartPositions[scrollFrame] = nil
-            showNotification("检测到菜单移动", "移动成功！")
-        end
-    end)
+-- 在 createMenuContentPanel 函数中，找到 scrollFrame.InputBegan 代码，新增 InputEnded 监听
+scrollFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+       input.UserInputType == Enum.UserInputType.Touch then
+        UI_STATE.isScrolling = true
+        UI_STATE.scrollStartPositions[scrollFrame] = scrollFrame.CanvasPosition
+    end
+end)
+
+-- 新增 InputEnded 监听，重置滚动状态
+scrollFrame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+       input.UserInputType == Enum.UserInputType.Touch then
+        UI_STATE.isScrolling = false
+    end
+end)
+
+    
     local actionContainer = Instance.new("Frame")
     actionContainer.Name = "ActionContainer_" .. menuKey:gsub("%p", "")
     actionContainer.Size = UDim2.new(1, 0, 0, 0)
     actionContainer.BackgroundTransparency = 1
     actionContainer.Parent = scrollFrame
+    
     local listLayout = Instance.new("UIListLayout")
     listLayout.Parent = actionContainer
     listLayout.FillDirection = Enum.FillDirection.Vertical
@@ -1947,32 +2234,14 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle)
         -- 确保滚动条可见性
         scrollFrame.ScrollBarThickness = (contentHeight > visibleHeight) and (6 * UI_STATE.scale) or 0
     end
+    
     -- 监听内容变化自动更新滚动设置
     updateScrollBar()
     listLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateScrollBar)
     scrollFrame:GetPropertyChangedSignal("CanvasPosition"):Connect(updateScrollBar)
     scrollFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollBar)  -- 窗口大小变化时更新
-    local updateCallback
     
-    -- 菜单内容映射：key=面板标识，value={contentFunc=内容创建函数, panelTitle=面板标题}
-    local menuConfig = {
-        ["传送玩家"] = {contentFunc = create2Content, panelTitle = "玩家传送管理"},
-        ["保存位置"] = {contentFunc = create1Content, panelTitle = "坐标保存与管理"},
-        ["玩家通用"] = {contentFunc = create4Content, panelTitle = "通用功能工具箱"},
-        ["注入器下载"] = {contentFunc = create3Content, panelTitle = "注入器资源下载"},
-        ["死铁轨"] = {contentFunc = create5Content, panelTitle = "死铁轨"},
-        ["最坚强的战场"] = {contentFunc = create6Content, panelTitle = "最坚强的战场"},
-        ["伐木大亨2"] = {contentFunc = create7Content, panelTitle = "伐木大亨2"},
-        ["墨水游戏"] = {contentFunc = create8Content, panelTitle = "墨水游戏"},
-        ["鱼"] = {contentFunc = create9Content, panelTitle = "鱼"},
-        ["被遗弃"] = {contentFunc = create10Content, panelTitle = "被遗弃"},
-        ["99生存"] = {contentFunc = create11Content, panelTitle = "99生存"},
-        ["doors"] = {contentFunc = create12Content, panelTitle = "doors"},
-        ["偷走脑红"] = {contentFunc = create13Content, panelTitle = "偷走脑红"},
-    }
-    
-    -- 根据面板标识匹配内容创建函数
-    local config = menuConfig[menuKey] or {}    updateCallback = config.contentFunc and config.contentFunc(actionContainer) or function() end
+    local updateCallback = contentFunc and contentFunc(actionContainer) or function() end
     
     -- 绑定面板可见性变化事件
     panel:GetPropertyChangedSignal("Visible"):Connect(function()
@@ -2004,16 +2273,19 @@ local function createMainUI()
         showNotification("UI加载失败", "获取PlayerGui超时", 10)
         return
     end
+    
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "秋容脚本"
     screenGui.IgnoreGuiInset = true
     screenGui.Parent = playerGui
+    
     -- 忍者注入器保护GUI
     pcall(function()
         if syn and syn.protect_gui then
             syn.protect_gui(screenGui)
         end
     end)
+    
     local mainPanel = Instance.new("Frame")
     mainPanel.Name = "MainPanel"
     mainPanel.Size = UDim2.new(0, 650 * UI_STATE.scale, 0, 380 * UI_STATE.scale)
@@ -2025,6 +2297,7 @@ local function createMainUI()
     mainPanel.Parent = screenGui
     createCorner(mainPanel, 14)
     UI_STATE.mainPanel = mainPanel
+    
     local topBar = Instance.new("Frame")
     topBar.Name = "TopBar"
     topBar.Size = UDim2.new(1, -20 * UI_STATE.scale, 0, 80 * UI_STATE.scale)
@@ -2034,109 +2307,109 @@ local function createMainUI()
     topBar.Parent = mainPanel
     createCorner(topBar, 8)
     UI_STATE.topBar = topBar
--- 在createMainUI函数中找到leftInfo部分，将其替换为以下代码：
-
--- 在createMainUI函数中找到leftInfo部分，将其替换为以下代码：
--- 在createMainUI函数中找到leftInfo部分，确保一键汉化按钮存在
-
-local leftInfo = Instance.new("Frame")
-leftInfo.Size = UDim2.new(0, 240 * UI_STATE.scale, 0, 60 * UI_STATE.scale)
-leftInfo.Position = UDim2.new(0, 10 * UI_STATE.scale, 0.5, 0)
-leftInfo.AnchorPoint = Vector2.new(0, 0.5)
-leftInfo.BackgroundTransparency = 1
-leftInfo.Parent = topBar
-
--- 创建一键汉化按钮（金色字体和边框）
+    
+    -- 左侧一键汉化按钮（金色字体+边框）
+    local leftInfo = Instance.new("Frame")
+    leftInfo.Size = UDim2.new(0, 240 * UI_STATE.scale, 0, 60 * UI_STATE.scale)
+    leftInfo.Position = UDim2.new(0, 10 * UI_STATE.scale, 0.5, 0)
+    leftInfo.AnchorPoint = Vector2.new(0, 0.5)
+    leftInfo.BackgroundTransparency = 1
+    leftInfo.Parent = topBar
+    
 local translateButton = createButton(leftInfo, {
     name = "QuickTranslateBtn",
     size = UDim2.new(0, 180 * UI_STATE.scale, 0, 50 * UI_STATE.scale),
     position = UDim2.new(0, 0, 0, 0),
-    text = "一键汉化",
-    textColor = Color3.fromRGB(255, 215, 0), -- 金色字体
+    text = "点击看支持汉化服务器", -- 修改按钮文本
+    textColor = Color3.fromRGB(255, 215, 0),
     textSize = 18,
-    bgColor = CONFIG.UI_COLORS.primary, -- 保持原有紫色背景
+    bgColor = CONFIG.UI_COLORS.primary,
     hoverColor = Color3.fromRGB(70, 70, 120),
     radius = 8,
     onClick = function()
         createExecutionDialog(
-            "一键汉化",
-            "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)--AX脚本\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02\ndoors:NullFire\n偷走脑红:Chilli",
+            "支持汉化的服务器", -- 修改标题
+            "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02--RINGTA",
             function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425"))()
-                showNotification("汉化功能已激活", "一键汉化脚本执行中...")
-            end
+                -- 移除原有的执行代码，只关闭弹窗
+                showNotification("已查看", "支持汉化的服务器列表已查看", 2)
+            end,
+            "知道了已查看", -- 确认按钮文本
+            "看完关闭了" -- 取消按钮文本
         )
     end
 })
-
--- 为按钮添加金黄色边框
-if translateButton then
-    local uiStroke = Instance.new("UIStroke")
-    uiStroke.Name = "GoldenBorder"
-    uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    uiStroke.Color = Color3.fromRGB(255, 215, 0) -- 金黄色
-    uiStroke.Thickness = 2.5 * UI_STATE.scale -- 边框粗细
-    uiStroke.Parent = translateButton
     
-    -- 添加悬停效果增强边框
-    translateButton.MouseEnter:Connect(function()
-        if not UI_STATE.isDragging and not UI_STATE.isScrolling and translateButton:IsDescendantOf(game) then
-            TweenService:Create(
-                uiStroke,
-                TweenInfo.new(0.2),
-                {Thickness = 3.5 * UI_STATE.scale} -- 悬停时边框加粗
-            ):Play()
-        end
-    end)
-    translateButton.MouseLeave:Connect(function()
-        if not UI_STATE.isDragging and not UI_STATE.isScrolling and translateButton:IsDescendantOf(game) then
-            TweenService:Create(
-                uiStroke,
-                TweenInfo.new(0.2),
-                {Thickness = 2.5 * UI_STATE.scale} -- 恢复原粗细
-            ):Play()
-        end
-    end)
-end
-
--- 在TitleLabel上方添加简单的2.0版本文字
-local versionText = createLabel(topBar, {
-    name = "VersionText",
-    size = UDim2.new(0, 0, 0, 20 * UI_STATE.scale),
-    position = UDim2.new(0.5, 0, 0.1, 0), -- 居中偏上
-    anchor = Vector2.new(0.5, 0),
-    text = "2.0",
-    color = CONFIG.UI_COLORS.accent, -- 使用与标题相同的颜色
-    textSize = 16,
-    font = Enum.Font.SourceSansBold,
-    xAlign = Enum.TextXAlignment.Center
-})
-
--- 保持原有的TitleLabel位置不变
-createLabel(topBar, {
-    name = "TitleLabel",
-    size = UDim2.new(0, 0, 1, 0),
-    position = UDim2.new(0.5, 0, 0, 0), -- 保持原位置不变
-    anchor = Vector2.new(0.5, 0),
-    text = "秋容脚本",
-    color = CONFIG.UI_COLORS.accent,
-    textSize = 26,
-    font = Enum.Font.SourceSansBold,
-    xAlign = Enum.TextXAlignment.Center
-})
-
--- 保持原有的欢迎语位置不变
-local welcomeLabel = createLabel(topBar, {
-    name = "WelcomeLabel",
-    size = UDim2.new(0, 0, 0, 24 * UI_STATE.scale),
-    position = UDim2.new(0.5, 0, 0.6, 0), -- 保持原位置不变
-    anchor = Vector2.new(0.5, 0),
-    text = string.format("尊贵的[%s]欢迎使用！", localPlayer.Name),
-    color = Color3.fromRGB(255, 200, 100), -- 金色系字体
-    textSize = 14,
-    font = Enum.Font.SourceSansBold,
-    xAlign = Enum.TextXAlignment.Center
-})
+    -- 汉化按钮金色边框
+    if translateButton then
+        local uiStroke = Instance.new("UIStroke")
+        uiStroke.Name = "GoldenBorder"
+        uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        uiStroke.Color = Color3.fromRGB(255, 215, 0) -- 金黄色
+        uiStroke.Thickness = 2.5 * UI_STATE.scale -- 边框粗细
+        uiStroke.Parent = translateButton
+        
+        -- 悬停边框加粗效果
+        translateButton.MouseEnter:Connect(function()
+            if not UI_STATE.isDragging and not UI_STATE.isScrolling and translateButton:IsDescendantOf(game) then
+                TweenService:Create(
+                    uiStroke,
+                    TweenInfo.new(0.2),
+                    {Thickness = 3.5 * UI_STATE.scale}
+                ):Play()
+            end
+        end)
+        translateButton.MouseLeave:Connect(function()
+            if not UI_STATE.isDragging and not UI_STATE.isScrolling and translateButton:IsDescendantOf(game) then
+                TweenService:Create(
+                    uiStroke,
+                    TweenInfo.new(0.2),
+                    {Thickness = 2.5 * UI_STATE.scale}
+                ):Play()
+            end
+        end)
+    end
+    
+    -- 版本号标签
+    local versionText = createLabel(topBar, {
+        name = "VersionText",
+        size = UDim2.new(0, 0, 0, 20 * UI_STATE.scale),
+        position = UDim2.new(0.5, 0, 0.1, 0), -- 居中偏上
+        anchor = Vector2.new(0.5, 0),
+        text = "2.0",
+        color = CONFIG.UI_COLORS.accent,
+        textSize = 16,
+        font = Enum.Font.SourceSansBold,
+        xAlign = Enum.TextXAlignment.Center
+    })
+    
+    -- 主标题
+    createLabel(topBar, {
+        name = "TitleLabel",
+        size = UDim2.new(0, 0, 1, 0),
+        position = UDim2.new(0.5, 0, 0, 0),
+        anchor = Vector2.new(0.5, 0),
+        text = "秋容脚本",
+        color = CONFIG.UI_COLORS.accent,
+        textSize = 26,
+        font = Enum.Font.SourceSansBold,
+        xAlign = Enum.TextXAlignment.Center
+    })
+    
+    -- 欢迎语
+    local welcomeLabel = createLabel(topBar, {
+        name = "WelcomeLabel",
+        size = UDim2.new(0, 0, 0, 24 * UI_STATE.scale),
+        position = UDim2.new(0.5, 0, 0.6, 0),
+        anchor = Vector2.new(0.5, 0),
+        text = string.format("尊贵的[%s]欢迎使用！", localPlayer.Name),
+        color = Color3.fromRGB(255, 200, 100), -- 金色系字体
+        textSize = 14,
+        font = Enum.Font.SourceSansBold,
+        xAlign = Enum.TextXAlignment.Center
+    })
+    
+    -- 顶部控制按钮（缩小/放大/关闭）
     local function createControlButton(text, offset, color, callback)
         createButton(topBar, {
             name = text == "X" and "CloseBtn" or (text == "+" and "ZoomInBtn" or "ZoomOutBtn"),
@@ -2152,16 +2425,15 @@ local welcomeLabel = createLabel(topBar, {
             onClick = callback
         })
     end
-    -- 缩小按钮（优化：直接使用当前活跃菜单）
+    
+    -- 缩小按钮
     createControlButton("-", 90 * UI_STATE.scale, Color3.fromRGB(120, 80, 60), function()
         if UI_STATE.isScaling then return end
         UI_STATE.isScaling = true
-        -- 保存当前活跃菜单状态
         local currentActiveMenu = UI_STATE.activeMenu
         if UI_STATE.scale > 0.6 then
             UI_STATE.scale -= 0.1
             cleanupOldUI()
-            -- 重新创建前恢复活跃菜单
             UI_STATE.activeMenu = currentActiveMenu
             createMainUI()
             showNotification("UI缩放调整", "当前缩放比例：" .. string.format("%.1f", UI_STATE.scale) .. "x（缩小）")
@@ -2170,16 +2442,15 @@ local welcomeLabel = createLabel(topBar, {
             UI_STATE.isScaling = false
         end
     end)
-    -- 放大按钮（优化：直接使用当前活跃菜单）
+    
+    -- 放大按钮
     createControlButton("+", 45 * UI_STATE.scale, Color3.fromRGB(60, 120, 60), function()
         if UI_STATE.isScaling then return end
         UI_STATE.isScaling = true
-        -- 保存当前活跃菜单状态
         local currentActiveMenu = UI_STATE.activeMenu
         if UI_STATE.scale < 1.0 then
             UI_STATE.scale += 0.1
             cleanupOldUI()
-            -- 重新创建前恢复活跃菜单
             UI_STATE.activeMenu = currentActiveMenu
             createMainUI()
             showNotification("UI缩放调整", "当前缩放比例：" .. string.format("%.1f", UI_STATE.scale) .. "x（放大）")
@@ -2188,12 +2459,15 @@ local welcomeLabel = createLabel(topBar, {
             UI_STATE.isScaling = false
         end
     end)
+    
     -- 关闭按钮
     createControlButton("X", 0, Color3.fromRGB(210, 60, 60), function()
         cleanupOldUI()
         UI_STATE.isRunning = false
         showNotification("脚本已关闭", "秋容脚本已退出运行", 3)
     end)
+    
+    -- 左侧菜单滚动框
     local leftWidth = 180 * UI_STATE.scale
     local leftScroll = Instance.new("ScrollingFrame")
     leftScroll.Name = "LeftScrollFrame"
@@ -2204,21 +2478,26 @@ local welcomeLabel = createLabel(topBar, {
     leftScroll.Parent = mainPanel
     leftScroll.ClipsDescendants = true
     createCorner(leftScroll, 12)
+    
     local leftContainer = Instance.new("Frame")
     leftContainer.Name = "LeftMenuContainer"
     leftContainer.Size = UDim2.new(1, 0, 0, 0)
     leftContainer.BackgroundTransparency = 1
     leftContainer.Parent = leftScroll
+    
     local leftLayout = Instance.new("UIListLayout")
     leftLayout.Parent = leftContainer
     leftLayout.FillDirection = Enum.FillDirection.Vertical
     leftLayout.Padding = UDim.new(0, 8 * UI_STATE.scale)
     leftLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     leftLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    
     local leftPadding = Instance.new("UIPadding")
     leftPadding.PaddingTop = UDim.new(0, 8 * UI_STATE.scale)
     leftPadding.PaddingBottom = UDim.new(0, 8 * UI_STATE.scale)
     leftPadding.Parent = leftContainer
+    
+    -- 左侧菜单滚动更新
     local function updateLeftScroll()
         local contentHeight = leftLayout.AbsoluteContentSize.Y
         local visibleHeight = leftScroll.AbsoluteSize.Y
@@ -2227,9 +2506,12 @@ local welcomeLabel = createLabel(topBar, {
         local maxY = math.max(0, contentHeight - visibleHeight)
         leftScroll.CanvasPosition = Vector2.new(0, math.clamp(leftScroll.CanvasPosition.Y, 0, maxY))
     end
+    
     updateLeftScroll()
     leftLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateLeftScroll)
     leftScroll:GetPropertyChangedSignal("CanvasPosition"):Connect(updateLeftScroll)
+    
+    -- 右侧内容面板
     local rightPanel = Instance.new("Frame")
     rightPanel.Name = "RightPanel"
     rightPanel.Size = UDim2.new(1, - (leftWidth + 20 * UI_STATE.scale), 1, - (topBar.Position.Y.Offset + topBar.Size.Y.Offset + 10 * UI_STATE.scale))
@@ -2238,86 +2520,59 @@ local welcomeLabel = createLabel(topBar, {
     rightPanel.BackgroundTransparency = 0.8
     rightPanel.Parent = mainPanel
     createCorner(rightPanel, 12)
--- 1. 提取“切换面板可见性”的通用逻辑
-local function setActivePanel(targetKey)
-    -- 1. 切换面板可见性
-    for key, panel in pairs(UI_STATE.menuPanels) do
-        if panel and panel:IsDescendantOf(game) then
-            panel.Visible = (key == targetKey)
-        end
-    end
-    -- 2. 强制同步更新所有菜单按钮状态（与面板切换严格同步）
-    if leftContainer and leftContainer:IsDescendantOf(game) then
-        for _, child in ipairs(leftContainer:GetChildren()) do
-            if child:IsA("TextButton") and child.Name:match("MenuButton_") then
-                local btnMenuKey = child.Name:gsub("MenuButton_", "")
-                local targetKeyClean = targetKey:gsub("%p", "")
-                child.BackgroundColor3 = btnMenuKey == targetKeyClean and 
-                    Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
-                -- 强制刷新
-                child.BackgroundColor3 = child.BackgroundColor3
+    
+    -- 切换面板可见性通用逻辑
+    local function setActivePanel(targetKey)
+        -- 切换面板显示
+        for key, panel in pairs(UI_STATE.menuPanels) do
+            if panel and panel:IsDescendantOf(game) then
+                panel.Visible = (key == targetKey)
             end
         end
+        -- 同步菜单按钮颜色
+        if leftContainer and leftContainer:IsDescendantOf(game) then
+            for _, child in ipairs(leftContainer:GetChildren()) do
+                if child:IsA("TextButton") and child.Name:match("MenuButton_") then
+                    local btnMenuKey = child.Name:gsub("MenuButton_", "")
+                    local targetKeyClean = targetKey:gsub("%p", "")
+                    child.BackgroundColor3 = btnMenuKey == targetKeyClean and 
+                        Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
+                    child.BackgroundColor3 = child.BackgroundColor3 -- 强制刷新
+                end
+            end
+        end
+        -- 更新活跃菜单标识
+        UI_STATE.activeMenu = targetKey
     end
-    -- 3. 更新当前活跃菜单标识
-    UI_STATE.activeMenu = targetKey
-end
--- 2. 菜单配置：左侧显示文本 + 面板标识 + 布局顺序 + 面板标题
-local menuList = {
-    {menuText = "玩家传送", menuKey = "传送玩家", layoutOrder = 1},
-    {menuText = "坐标管理", menuKey = "保存位置", layoutOrder = 2},
-    {menuText = "通用功能", menuKey = "玩家通用", layoutOrder = 3},
-    {menuText = "注入器下载", menuKey = "注入器下载", layoutOrder = 4},
-    {menuText = "死铁轨", menuKey = "死铁轨", layoutOrder = 5},
-    {menuText = "最坚强的战场", menuKey = "最坚强的战场", layoutOrder = 6},
-    {menuText = "伐木大亨2", menuKey = "伐木大亨2", layoutOrder = 7},
-    {menuText = "墨水游戏", menuKey = "墨水游戏", layoutOrder = 8},
-    {menuText = "鱼", menuKey = "鱼", layoutOrder = 9},
-    {menuText = "被遗弃", menuKey = "被遗弃", layoutOrder = 10},
-    {menuText = "99生存", menuKey = "99生存", layoutOrder = 11},
-    {menuText = "doors", menuKey = "doors", layoutOrder = 12},
-    {menuText = "偷走脑红", menuKey = "偷走脑红", layoutOrder = 13}
-}
--- 3. 批量创建菜单（按钮 + 面板）
-local menuConfig = {
-    ["传送玩家"] = {contentFunc = create2Content, panelTitle = "玩家传送"},
-    ["保存位置"] = {contentFunc = create1Content, panelTitle = "坐标保存"},
-    ["玩家通用"] = {contentFunc = create4Content, panelTitle = "通用功能"},
-    ["注入器下载"] = {contentFunc = create3Content, panelTitle = "注入器下载网址"},
-    ["死铁轨"] = {contentFunc = create5Content, panelTitle = "死铁轨"},
-    ["最坚强的战场"] = {contentFunc = create6Content, panelTitle = "最坚强的战场"},
-    ["伐木大亨2"] = {contentFunc = create7Content, panelTitle = "伐木大亨2"},
-    ["墨水游戏"] = {contentFunc = create8Content, panelTitle = "墨水游戏"},
-    ["鱼"] = {contentFunc = create9Content, panelTitle = "鱼"},
-    ["被遗弃"] = {contentFunc = create10Content, panelTitle = "被遗弃"},
-    ["99生存"] = {contentFunc = create11Content, panelTitle = "99生存"},
-    ["doors"] = {contentFunc = create12Content, panelTitle = "doors"},
-    ["偷走脑红"] = {contentFunc = create13Content, panelTitle = "偷走脑红"},
-}
--- 创建菜单按钮和面板
-for _, menu in ipairs(menuList) do
-    local config = menuConfig[menu.menuKey] or {}
-    -- 创建面板并缓存
-    UI_STATE.menuPanels[menu.menuKey] = createMenuContentPanel(rightPanel, menu.menuKey, config.panelTitle)
-    -- 创建菜单项并绑定切换事件
-    createMenuItem(leftContainer, menu.menuText, menu.layoutOrder, function()
-        setActivePanel(menu.menuKey)
-        showNotification("菜单切换成功", "当前菜单：" .. menu.menuText)
-    end)
-end
-updateLeftScroll()
-    -- 立即激活初始菜单（无延迟）
+    
+    -- 从菜单配置表创建菜单按钮和内容面板
+    for _, menu in ipairs(MENU_CONFIG) do
+        -- 创建左侧菜单按钮
+        createMenuItem(leftContainer, menu.displayName, menu.layoutOrder, function()
+            setActivePanel(menu.id)
+            showNotification("菜单切换成功", "当前菜单：" .. menu.displayName)
+        end)
+        
+        -- 创建右侧内容面板
+        UI_STATE.menuPanels[menu.id] = createMenuContentPanel(rightPanel, menu.id, menu.panelTitle, menu.contentFunc)
+    end
+    
+    updateLeftScroll()
+    
+    -- 激活初始菜单
     local initActiveKey = UI_STATE.activeMenu
     local initPanel = UI_STATE.menuPanels[initActiveKey]
     if initPanel and initPanel:IsDescendantOf(game) then
         initPanel.Visible = true
-        -- 同步激活对应菜单按钮
         setActivePanel(initActiveKey)
     end
-    -- 绑定拖动事件
+    
+    -- 绑定面板拖动事件
     bindDragToElement(topBar, mainPanel)
     bindDragToElement(mainPanel, mainPanel)
     bindDragToElement(rightPanel, mainPanel)
+    
+    -- 拖动逻辑实现
     UserInputService.InputChanged:Connect(function(input)
         if UI_STATE.isDragging and not UI_STATE.isScrolling and 
            (input.UserInputType == Enum.UserInputType.MouseMovement or 
@@ -2330,16 +2585,26 @@ updateLeftScroll()
             )
         end
     end)
-    UserInputService.InputEnded:Connect(function(input)
-        if (input.UserInputType == Enum.UserInputType.MouseButton1 or 
-            input.UserInputType == Enum.UserInputType.Touch) and UI_STATE.isDragging then
-            UI_STATE.isDragging = false
-        end
-    end)
+    
+-- 替换原有的 UserInputService.InputEnded 连接代码
+UserInputService.InputEnded:Connect(function(input)
+    -- 输入结束时，同时重置拖动和滚动状态
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+       input.UserInputType == Enum.UserInputType.Touch then
+        UI_STATE.isDragging = false  -- 重置拖动状态
+        UI_STATE.isScrolling = false -- 重置滚动状态（关键补充）
+        -- 同时重置悬浮窗单独的拖动状态
+        btnIsDragging = false
+    end
+end)
+
+    
+    -- 创建悬浮窗
     createFloatingButton()
     UI_STATE.isScaling = false
     print("主UI创建成功")
 end
+-- ====================== 脚本初始化 ======================
 local function initScript()
     local localPlayer = Players.LocalPlayer
     if not localPlayer then
@@ -2350,28 +2615,30 @@ local function initScript()
         end
     end
     initCSVPath()
-    -- 初始化角色监听
-    -- 断开已有连接（防止重复监听）
+    -- 初始化角色监听（防止重复绑定）
     if UI_STATE.characterAddedConn then
         UI_STATE.characterAddedConn:Disconnect()
     end
     if UI_STATE.characterRemovingConn then
         UI_STATE.characterRemovingConn:Disconnect()
     end
-    -- 监听角色添加
+    -- 角色添加监听
     UI_STATE.characterAddedConn = localPlayer.CharacterAdded:Connect(onCharacterAdded)
-    -- 监听角色移除
+    -- 角色移除监听
     UI_STATE.characterRemovingConn = localPlayer.CharacterRemoving:Connect(onCharacterRemoving)
-    -- 如果已有角色，立即初始化
+    -- 已有角色则立即初始化
     if localPlayer.Character then
         task.spawn(onCharacterAdded, localPlayer.Character)
     end
+    -- 读取已保存坐标
     UI_STATE.savedCoordinates = readCSVFile()
+    -- 创建主UI
     local success, err = pcall(createMainUI)
     if not success then
         local fullError = debug.traceback(err)
         warn("创建UI失败：\n" .. fullError)
         showNotification("UI加载失败", "错误：\n" .. fullError:sub(1, 100) .. "...", 10)
+        -- 显示错误GUI
         local playerGui = localPlayer:FindFirstChild("PlayerGui")
         if playerGui then
             local errorGui = Instance.new("ScreenGui")
@@ -2398,6 +2665,7 @@ local function initScript()
     showNotification("UI2.0加载成功", "尊贵的用户欢迎使用秋容脚本")
     print("初始化完成")
 end
+-- ====================== 脚本启动 ======================
 local success, errorMsg = pcall(initScript)
 if not success then
     local fullError = debug.traceback(errorMsg)
@@ -2425,40 +2693,3 @@ if not success then
         end
     end)
 end
---[[local function create16Content(container)--编号菜单你只需要写这个数字
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "",--名字
-            url = "",--脚本代码
-            desc = "功能说明：\n- "--功能说明
-        }
-    }
-    -- 创建按钮
-    for i, btn in ipairs(buttons) do
-        createButton(container, {
-            name = "16" .. i,--这里得填编号菜单你只需要写这个数字，然后其余的不变
-            layoutOrder = i,
-            size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-            text = btn.name,
-            bgColor = CONFIG.UI_COLORS.primary,
-            hoverColor = Color3.fromRGB(70, 70, 120),
-            onClick = function()
-                createExecutionDialog(
-                    "执行 " .. btn.name,
-                    btn.desc,
-                    function()
-                        loadstring(game:HttpGet(btn.url, true))()
-                        showNotification("功能加载中", "脚本执行中...")
-                    end
-                )
-            end
-        })
-    end
-    return function() end
-end]]
-
-   
-
