@@ -1,5 +1,4 @@
 -- 秋容脚本验证核心逻辑（LocalScript，适配多注入器）
-
 -- 验证标记：注入器持久化目录下的"同意秋容脚本"文件夹
 -----------------------------------------------------------
 -- ================ 基础服务与变量 ================
@@ -7,79 +6,148 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 local Color3 = Color3
 local UDim2 = UDim2
 local Instance = Instance
 local task = task
 local Enum = Enum
+
+-- 卡密配置（保留原定义）
+local VALID_KEY = "QRNB" -- 默认卡密
+local PERMANENT_KEY = "秋容粉丝团永久卡" -- 永久卡密
+
 -- 注入器文件操作兼容（核心：获取持久化路径）
 local readFunc, writeFunc, getPathFunc
 pcall(function()
-    -- 适配忍者/Delta/Synapse等注入器
     if type(syn) == "table" then
         readFunc = syn.readfile or readfile
         writeFunc = syn.writefile or writefile
-        getPathFunc = syn.datapath  -- 忍者注入器获取沙盒路径
+        getPathFunc = syn.datapath
     else
-        -- 其他注入器兼容
         readFunc = readfile or readFile
         writeFunc = writefile or writeFile
-        -- 尝试获取默认路径（如Krnl等）
         getPathFunc = function() return "Roblox/Scripts" end
     end
 end)
--- ================ 验证文件夹核心逻辑 ================
--- 获取持久化文件夹路径（跨注入器兼容）
+-- ================ 验证文件夹核心逻辑（修复版） ================
+-- 1. 获取验证文件夹路径（兼容主脚本）
 local function getVerifyFolderPath()
     local basePath
     if getPathFunc then
-        -- 优先使用注入器提供的沙盒路径（如忍者的syn.datapath()）
         basePath = getPathFunc()
     else
-        --  fallback路径（适配多数PC注入器）
-        basePath = "C:/RobloxScripts"  -- 可根据系统自动调整
+        basePath = "C:/RobloxScripts"
         pcall(function()
-            -- 尝试检测系统类型（Windows/macOS）
             if game:GetService("RunService"):IsStudio() then
-                basePath = "Roblox/Scripts"  -- Studio环境
+                basePath = "Roblox/Scripts"
             elseif string.find(game:GetService("MarketplaceService"):GetProductInfo(1).Name, "Mac") then
-                basePath = "~/Library/Roblox/Scripts"  -- macOS路径
+                basePath = "~/Library/Roblox/Scripts"
             end
         end)
     end
-    -- 拼接完整文件夹路径
-    return basePath .. "/同意秋容脚本"
+    local folderPath = basePath .. "/同意秋容脚本"
+    print("副脚本验证路径：" .. folderPath)
+    return folderPath
 end
--- 检查文件夹是否存在（跨注入器兼容）
+
+-- 2. 检查验证文件（.verify + key_data.json）有效性
 local function folderExists()
-    if not readFunc then return false end  -- 无文件操作能力则强制验证
+    if not readFunc then return false end
     local folderPath = getVerifyFolderPath()
-    -- 尝试读取文件夹（注入器通常通过检查路径是否可访问判断存在性）
-    local success = pcall(function()
-        -- 不同注入器判断方式可能不同，这里用"尝试读取"作为存在性检测
-        readFunc(folderPath .. "/.verify")  -- 读取文件夹内的标记文件
+    local keyFilePath = folderPath .. "/key_data.json"
+    
+    -- 检查.verify标记
+    local verifySuccess = pcall(function()
+        readFunc(folderPath .. "/.verify")
     end)
-    return success
+    if not verifySuccess then return false end
+    
+    -- 检查卡密文件
+    local keySuccess, keyContent = pcall(function()
+        return readFunc(keyFilePath)
+    end)
+    if not keySuccess or not keyContent then return false end
+    
+    -- 解析卡密
+    local success, keyData = pcall(function()
+        return HttpService:JSONDecode(keyContent)
+    end)
+    if not success or not keyData or not keyData.key then return false end
+    
+    -- 验证卡密（支持主脚本快手号key+副脚本卡密）
+    local VALID_KEYS = {
+        "CN_QRNBYYDS",  -- 主脚本快手号验证key
+        VALID_KEY,     -- 副脚本默认卡密
+        PERMANENT_KEY  -- 副脚本永久卡密
+    }
+    local isKeyValid = false
+    for _, k in ipairs(VALID_KEYS) do
+        if keyData.key == k then
+            isKeyValid = true
+            break
+        end
+    end
+    if not isKeyValid then return false end
+    
+    -- 检查普通卡密过期
+    if keyData.key ~= PERMANENT_KEY and keyData.expiry and os.time() > keyData.expiry then
+        return false
+    end
+    
+    return true
 end
--- 创建验证文件夹（跨注入器兼容）
-local function createTargetFolder()
-    if not writeFunc then return end  -- 无写入能力则跳过（不影响使用，仅下次仍需验证）
+
+-- 3. 创建验证文件夹+卡密文件（修复版）
+local function createTargetFolder(verifyKey)
+    if not writeFunc then 
+        warn("无文件写入权限，无法创建验证文件")
+        return 
+    end
+    
     local folderPath = getVerifyFolderPath()
+    local keyFilePath = folderPath .. "/key_data.json"
+    local finalKey = verifyKey or "CN_QRNBYYDS" -- 默认用主脚本快手号key
+    
     local success = pcall(function()
-        -- 1. 创建文件夹（注入器通常支持通过写入空文件创建文件夹）
-        writeFunc(folderPath .. "/.verify", "")  -- 写入空标记文件，自动创建父文件夹
-        print("验证文件夹创建成功：" .. folderPath)
+        -- 创建.verify标记（触发文件夹创建）
+        writeFunc(folderPath .. "/.verify", "")
+        
+        -- 创建卡密文件（主脚本可读取）
+        local keyData = {
+            key = finalKey,
+            timestamp = os.time(),
+            expiry = (finalKey == PERMANENT_KEY) and nil or (os.time() + 30*24*60*60),
+            isPermanent = (finalKey == PERMANENT_KEY)
+        }
+        writeFunc(keyFilePath, HttpService:JSONEncode(keyData))
+        
+        print("验证文件创建成功：")
+        print("- 文件夹：" .. folderPath)
+        print("- 卡密文件：" .. keyFilePath)
     end)
+    
     if not success then
-        -- 降级方案：若无法创建文件夹，临时用PlayerGui文件夹（仅当前会话有效）
+        -- 降级：临时文件夹（PlayerGui）
         local tempFolder = Instance.new("Folder")
         tempFolder.Name = "同意秋容脚本"
         tempFolder.Parent = PlayerGui
-        print("警告：持久化文件夹创建失败，使用临时文件夹（仅当前会话有效）")
+        
+        local tempKeyData = Instance.new("StringValue")
+        tempKeyData.Name = "key_data"
+        tempKeyData.Value = HttpService:JSONEncode({
+            key = finalKey,
+            isTemporary = true,
+            timestamp = os.time()
+        })
+        tempKeyData.Parent = tempFolder
+        
+        print("持久化失败，使用临时文件夹（仅当前会话有效）")
     end
 end
--- ================ 通用UI工具函数 ================
--- 创建屏幕GUI
+-- ================ 通用UI工具函数（保留原版） ================
 local function createScreenGui(name)
     local gui = Instance.new("ScreenGui")
     gui.Name = name
@@ -87,7 +155,7 @@ local function createScreenGui(name)
     gui.Parent = PlayerGui
     return gui
 end
--- 创建带圆角的框架
+
 local function createFrame(parent, size, position)
     local frame = Instance.new("Frame")
     frame.Size = size
@@ -102,19 +170,7 @@ local function createFrame(parent, size, position)
     corner.Parent = frame
     return frame
 end
--- 创建基础标签
-local function createBasicLabel(parent, text, size, position)
-    local label = Instance.new("TextLabel")
-    label.Text = text
-    label.Size = size
-    label.Position = position
-    label.TextColor3 = Color3.new(1, 1, 1)
-    label.TextSize = 16
-    label.BackgroundTransparency = 1
-    label.Parent = parent
-    return label
-end
--- 创建普通标签
+
 local function createLabel(parent, text, size, position)
     local label = Instance.new("TextLabel")
     label.Text = text
@@ -126,7 +182,7 @@ local function createLabel(parent, text, size, position)
     label.Parent = parent
     return label
 end
--- 创建按钮
+
 local function createButton(parent, text, size, position, callback)
     local btn = Instance.new("TextButton")
     btn.Text = text
@@ -144,7 +200,7 @@ local function createButton(parent, text, size, position, callback)
     end
     return btn
 end
--- 创建点击输入框
+
 local function createClickToInput(parent, size, position, triggerText, placeholderText)
     local trigger = Instance.new("TextButton")
     trigger.Size = size
@@ -158,6 +214,7 @@ local function createClickToInput(parent, size, position, triggerText, placehold
     local cornerTrigger = Instance.new("UICorner")
     cornerTrigger.CornerRadius = UDim.new(0, 6)
     cornerTrigger.Parent = trigger
+    
     local box = Instance.new("TextBox")
     box.Size = size
     box.Position = position
@@ -171,14 +228,16 @@ local function createClickToInput(parent, size, position, triggerText, placehold
     local cornerBox = Instance.new("UICorner")
     cornerBox.CornerRadius = UDim.new(0, 6)
     cornerBox.Parent = box
+    
     trigger.MouseButton1Click:Connect(function()
         trigger.Visible = false
         box.Visible = true
         box:CaptureFocus()
     end)
+    
     return trigger, box
 end
--- 播放临时音效
+
 local function playTempSound(soundId)
     local fullSoundId = "rbxassetid://" .. tostring(soundId)
     local sound = Instance.new("Sound")
@@ -191,7 +250,7 @@ local function playTempSound(soundId)
         task.delay(5, function() if sound.Parent then sound:Destroy() end end)
     end)
 end
--- ================ 验证弹窗逻辑 ================
+-- ================ 验证弹窗逻辑（保留原版） ================
 -- 快手号验证
 local function Popup_VerifyKuaishou()
     local gui = createScreenGui("Popup_Kuaishou")
@@ -223,59 +282,49 @@ local function Popup_VerifyKuaishou()
     
     while not done do task.wait() end
 end
--- QQ群验证
-local function Popup_VerifyQQGroup()
-    local gui = createScreenGui("Popup_QQGroup")
+
+-- 卡密验证
+local function Popup_VerifyKey()
+    local gui = createScreenGui("Popup_KeyVerify")
     local frame = createFrame(gui, UDim2.new(0, 420, 0, 260), UDim2.new(0.5, -210, 0.5, -130))
-    createLabel(frame, "主播现在还有没有QQ群？", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
+    createLabel(frame, "请输入免费卡密(进QQ频道获取)", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
     
-    local _, inputQQGroup = createClickToInput(
+    local _, inputKey = createClickToInput(
         frame, UDim2.new(1, -50, 0, 45), UDim2.new(0, 25, 0, 75),
-        "点击输入答案", "请输入有或者没有"
+        "点击输入卡密", "请输入卡密"
     )
     
     local statusLabel = createLabel(frame, "", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 135))
-    local exitCount = 0
     local done = false
     
-    createButton(frame, "确定回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
-        statusLabel.Text = "你是废物吗？这都答不上来"
-        statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
-    end)
-    
-    createButton(frame, "退出回答(进入脚本)", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.5, 0, 0, 185), function()
-        exitCount += 1
-        if exitCount == 1 then
-            statusLabel.Text = "废物玩意儿确定退出吗？真废物这都答不上来😂"
-            statusLabel.TextColor3 = Color3.fromRGB(255, 220, 60)
-        elseif exitCount >= 2 then
+    createButton(frame, "验证卡密", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
+        if inputKey.Text == VALID_KEY or inputKey.Text == PERMANENT_KEY then
             done = true
+            createTargetFolder(inputKey.Text) -- 验证通过创建文件
             gui:Destroy()
+        else
+            statusLabel.Text = "卡密错误，请检查后重新输入"
+            statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
         end
     end)
     
-    while not done do task.wait() end
+    createButton(frame, "退出脚本", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.5, 0, 0, 185), function()
+        gui:Destroy()
+        error("用户主动退出，脚本停止运行")
+    end)
     
-    -- 最终提示
-    local notifyGui = createScreenGui("Popup_FinalNotice")
-    local notifyFrame = createFrame(notifyGui, UDim2.new(0, 340, 0, 120), UDim2.new(0.5, -170, 0.5, -60))
-    createLabel(notifyFrame, "确实没有QQ群🤓", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 45))
-    playTempSound("12222253")
-    task.wait(3)
-    notifyGui:Destroy()
+    while not done do task.wait() end
 end
--- ================ 公告弹窗（添加滚动功能） ================
+-- ================ 公告弹窗（保留原版） ================
 local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
     
-    -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "3.22汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
-    titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
+    local titleLabel = createLabel(noticeFrame, "3.3汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    titleLabel.TextSize = 11
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     
-    -- 创建滚动框架
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Name = "AnnouncementScroll"
     scrollFrame.Size = UDim2.new(1, -20, 0, 180)
@@ -285,20 +334,17 @@ local function showAnnouncement()
     scrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
     scrollFrame.Parent = noticeFrame
     
-    -- 内容标签（放在滚动框架内）
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可\n9月20日15:17添加了墨水游戏ax卡验证并且将自动隐藏卡密信息并且修复点击ax卡密不会取消窗口而是得自己手动取消然后再添加了一个保存卡密信息，防止第二次重复输入，可直接点击执行就行", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可\n9月20日15:17添加了墨水游戏ax卡验证并且将自动隐藏卡密信息并且修复点击ax卡密不会取消窗口而是得自己手动取消然后再添加了一个保存卡密信息，防止第二次重复输入，可直接点击执行就行\n9月20日16:32修复脚本无法执行添加了注入器下载链接\n9月20日19:19修复偷偷更新导致你们部分人使用不了添加了卡密验证系统想要获取卡密要进QQ频道免费获取并且随时更改卡密\n并且添加ax卡密保存和检测卡密使用时长如果卡密过期将会直接通知", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
-    contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
+    contentLabel.TextSize = 8
     contentLabel.TextWrapped = true
     contentLabel.TextXAlignment = Enum.TextXAlignment.Left
     contentLabel.AutomaticSize = Enum.AutomaticSize.Y
     
-    -- 设置滚动框架的CanvasSize
     contentLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
         scrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentLabel.TextBounds.Y + 10)
     end)
     
-    -- 关闭按钮
     local noticeDone = false
     createButton(noticeFrame, "秋容爸爸我知道了🤓👆", UDim2.new(0.5, 0, 0, 40), UDim2.new(0.25, 0, 1, -50), function()
         noticeDone = true
@@ -307,31 +353,12 @@ local function showAnnouncement()
     
     while not noticeDone do task.wait() end
 end
--- ================ 执行流程 ================
-local isFirstUse = not folderExists()  -- 检测持久化文件夹是否存在
-if isFirstUse then
-    -- 首次使用：执行验证 → 创建持久化文件夹 → 显示公告
-    Popup_VerifyKuaishou()
-    Popup_VerifyQQGroup()
-    createTargetFolder()  -- 验证通过后创建文件夹（跨会话保留）
-    showAnnouncement()
-else
-    -- 非首次使用：直接显示公告（跳过验证）
-    print("检测到验证文件夹，跳过验证")
-    showAnnouncement()
-end
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
-local StarterGui = game:GetService("StarterGui")
-local RunService = game:GetService("RunService")
-local SoundService = game:GetService("SoundService")
-local HttpService = game:GetService("HttpService") -- 新增HTTP服务引用
--- ====================== 配置与状态管理 ======================
+-- ================ 配置与状态管理（保留原版） ================
 local CONFIG = {
-    TWEEN_DURATION = 0.25,       -- 动画时长
-    UPDATE_INTERVAL = 0.5,       -- 玩家列表更新间隔
-    UI_SCALE = { default = 0.8 },-- 默认缩放比例
-    UI_COLORS = {                -- 主题色
+    TWEEN_DURATION = 0.25,
+    UPDATE_INTERVAL = 0.5,
+    UI_SCALE = { default = 0.8 },
+    UI_COLORS = {
         primary = Color3.fromRGB(60, 60, 100),
         secondary = Color3.fromRGB(50, 50, 70),
         accent = Color3.fromRGB(255, 230, 100),
@@ -339,46 +366,45 @@ local CONFIG = {
         danger = Color3.fromRGB(150, 50, 50),
         localPlayer = Color3.fromRGB(100, 200, 255)
     },
-    NOTIFICATION = {             -- 通知配置
-        DURATION = 3,            -- 显示时长（秒）
-        SOUND_ID = "rbxassetid://79348298352567", -- 叮咚音效
-        CORNER_RADIUS = 12       -- 通知框圆角
+    NOTIFICATION = {
+        DURATION = 3,
+        SOUND_ID = "rbxassetid://79348298352567",
+        CORNER_RADIUS = 12
     }
 }
+
 local UI_STATE = {
-    scale = CONFIG.UI_SCALE.default,  -- 当前UI缩放比例
-    activeMenu = "保存位置",          -- 初始激活菜单（面板标识，不可修改）
-    menuPanels = {},                  -- 菜单面板缓存（键：面板标识，值：面板实例）
-    isRunning = true,                 -- 脚本运行状态
-    isScaling = false,                -- 缩放中标记
-    mainPanel = nil,                  -- 主面板引用
-    floatBtn = nil,                   -- 悬浮窗按钮
-    topBar = nil,                     -- 顶部栏引用
-    isDragging = false,               -- 拖动中标记
-    isScrolling = false,              -- 滚动中标记
-    dragStart = Vector2.new(0, 0),    -- 拖动起始位置
-    panelStartPos = UDim2.new(0, 0, 0, 0), -- 面板初始位置
-    scrollStartPositions = {},        -- 滚动起始位置缓存
-    savedCoordinates = {},            -- 已保存坐标
-    csvFilePath = "",                 -- CSV文件路径
-    coordinateLoop = nil,             -- 坐标更新循环
-    playerPositionLoop = nil,         -- 玩家位置更新循环
-    playerSortMode = "name",          -- 玩家排序模式（name/distance）
-    isToggleFeatureEnabled = false,   -- 穿墙功能开关状态（默认关闭）
-    wallhackConnection = nil,          -- 存储角色部件监听连接
+    scale = CONFIG.UI_SCALE.default,
+    activeMenu = "保存位置",
+    menuPanels = {},
+    isRunning = true,
+    isScaling = false,
+    mainPanel = nil,
+    floatBtn = nil,
+    topBar = nil,
+    isDragging = false,
+    isScrolling = false,
+    dragStart = Vector2.new(0, 0),
+    panelStartPos = UDim2.new(0, 0, 0, 0),
+    scrollStartPositions = {},
+    savedCoordinates = {},
+    csvFilePath = "",
+    coordinateLoop = nil,
+    playerPositionLoop = nil,
+    playerSortMode = "name",
+    isToggleFeatureEnabled = false,
+    wallhackConnection = nil,
     characterAddedConn = nil,
     characterRemovingConn = nil
 }
-
--- ====================== 工具函数 ======================
--- 创建圆角（适配缩放）
+-- ================ 工具函数（保留原版） ================
 local function createCorner(parent, radius)
     if not parent or not parent:IsDescendantOf(game) then return end
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, radius * UI_STATE.scale)
     corner.Parent = parent
 end
--- 创建文本标签（适配缩放）
+
 local function createLabel(parent, props)
     if not parent or not parent:IsDescendantOf(game) then return nil end
     local label = Instance.new("TextLabel")
@@ -399,7 +425,7 @@ local function createLabel(parent, props)
     end
     return label
 end
--- 创建按钮（适配缩放 + 悬停动画）
+
 local function createButton(parent, props)
     if not parent or not parent:IsDescendantOf(game) then return nil end
     local btn = Instance.new("TextButton")
@@ -419,7 +445,6 @@ local function createButton(parent, props)
     end
     createCorner(btn, props.radius or 8)
     
-    -- 悬停动画（修复：添加 MouseLeave 事件恢复颜色）
     if props.hoverColor then
         btn.MouseEnter:Connect(function()
             if not UI_STATE.isDragging and not UI_STATE.isScrolling and btn:IsDescendantOf(game) then
@@ -435,13 +460,12 @@ local function createButton(parent, props)
                 TweenService:Create(
                     btn,
                     TweenInfo.new(CONFIG.TWEEN_DURATION),
-                    {BackgroundColor3 = props.bgColor} -- 关键修复：恢复原始颜色
+                    {BackgroundColor3 = props.bgColor}
                 ):Play()
             end
         end)
     end
     
-    -- 点击事件
     if props.onClick then
         btn.MouseButton1Click:Connect(function()
             task.defer(function()
@@ -453,7 +477,7 @@ local function createButton(parent, props)
     end
     return btn
 end
--- 拖动绑定函数
+
 local function bindDragToElement(element, target)
     if not element or not target then return end
     element.InputBegan:Connect(function(input)
@@ -465,31 +489,27 @@ local function bindDragToElement(element, target)
         end
     end)
 end
--- UI清理函数
+
 local function cleanupOldUI()
     local localPlayer = Players.LocalPlayer
     if not localPlayer then return end
     local playerGui = localPlayer:FindFirstChild("PlayerGui")
     if not playerGui then return end
     
-    -- 清理主UI
     if UI_STATE.mainPanel and UI_STATE.mainPanel:IsDescendantOf(game) then
         UI_STATE.mainPanel:Destroy()
     end
     
-    -- 清理悬浮窗
     if UI_STATE.floatBtn and UI_STATE.floatBtn:IsDescendantOf(game) then
         UI_STATE.floatBtn:Destroy()
     end
     
-    -- 清理通知和对话框
     for _, gui in ipairs(playerGui:GetChildren()) do
         if gui.Name:match("CustomNotification") or gui.Name == "ExecutionDialog" then
             gui:Destroy()
         end
     end
     
-    -- 断开循环
     if UI_STATE.coordinateLoop then
         UI_STATE.coordinateLoop:Disconnect()
         UI_STATE.coordinateLoop = nil
@@ -498,7 +518,6 @@ local function cleanupOldUI()
         UI_STATE.playerPositionLoop:Disconnect()
         UI_STATE.playerPositionLoop = nil
     end
-    -- 断开角色监听连接
     if UI_STATE.characterAddedConn then
         UI_STATE.characterAddedConn:Disconnect()
         UI_STATE.characterAddedConn = nil
@@ -508,43 +527,36 @@ local function cleanupOldUI()
         UI_STATE.characterRemovingConn = nil
     end
 end
--- 角色销毁时的清理函数
+
 local function onCharacterRemoving()
-    -- 断开坐标更新循环
     if UI_STATE.coordinateLoop then
         UI_STATE.coordinateLoop:Disconnect()
         UI_STATE.coordinateLoop = nil
     end
-    -- 断开玩家位置更新循环
     if UI_STATE.playerPositionLoop then
         UI_STATE.playerPositionLoop:Disconnect()
         UI_STATE.playerPositionLoop = nil
     end
-    -- 断开穿墙功能连接
     if UI_STATE.wallhackConnection then
         UI_STATE.wallhackConnection:Disconnect()
         UI_STATE.wallhackConnection = nil
     end
-    -- 增加函数存在性判断
     if typeof(showNotification) == "function" then
         showNotification("角色已销毁", "脚本已暂停，等待角色重生...")
     end
 end
--- 角色重生时的初始化函数（修复：增加showNotification存在性判断）
+
 local function onCharacterAdded(character)
-    -- 等待角色加载完成
     local rootPart = character:WaitForChild("HumanoidRootPart", 10)
     local humanoid = character:WaitForChild("Humanoid", 10)
     
     if not rootPart or not humanoid then
-        -- 增加函数存在性判断
         if typeof(showNotification) == "function" then
             showNotification("角色加载失败", "无法获取角色关键部件")
         end
         return
     end
     
-    -- 重新启动坐标更新（如果当前在保存位置菜单）
     if UI_STATE.activeMenu == "保存位置" and UI_STATE.mainPanel and UI_STATE.mainPanel.Visible then
         if UI_STATE.coordinateLoop then
             UI_STATE.coordinateLoop:Disconnect()
@@ -561,45 +573,43 @@ local function onCharacterAdded(character)
         end)
     end
     
-    -- 监听角色死亡事件
     humanoid.Died:Connect(function()
         onCharacterRemoving()
     end)
     
-    -- 增加函数存在性判断
     if typeof(showNotification) == "function" then
         showNotification("角色已加载", "脚本功能已恢复")
     end
 end
--- ====================== 右下角弹窗逻辑 ======================
+-- ================ 右下角弹窗逻辑（保留原版） ================
 local NOTIFICATION_DATA = {
-    maxCount = 5, -- 最大叠加数量
-    spacing = 6, -- 窗口间距
-    width = 120, -- 窗口宽度
-    height = 60, -- 窗口高度
-    activeWindows = {} -- 存储当前活跃窗口（按序号排序）
+    maxCount = 5,
+    spacing = 6,
+    width = 120,
+    height = 60,
+    activeWindows = {}
 }
+
 local function updateWindowPositions()
-    -- 遍历所有活跃窗口，按序号重新计算位置（序号1在最顶部）
     for index, windowData in ipairs(NOTIFICATION_DATA.activeWindows) do
         local frame = windowData.frame
         if frame and frame:IsDescendantOf(game) then
-            -- 计算绝对Y坐标：序号越大越靠下，X轴紧贴右侧（仅留2像素缝隙）
             local targetY = -NOTIFICATION_DATA.height - 10 
                 - (NOTIFICATION_DATA.height + NOTIFICATION_DATA.spacing) * (index - 1)
             frame.Position = UDim2.new(
-                1, -NOTIFICATION_DATA.width - 2, -- 右侧仅留2像素缝隙
-                1, targetY -- 基于序号的Y坐标（序号1最靠上）
+                1, -NOTIFICATION_DATA.width - 2,
+                1, targetY
             )
         end
     end
 end
+
 local function showNotification(title, text, duration)
     local localPlayer = Players.LocalPlayer
     if not localPlayer then return end
     local playerGui = localPlayer:FindFirstChild("PlayerGui")
     if not playerGui then return end
-    -- 步骤1：移除超出上限的最旧窗口（最后一个）
+    
     if #NOTIFICATION_DATA.activeWindows >= NOTIFICATION_DATA.maxCount then
         local oldestWindow = NOTIFICATION_DATA.activeWindows[#NOTIFICATION_DATA.activeWindows]
         if oldestWindow and oldestWindow.gui:IsDescendantOf(game) then
@@ -607,34 +617,34 @@ local function showNotification(title, text, duration)
         end
         table.remove(NOTIFICATION_DATA.activeWindows, #NOTIFICATION_DATA.activeWindows)
     end
-    -- 步骤2：所有现有窗口序号+1（索引后移）
+    
     for i = #NOTIFICATION_DATA.activeWindows, 1, -1 do
         NOTIFICATION_DATA.activeWindows[i].index = i + 1
     end
-    -- 步骤3：创建新窗口（索引1，最顶部）
+    
     local newIndex = 1
     local notificationGui = Instance.new("ScreenGui")
     notificationGui.Name = "CustomNotification_" .. newIndex
     notificationGui.IgnoreGuiInset = true
     notificationGui.Parent = playerGui
-    -- 主窗口框架（初始位置紧贴右侧）
+    
     local notificationFrame = Instance.new("Frame")
     notificationFrame.Name = "NotificationFrame"
     notificationFrame.Size = UDim2.new(0, NOTIFICATION_DATA.width * 0.8, 0, NOTIFICATION_DATA.height * 0.8)
     notificationFrame.Position = UDim2.new(
-        1, -NOTIFICATION_DATA.width - 2, -- 初始X位置：右侧仅留2像素缝隙
-        1, 10 -- 初始在屏幕外下方（准备滑入）
+        1, -NOTIFICATION_DATA.width - 2,
+        1, 10
     )
     notificationFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
     notificationFrame.BackgroundTransparency = 1
     notificationFrame.BorderSizePixel = 0
     notificationFrame.ClipsDescendants = true
     notificationFrame.Parent = notificationGui
-    -- 圆角
+    
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 6)
     corner.Parent = notificationFrame
-    -- 标题和内容
+    
     createLabel(notificationFrame, {
         name = "TitleLabel",
         size = UDim2.new(1, -8, 0, 20),
@@ -645,6 +655,7 @@ local function showNotification(title, text, duration)
         font = Enum.Font.SourceSansBold,
         textWrapped = true
     })
+    
     createLabel(notificationFrame, {
         name = "ContentLabel",
         size = UDim2.new(1, -8, 0, 32),
@@ -655,7 +666,7 @@ local function showNotification(title, text, duration)
         textWrapped = true,
         textTruncate = Enum.TextTruncate.AtEnd
     })
-    -- 音效
+    
     pcall(function()
         local sound = Instance.new("Sound")
         sound.SoundId = CONFIG.NOTIFICATION.SOUND_ID
@@ -664,15 +675,15 @@ local function showNotification(title, text, duration)
         sound:Play()
         sound.Ended:Connect(function() sound:Destroy() end)
     end)
-    -- 存储新窗口数据（索引1）
+    
     table.insert(NOTIFICATION_DATA.activeWindows, 1, {
         index = newIndex,
         gui = notificationGui,
         frame = notificationFrame
     })
-    -- 立即更新所有窗口位置（强制叠加）
+    
     updateWindowPositions()
-    -- 弹出动画（滑入顶部位置）
+    
     local popInTween = TweenService:Create(
         notificationFrame,
         TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -682,7 +693,7 @@ local function showNotification(title, text, duration)
         }
     )
     popInTween:Play()
-    -- 消失动画与清理
+    
     task.wait(duration or CONFIG.NOTIFICATION.DURATION)
     local fadeOutTween = TweenService:Create(
         notificationFrame,
@@ -694,7 +705,6 @@ local function showNotification(title, text, duration)
     )
     fadeOutTween:Play()
     fadeOutTween.Completed:Connect(function()
-        -- 从活跃列表中移除当前窗口
         for i, windowData in ipairs(NOTIFICATION_DATA.activeWindows) do
             if windowData.gui == notificationGui then
                 table.remove(NOTIFICATION_DATA.activeWindows, i)
@@ -702,16 +712,14 @@ local function showNotification(title, text, duration)
             end
         end
         notificationGui:Destroy()
-        -- 重新编号并更新剩余窗口位置
         for i = 1, #NOTIFICATION_DATA.activeWindows do
             NOTIFICATION_DATA.activeWindows[i].index = i
         end
-        updateWindowPositions() -- 强制更新位置，确保无空位
+        updateWindowPositions()
     end)
 end
--- ====================== 执行确认弹窗（从主脚本移植） ======================
+-- ================ 执行确认弹窗（保留原版） ================
 local function createExecutionDialog(title, description, onConfirm, confirmText, cancelText)
-    -- 添加参数默认值
     confirmText = confirmText or "确认执行"
     cancelText = cancelText or "取消"
     
@@ -720,7 +728,6 @@ local function createExecutionDialog(title, description, onConfirm, confirmText,
     local playerGui = localPlayer:FindFirstChild("PlayerGui")
     if not playerGui then return end
     
-    -- 清理现有对话框
     for _, gui in ipairs(playerGui:GetChildren()) do
         if gui.Name == "ExecutionDialog" then
             gui:Destroy()
@@ -732,21 +739,18 @@ local function createExecutionDialog(title, description, onConfirm, confirmText,
     dialogGui.IgnoreGuiInset = true
     dialogGui.Parent = playerGui
     
-    -- 设置最高显示层级（忍者注入器兼容）
     pcall(function()
         dialogGui.DisplayOrder = 999
     end)
     
-    -- 背景遮罩（防穿透）
     local overlay = Instance.new("Frame")
     overlay.Size = UDim2.new(1, 0, 1, 0)
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.7
     overlay.Parent = dialogGui
     
-    -- 对话框主框架：宽缩小1/5（0.7→0.56），高动态扩展
     local dialogFrame = Instance.new("Frame")
-    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0) -- 0.7 × (4/5) = 0.56
+    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0)
     dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
@@ -754,233 +758,93 @@ local function createExecutionDialog(title, description, onConfirm, confirmText,
     dialogFrame.Parent = overlay
     createCorner(dialogFrame, 12)
     
-    -- 标题栏：紧凑设计，文字适中
     local titleLabel = createLabel(dialogFrame, {
         name = "DialogTitle",
-        size = UDim2.new(1, -40, 0, 35), -- 高度压缩（原45→35）
-        position = UDim2.new(0, 20, 0, 15), -- 上移贴边
+        size = UDim2.new(1, -40, 0, 35),
+        position = UDim2.new(0, 20, 0, 15),
         text = title or "执行确认",
         color = CONFIG.UI_COLORS.accent,
-        textSize = 20, -- 标题文字微缩（原24→20）
+        textSize = 20,
         font = Enum.Font.SourceSansBold,
         xAlign = Enum.TextXAlignment.Center
     })
     
-    -- 分隔线：更细，贴近标题
     local line = Instance.new("Frame")
-    line.Size = UDim2.new(1, -40, 0, 1) -- 线宽1px，更精致
-    line.Position = UDim2.new(0, 20, 0, 55) -- 标题下方40px（15+35）
-    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180) -- 浅灰更柔和
+    line.Size = UDim2.new(1, -40, 0, 1)
+    line.Position = UDim2.new(0, 20, 0, 55)
+    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180)
     line.Parent = dialogFrame
     
-    -- 滚动容器：抢占中间80%空间，强制滚动
     local scrollContainer = Instance.new("ScrollingFrame")
     scrollContainer.Name = "ContentScroll"
-    scrollContainer.Size = UDim2.new(1, -40, 0, 300) -- 初始高度，动态扩展
-    scrollContainer.Position = UDim2.new(0, 20, 0, 65) -- 分隔线下方10px，极致紧凑
+    scrollContainer.Size = UDim2.new(1, -40, 0, 300)
+    scrollContainer.Position = UDim2.new(0, 20, 0, 65)
     scrollContainer.BackgroundTransparency = 1
-    scrollContainer.ScrollBarThickness = 5 -- 细滚动条
-    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y -- 仅垂直滚动
-    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- 动态计算
+    scrollContainer.ScrollBarThickness = 5
+    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y
+    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0)
     scrollContainer.Parent = dialogFrame
     createCorner(scrollContainer, 8)
     
-    -- 内容标签：文字放大，适配滚动区
     local descLabel = createLabel(scrollContainer, {
         name = "DialogContent",
-        size = UDim2.new(1, 0, 0, 0), -- 高度自适应
+        size = UDim2.new(1, 0, 0, 0),
         text = description or "确认执行该功能？",
-        textSize = 16, -- 内容文字放大（原14→16）
+        textSize = 16,
         xAlign = Enum.TextXAlignment.Left,
         textWrapped = true,
-        bgColor = Color3.fromRGB(30, 30, 50), -- 深色背景更突出
+        bgColor = Color3.fromRGB(30, 30, 50),
         bgTransparency = 0.9
     })
     createCorner(descLabel, 8)
     
-    -- 按钮容器：底部紧凑布局，按钮对称分布
     local btnContainer = Instance.new("Frame")
-    btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
-    btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
+    btnContainer.Size = UDim2.new(1, -40, 0, 30)
+    btnContainer.Position = UDim2.new(0, 20, 1, -40)
     btnContainer.BackgroundTransparency = 1
     btnContainer.Parent = dialogFrame
     
-    -- 取消按钮：左对齐
     createButton(btnContainer, {
         name = "CancelBtn",
-        size = UDim2.new(0, 80, 1, 0), -- 固定宽度
-        position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
-        text = cancelText, -- 使用参数
+        size = UDim2.new(0, 80, 1, 0),
+        position = UDim2.new(0, 0, 0, 0),
+        text = cancelText,
         onClick = function() dialogGui:Destroy() end
     })
     
-    -- 确认按钮：右对齐
     createButton(btnContainer, {
         name = "ConfirmBtn",
-        size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
-        position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
-        anchor = Vector2.new(1, 0), -- 右锚点
-        text = confirmText, -- 使用参数
-        bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
+        size = UDim2.new(0, 100, 1, 0),
+        position = UDim2.new(1, -10, 0, 0),
+        anchor = Vector2.new(1, 0),
+        text = confirmText,
+        bgColor = CONFIG.UI_COLORS.success,
         onClick = function()
             dialogGui:Destroy()
             onConfirm()
         end
     })
     
-    -- 新增：中间空隙（视觉分隔）
     local gap = Instance.new("Frame")
-    gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
+    gap.Size = UDim2.new(1, -190, 1, 0)
     gap.BackgroundTransparency = 1
     gap.Parent = btnContainer
     
-    -- 动态布局计算：让文字区占满中间
     task.defer(function()
         local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
-        local maxDialogHeight = screenHeight * 0.85 -- 高度扩展50%（原0.57→0.85）
-        local contentHeight = descLabel.TextBounds.Y + 20 -- 内容高度+内边距
+        local maxDialogHeight = screenHeight * 0.85
+        local contentHeight = descLabel.TextBounds.Y + 20
         
-        -- 强制滚动容器高度最大化
-        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100)) -- 标题+按钮区占100px
-        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight) -- 滚动范围匹配内容
-        descLabel.Size = UDim2.new(1, 0, 0, contentHeight) -- 内容标签高度自适应
+        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100))
+        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight)
+        descLabel.Size = UDim2.new(1, 0, 0, contentHeight)
         
-        -- 调整对话框总高度
-        local totalHeight = 65 + -- 标题到滚动容器顶部：15+35+1+14=65（精确计算）
-                            scrollContainer.Size.Y.Offset + 
-                            35 -- 按钮区高度22 + 间距13
+        local totalHeight = 65 + scrollContainer.Size.Y.Offset + 35
         dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
     end)
 end
-    
-    local dialogGui = Instance.new("ScreenGui")
-    dialogGui.Name = "ExecutionDialog"
-    dialogGui.IgnoreGuiInset = true
-    dialogGui.Parent = playerGui
-    
-    -- 设置最高显示层级（忍者注入器兼容）
-    pcall(function()
-        dialogGui.DisplayOrder = 999
-    end)
-    
-    -- 背景遮罩（防穿透）
-    local overlay = Instance.new("Frame")
-    overlay.Size = UDim2.new(1, 0, 1, 0)
-    overlay.BackgroundColor3 = Color3.new(0, 0, 0)
-    overlay.BackgroundTransparency = 0.7
-    overlay.Parent = dialogGui
-    
-    -- 对话框主框架：宽缩小1/5（0.7→0.56），高动态扩展
-    local dialogFrame = Instance.new("Frame")
-    dialogFrame.Size = UDim2.new(0.56, 0, 0, 0) -- 0.7 × (4/5) = 0.56
-    dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
-    dialogFrame.BackgroundTransparency = 0.3
-    dialogFrame.Parent = overlay
-    createCorner(dialogFrame, 12)
-    
-    -- 标题栏：紧凑设计，文字适中
-    local titleLabel = createLabel(dialogFrame, {
-        name = "DialogTitle",
-        size = UDim2.new(1, -40, 0, 35), -- 高度压缩（原45→35）
-        position = UDim2.new(0, 20, 0, 15), -- 上移贴边
-        text = title or "执行确认",
-        color = CONFIG.UI_COLORS.accent,
-        textSize = 20, -- 标题文字微缩（原24→20）
-        font = Enum.Font.SourceSansBold,
-        xAlign = Enum.TextXAlignment.Center
-    })
-    
-    -- 分隔线：更细，贴近标题
-    local line = Instance.new("Frame")
-    line.Size = UDim2.new(1, -40, 0, 1) -- 线宽1px，更精致
-    line.Position = UDim2.new(0, 20, 0, 55) -- 标题下方40px（15+35）
-    line.BackgroundColor3 = Color3.fromRGB(150, 150, 180) -- 浅灰更柔和
-    line.Parent = dialogFrame
-    
-    -- 滚动容器：抢占中间80%空间，强制滚动
-    local scrollContainer = Instance.new("ScrollingFrame")
-    scrollContainer.Name = "ContentScroll"
-    scrollContainer.Size = UDim2.new(1, -40, 0, 300) -- 初始高度，动态扩展
-    scrollContainer.Position = UDim2.new(0, 20, 0, 65) -- 分隔线下方10px，极致紧凑
-    scrollContainer.BackgroundTransparency = 1
-    scrollContainer.ScrollBarThickness = 5 -- 细滚动条
-    scrollContainer.ScrollingDirection = Enum.ScrollingDirection.Y -- 仅垂直滚动
-    scrollContainer.CanvasSize = UDim2.new(1, 0, 0, 0) -- 动态计算
-    scrollContainer.Parent = dialogFrame
-    createCorner(scrollContainer, 8)
-    
-    -- 内容标签：文字放大，适配滚动区
-    local descLabel = createLabel(scrollContainer, {
-        name = "DialogContent",
-        size = UDim2.new(1, 0, 0, 0), -- 高度自适应
-        text = description or "确认执行该功能？",
-        textSize = 16, -- 内容文字放大（原14→16）
-        xAlign = Enum.TextXAlignment.Left,
-        textWrapped = true,
-        bgColor = Color3.fromRGB(30, 30, 50), -- 深色背景更突出
-        bgTransparency = 0.9
-    })
-    createCorner(descLabel, 8)
-    
-    -- 按钮容器：底部紧凑布局，按钮对称分布
-    local btnContainer = Instance.new("Frame")
-    btnContainer.Size = UDim2.new(1, -40, 0, 30) -- 高度压缩，适配紧凑设计
-    btnContainer.Position = UDim2.new(0, 20, 1, -40) -- 底部间距优化
-    btnContainer.BackgroundTransparency = 1
-    btnContainer.Parent = dialogFrame
-    
-    -- 取消按钮：左对齐
-    createButton(btnContainer, {
-        name = "CancelBtn",
-        size = UDim2.new(0, 80, 1, 0), -- 固定宽度
-        position = UDim2.new(0, 0, 0, 0), -- 左侧贴边
-        text = "取消",
-        onClick = function() dialogGui:Destroy() end
-    })
-    
-    -- 确认按钮：右对齐
-    createButton(btnContainer, {
-        name = "ConfirmBtn",
-        size = UDim2.new(0, 100, 1, 0), -- 稍宽于取消按钮
-        position = UDim2.new(1, -10, 0, 0), -- 右侧贴边（留10px空隙）
-        anchor = Vector2.new(1, 0), -- 右锚点
-        text = "确认执行",
-        bgColor = CONFIG.UI_COLORS.success, -- 绿色强调
-        onClick = function()
-            dialogGui:Destroy()
-            onConfirm()
-        end
-    })
-    
-    -- 新增：中间空隙（视觉分隔）
-    local gap = Instance.new("Frame")
-    gap.Size = UDim2.new(1, -190, 1, 0) -- 动态填充中间区域
-    gap.BackgroundTransparency = 1
-    gap.Parent = btnContainer
-    
-    -- 动态布局计算：让文字区占满中间
-    task.defer(function()
-        local screenHeight = game:GetService("Workspace").CurrentCamera.ViewportSize.Y
-        local maxDialogHeight = screenHeight * 0.85 -- 高度扩展50%（原0.57→0.85）
-        local contentHeight = descLabel.TextBounds.Y + 20 -- 内容高度+内边距
-        
-        -- 强制滚动容器高度最大化
-        scrollContainer.Size = UDim2.new(1, -40, 0, math.min(contentHeight, maxDialogHeight - 100)) -- 标题+按钮区占100px
-        scrollContainer.CanvasSize = UDim2.new(0, 0, 0, contentHeight) -- 滚动范围匹配内容
-        descLabel.Size = UDim2.new(1, 0, 0, contentHeight) -- 内容标签高度自适应
-        
-        -- 调整对话框总高度
-        local totalHeight = 65 + -- 标题到滚动容器顶部：15+35+1+14=65（精确计算）
-                            scrollContainer.Size.Y.Offset + 
-                            35 -- 按钮区高度22 + 间距13
-        dialogFrame.Size = UDim2.new(0.56, 0, 0, math.min(totalHeight, maxDialogHeight))
-    end)
--- ====================== 文件读写（适配忍者注入器） ======================
-local readFunc, writeFunc
+-- ================ 文件读写（保留原版） ================
 pcall(function()
-    -- 忍者注入器兼容处理
     if type(syn) == "table" then
         readFunc = syn.readfile or readfile
         writeFunc = syn.writefile or writefile
@@ -989,10 +853,10 @@ pcall(function()
         writeFunc = writefile or writeFile
     end
 end)
+
 local function initCSVPath()
     print("初始化CSV路径...")
     local success, result = pcall(function()
-        -- 忍者注入器路径适配
         if type(syn) == "table" then
             return syn.datapath and syn.datapath() .. "/Roblox_Current_Coord.csv" 
                 or "/sdcard/Delta/Scripts/Roblox_Current_Coord.csv"
@@ -1003,6 +867,7 @@ local function initCSVPath()
     UI_STATE.csvFilePath = success and result or "Roblox_Current_Coord.csv"
     print("坐标文件路径：", UI_STATE.csvFilePath)
 end
+
 local function readCSVFile()
     print("读取坐标文件：", UI_STATE.csvFilePath)
     if not readFunc then
@@ -1036,6 +901,7 @@ local function readCSVFile()
     print("读取到", #coords, "条坐标")
     return coords
 end
+
 local function updateCSVFile()
     if not writeFunc then
         warn("当前注入器不支持文件写入")
@@ -1054,7 +920,7 @@ local function updateCSVFile()
     print("坐标文件已更新")
     return true
 end
--- ====================== 悬浮窗创建 ======================
+-- ================ 悬浮窗创建（保留原版） ================
 local function createFloatingButton()
     local localPlayer = Players.LocalPlayer
     if not localPlayer then return end
@@ -1067,18 +933,19 @@ local function createFloatingButton()
     floatGui.Name = "秋容脚本悬浮窗"
     floatGui.IgnoreGuiInset = true
     floatGui.Parent = playerGui
-    -- 忍者注入器保护GUI
+    
     pcall(function()
         if syn and syn.protect_gui then
             syn.protect_gui(floatGui)
         end
     end)
+    
     local floatWidth = 60 * UI_STATE.scale
     local floatHeight = 30 * UI_STATE.scale
     UI_STATE.floatBtn = createButton(floatGui, {
         name = "FloatingButton",
         size = UDim2.new(0, floatWidth, 0, floatHeight),
-        position = UDim2.new(1, -floatWidth - 2, 0.1, 0), -- 右侧仅留2像素缝隙
+        position = UDim2.new(1, -floatWidth - 2, 0.1, 0),
         text = "显示",
         bgColor = CONFIG.UI_COLORS.primary,
         radius = 15 * UI_STATE.scale,
@@ -1099,7 +966,7 @@ local function createFloatingButton()
             end
         end
     })
-    -- 悬浮窗拖动逻辑
+    
     local btnIsDragging = false
     local btnStartPos = UI_STATE.floatBtn and UI_STATE.floatBtn.Position or UDim2.new()
     if UI_STATE.floatBtn then
@@ -1112,6 +979,7 @@ local function createFloatingButton()
             end
         end)
     end
+    
     UserInputService.InputChanged:Connect(function(input)
         if btnIsDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or 
            input.UserInputType == Enum.UserInputType.Touch) and UI_STATE.floatBtn and UI_STATE.floatBtn:IsDescendantOf(game) then
@@ -1122,21 +990,17 @@ local function createFloatingButton()
             )
         end
     end)
--- 替换原有的 UserInputService.InputEnded 连接代码
-UserInputService.InputEnded:Connect(function(input)
-    -- 输入结束时，同时重置拖动和滚动状态
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-       input.UserInputType == Enum.UserInputType.Touch then
-        UI_STATE.isDragging = false  -- 重置拖动状态
-        UI_STATE.isScrolling = false -- 重置滚动状态（关键补充）
-        -- 同时重置悬浮窗单独的拖动状态
-        btnIsDragging = false
-    end
-end)
-
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or 
+            input.UserInputType == Enum.UserInputType.Touch) and btnIsDragging then
+            btnIsDragging = false
+        end
+    end)
+    
     print("悬浮窗创建成功（适配缩放）")
 end
--- ====================== 菜单与内容创建 ======================
+-- ================ 菜单与内容创建（修复AX卡密时长选择） ================
 local function createMenuItem(parent, menuText, layoutOrder, onSwitch)
     local btn = createButton(parent, {
         name = "MenuButton_" .. menuText:gsub("%p", ""),
@@ -1149,25 +1013,24 @@ local function createMenuItem(parent, menuText, layoutOrder, onSwitch)
     })
     if not btn then return nil end
     btn.LayoutOrder = layoutOrder
+    
     local function setActive(active)
-        -- 强制立即应用颜色，避免引擎延迟
         btn.BackgroundColor3 = active and Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
-        -- 手动触发刷新（解决Roblox UI渲染延迟）
         btn.BackgroundColor3 = btn.BackgroundColor3
     end
-    -- 初始化时强制同步状态（根据当前活跃面板标识匹配）
+    
     local currentActiveKey = UI_STATE.activeMenu
     local isActive = (btn.Name:gsub("MenuButton_", "") == currentActiveKey:gsub("%p", ""))
     setActive(isActive)
     
     btn.MouseButton1Click:Connect(function()
         if not UI_STATE.isDragging and not UI_STATE.isScrolling and btn:IsDescendantOf(game) then
-            -- 执行切换面板逻辑
             onSwitch()
         end
     end)
     return btn
 end
+
 local function createSavedCoordItem(parent, data, layoutOrder)
     if not parent or not parent:IsDescendantOf(game) then return nil end
     local frame = Instance.new("Frame")
@@ -1180,6 +1043,7 @@ local function createSavedCoordItem(parent, data, layoutOrder)
     frame.Parent = parent
     frame.Active = false
     createCorner(frame, 6)
+    
     createLabel(frame, {
         size = UDim2.new(0.6, -10 * UI_STATE.scale, 1, 0),
         position = UDim2.new(0, 10 * UI_STATE.scale, 0, 0),
@@ -1187,6 +1051,7 @@ local function createSavedCoordItem(parent, data, layoutOrder)
         textSize = 12,
         xAlign = Enum.TextXAlignment.Left
     })
+    
     createButton(frame, {
         name = "DeleteBtn",
         size = UDim2.new(0.15, 0, 1, -6 * UI_STATE.scale),
@@ -1220,6 +1085,7 @@ local function createSavedCoordItem(parent, data, layoutOrder)
             showNotification("删除失败", "未找到匹配坐标")
         end
     })
+    
     createButton(frame, {
         name = "TeleportBtn",
         size = UDim2.new(0.15, 0, 1, -6 * UI_STATE.scale),
@@ -1242,6 +1108,7 @@ local function createSavedCoordItem(parent, data, layoutOrder)
     })
     return frame
 end
+
 local function createPlayerPositionItem(parent, playerName, position, isLocalPlayer, layoutOrder, distance)
     if isLocalPlayer then return nil end
     if not parent or not parent:IsDescendantOf(game) then return nil end
@@ -1254,6 +1121,7 @@ local function createPlayerPositionItem(parent, playerName, position, isLocalPla
     frame.Parent = parent
     frame.Active = false
     createCorner(frame, 6)
+    
     local distanceText = distance and string.format(" 距离: %.1f", distance) or ""
     createLabel(frame, {
         size = UDim2.new(0.7, -10 * UI_STATE.scale, 1, 0),
@@ -1264,12 +1132,14 @@ local function createPlayerPositionItem(parent, playerName, position, isLocalPla
         color = Color3.new(1, 1, 1),
         xAlign = Enum.TextXAlignment.Left
     })
+    
     local controlContainer = Instance.new("Frame")
     controlContainer.Name = "ControlContainer"
     controlContainer.Size = UDim2.new(0.25, 0, 0.8, 0)
     controlContainer.Position = UDim2.new(0.72, 0, 0.1, 0)
     controlContainer.BackgroundTransparency = 1
     controlContainer.Parent = frame
+    
     createButton(controlContainer, {
         name = "TeleportBtn",
         size = UDim2.new(1, 0, 1, 0),
@@ -1295,21 +1165,20 @@ local function createPlayerPositionItem(parent, playerName, position, isLocalPla
     })
     return frame
 end
--- ====================== 菜单配置表 ======================
--- 在这里定义所有菜单项，包括显示名称、ID、布局顺序和内容创建函数
+-- ================ 菜单配置表（修复墨水游戏AX卡密时长） ================
 local MENU_CONFIG = {
     {
         id = "传送玩家",
         displayName = "玩家传送",
         layoutOrder = 1,
         contentFunc = function(container)
-            -- 玩家传送菜单内容
             if not container or not container:IsDescendantOf(game) then return function() end end
             local controlFrame = Instance.new("Frame")
             controlFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
             controlFrame.LayoutOrder = 1
             controlFrame.BackgroundTransparency = 1
             controlFrame.Parent = container
+            
             local function refreshPlayerList(container)
                 for _, child in ipairs(container:GetChildren()) do
                     if child.Name:match("Player_") then
@@ -1380,6 +1249,7 @@ local MENU_CONFIG = {
                     })
                 end
             end
+            
             createButton(controlFrame, {
                 name = "SortBtn",
                 size = UDim2.new(0.5, 0, 1, 0),
@@ -1395,12 +1265,14 @@ local MENU_CONFIG = {
                     showNotification("排序方式更新", "玩家列表已按" .. sortText .. "排序")
                 end
             })
+            
             local divider = Instance.new("Frame")
             divider.Size = UDim2.new(1, 0, 0, 2 * UI_STATE.scale)
             divider.LayoutOrder = 2
             divider.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
             divider.BackgroundTransparency = 0.5
             divider.Parent = container
+            
             createLabel(container, {
                 name = "PlayerTitle",
                 size = UDim2.new(1, 0, 0, 30 * UI_STATE.scale),
@@ -1410,6 +1282,7 @@ local MENU_CONFIG = {
                 textSize = 16,
                 xAlign = Enum.TextXAlignment.Left
             })
+            
             return function(isVisible)
                 if not isVisible then return end
                 if UI_STATE.playerPositionLoop then UI_STATE.playerPositionLoop:Disconnect() end
@@ -1431,7 +1304,6 @@ local MENU_CONFIG = {
         displayName = "坐标管理",
         layoutOrder = 2,
         contentFunc = function(container)
-            -- 坐标管理菜单内容
             if not container or not container:IsDescendantOf(game) then return function() end end
             local coordDisplay = Instance.new("Frame")
             coordDisplay.Name = "CoordDisplay"
@@ -1441,6 +1313,7 @@ local MENU_CONFIG = {
             coordDisplay.BackgroundTransparency = 0.7
             coordDisplay.Parent = container
             createCorner(coordDisplay, 6)
+            
             local coordLabel = createLabel(coordDisplay, {
                 size = UDim2.new(1, -10 * UI_STATE.scale, 1, 0),
                 position = UDim2.new(0, 10 * UI_STATE.scale, 0, 0),
@@ -1448,6 +1321,7 @@ local MENU_CONFIG = {
                 textSize = 14,
                 xAlign = Enum.TextXAlignment.Left
             })
+            
             local nameInput = Instance.new("TextBox")
             nameInput.Name = "NameInput"
             nameInput.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
@@ -1463,12 +1337,13 @@ local MENU_CONFIG = {
             nameInput.Active = true
             nameInput.Selectable = true
             createCorner(nameInput, 6)
-            -- 操作提示：坐标名称修改（按回车确认）
+            
             nameInput.FocusLost:Connect(function(enterPressed)
                 if enterPressed and nameInput.Text ~= "" then
                     showNotification("名称已更新", "坐标名称设置为：" .. nameInput.Text)
                 end
             end)
+            
             createButton(container, {
                 name = "SaveBtn",
                 layoutOrder = 3,
@@ -1507,12 +1382,14 @@ local MENU_CONFIG = {
                     nameInput.Text = ""
                 end
             })
+            
             local divider = Instance.new("Frame")
             divider.Size = UDim2.new(1, 0, 0, 2 * UI_STATE.scale)
             divider.LayoutOrder = 4
             divider.BackgroundColor3 = Color3.fromRGB(100, 100, 120)
             divider.BackgroundTransparency = 0.5
             divider.Parent = container
+            
             createLabel(container, {
                 name = "SavedTitle",
                 size = UDim2.new(1, 0, 0, 30 * UI_STATE.scale),
@@ -1522,14 +1399,15 @@ local MENU_CONFIG = {
                 textSize = 16,
                 xAlign = Enum.TextXAlignment.Left
             })
+            
             for i, coord in ipairs(UI_STATE.savedCoordinates) do
                 createSavedCoordItem(container, coord, 6 + i)
             end
+            
             return function(isVisible)
                 if not isVisible then return end
                 if UI_STATE.coordinateLoop then UI_STATE.coordinateLoop:Disconnect() end
                 UI_STATE.coordinateLoop = RunService.Heartbeat:Connect(function()
-                    -- 增加多重安全检查
                     if not coordLabel or not coordLabel:IsDescendantOf(game) then
                         return
                     end
@@ -1546,18 +1424,75 @@ local MENU_CONFIG = {
                         coordLabel.Text = string.format("实时坐标：X: %.1f, Y: %.1f, Z: %.1f", pos.X, pos.Y, pos.Z)
                     else
                         coordLabel.Text = "实时坐标：角色加载中..."
-                    end              
+                    end
                 end)
             end
         end,
         panelTitle = "坐标保存与管理"
     },
     {
-        id = "玩家通用",
-        displayName = "通用功能",
+        id = "注入器地址",
+        displayName = "注入器地址",
         layoutOrder = 3,
         contentFunc = function(container)
-            -- 通用功能菜单内容
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            local injectors = {
+                {
+                    name = "忍者注入器(点击复制下载链接)",
+                    url = "http://DeltaExploits.com",
+                    desc = "功能说明：\n- 兼容多数Roblox版本\n- 支持主流脚本加载\n- 稳定性强，更新及时\n- 复制链接后在浏览器打开下载"
+                },
+                {
+                    name = "Krnl注入器(点击复制下载链接)",
+                    url = "http://Krnl.vip",
+                    desc = "功能说明：\n- 高性能注入器\n- 支持复杂脚本解析\n- 内置防检测机制\n- 复制链接后在浏览器打开下载"
+                },
+                {
+                    name = "RONIX注入器(点击复制下载链接)",
+                    url = "https://ronixexecutors.com/",
+                    desc = "功能说明：\n- 轻量级设计\n- 低资源占用\n- 适合低配设备\n- 复制链接后在浏览器打开下载"
+                },
+                {
+                    name = "Xeno注入器PC(点击复制下载链接)",
+                    url =                     "http://Xeno-Executor.com",
+                    desc = "功能说明：\n- PC端专用\n- 支持多线程加载\n- 兼容最新Roblox更新\n- 复制链接后在浏览器打开下载"
+                },
+                {
+                    name = "神秘礼物点击领取",
+                    url = "你好",
+                    desc = "功能说明：\n- 特殊福利内容\n- 复制后在游戏聊天框粘贴\n- 可能获得隐藏奖励\n- 限时有效"
+                }
+            }
+            -- 创建按钮（无菜单内说明标签）
+            for i, injector in ipairs(injectors) do
+                createButton(container, {
+                    name = "3" .. i,
+                    layoutOrder = i,
+                    size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
+                    text = injector.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "复制 " .. injector.name,
+                            injector.desc,
+                            function()
+                                setclipboard(injector.url)
+                                showNotification("链接已复制", "已将" .. injector.name .. "链接复制到剪贴板")
+                            end
+                        )
+                    end
+                })
+            end
+            return function() end
+        end
+    },
+    {
+        id = "玩家通用",
+        displayName = "通用功能",
+        layoutOrder = 4,
+        contentFunc = function(container)
             if not container or not container:IsDescendantOf(game) then return function() end end
             -- 功能按钮数据（含说明）
             local buttons = {
@@ -1607,29 +1542,28 @@ local MENU_CONFIG = {
         panelTitle = "通用功能工具箱"
     },
     {
-        id = "红叶脚本",--菜单名称
-        displayName = "红叶脚本",--菜单名称
-        layoutOrder = 4,--菜单编号顺序
+        id = "红叶脚本",
+        displayName = "红叶脚本",
+        layoutOrder = 5,
         contentFunc = function(container)
-            -- 偷走脑红菜单内容
             if not container or not container:IsDescendantOf(game) then return function() end end
             
             -- 按钮数据（含说明）
             local buttons = {
                 {
-                    name = "鱼",--脚本名称
-                    url = "https://getnative.cc/script/loader",--脚本链接
-                    desc = "建议搭配一键汉化"--详情注释
+                    name = "鱼",
+                    url = "https://getnative.cc/script/loader",
+                    desc = "建议搭配一键汉化"
                 },
                 {
-                    name = "99生存",--脚本名称
-                    url = "https://getnative.cc/script/loader",--脚本链接
-                    desc = "建议搭配一键汉化"--详情注释
+                    name = "99生存",
+                    url = "https://getnative.cc/script/loader",
+                    desc = "建议搭配一键汉化"
                 },
                 {
-                    name = "死铁轨",--脚本名称
-                    url = "https://getnative.cc/script/loader",--脚本链接
-                    desc = "建议搭配一键汉化"--详情注释
+                    name = "死铁轨",
+                    url = "https://getnative.cc/script/loader",
+                    desc = "建议搭配一键汉化"
                 }
             }
             -- 创建按钮
@@ -1653,360 +1587,397 @@ local MENU_CONFIG = {
                     end
                 })
             end
-            -- 功能说明整合到弹窗，菜单内无标签
             return function() end
         end,
-        panelTitle = "红叶脚本"--内容名称
+        panelTitle = "红叶脚本"
     },
-{
-    id = "墨水游戏",
-    displayName = "墨水游戏",
-    layoutOrder = 5,
-    contentFunc = function(container)
-        if not container or not container:IsDescendantOf(game) then return function() end end
-        
-        -- 按钮数据（含说明）
-        local buttons = {
-            {
-                name = "ink-game(测试版)",
-                url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
-                desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
-            },
-            {
-                name = "RINGTA",
-                url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
-                desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
-            }
-        }
-        
-        -- AX登录卡密部分
-        local axButtons = {
-            {
-                name = "AX新版(无汉化)",
-                func = function(key)
-                    script_key = key or ""
-                    loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua"))()
+    {
+        id = "墨水游戏",
+        displayName = "墨水游戏",
+        layoutOrder = 6,
+        contentFunc = function(container)
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 卡密管理器模块 (内置一体化)
+            local KeyManager = {
+                KEY_FILE_PATH = (getPathFunc and getPathFunc() or "RobloxScripts") .. "/ScriptKeys.json",
+                
+                readSavedKeys = function(self)
+                    if not readFunc then return {} end
+                    
+                    local fileExists = pcall(function() readFunc(self.KEY_FILE_PATH) end)
+                    if not fileExists then return {} end
+                    
+                    local success, content = pcall(readFunc, self.KEY_FILE_PATH)
+                    if not success or not content or content == "" or content == "{}" then return {} end
+                    
+                    local success, keys = pcall(function()
+                        if content:sub(1, 1) ~= "{" or content:sub(-1) ~= "}" then
+                            error("Invalid JSON format")
+                        end
+                        return HttpService:JSONDecode(content)
+                    end)
+                    
+                    if not success then
+                        pcall(function()
+                            if writeFunc then writeFunc(self.KEY_FILE_PATH, "{}") end
+                        end)
+                        return {}
+                    end
+                    
+                    return keys or {}
                 end,
-                desc = "脚本使用说明和介绍\n首先在下方输入卡密，然后点击执行\n需要先到解卡链接获取卡密",
-                keyId = "AX_KEY" -- 唯一标识符
+                
+                saveKey = function(self, keyId, keyValue, expiryDays)
+                    if not writeFunc then return false end
+                    
+                    local keys = self:readSavedKeys()
+                    keys[keyId] = {
+                        value = keyValue,
+                        timestamp = os.time(),
+                        expiryDays = expiryDays or 30
+                    }
+                    
+                    local success, json = pcall(function() return HttpService:JSONEncode(keys) end)
+                    if not success or not json or json == "" or json:sub(1, 1) ~= "{" then return false end
+                    
+                    local success, err = pcall(writeFunc, self.KEY_FILE_PATH, json)
+                    return success
+                end,
+                
+                deleteKey = function(self, keyId)
+                    if not writeFunc then return false end
+                    local keys = self:readSavedKeys()
+                    keys[keyId] = nil
+                    
+                    local success, json = pcall(function() return HttpService:JSONEncode(keys) end)
+                    if not success then return false end
+                    
+                    local success, err = pcall(writeFunc, self.KEY_FILE_PATH, json)
+                    return success
+                end,
+                
+                isKeyExpired = function(self, keyData)
+                    if not keyData or not keyData.timestamp then return true end
+                    local currentTime = os.time()
+                    local keyAge = currentTime - keyData.timestamp
+                    local expirySeconds = (keyData.expiryDays or 30) * 24 * 60 * 60
+                    return keyAge > expirySeconds
+                end,
+                
+                getRemainingDays = function(self, keyData)
+                    if not keyData or not keyData.timestamp then return 0 end
+                    local currentTime = os.time()
+                    local keyAge = currentTime - keyData.timestamp
+                    local expirySeconds = (keyData.expiryDays or 30) * 24 * 60 * 60
+                    return math.max(0, math.floor((expirySeconds - keyAge) / (24 * 60 * 60)))
+                end
             }
-        }
-        
-        -- 卡密文件路径
-        local KEY_FILE_PATH = (getPathFunc and getPathFunc() or "RobloxScripts") .. "/ScriptKeys.json"
-        
-        -- 读取保存的卡密
-        local function readSavedKeys()
-            if not readFunc then return {} end
-            local success, content = pcall(readFunc, KEY_FILE_PATH)
-            if not success or not content or content == "" then
-                return {}
+            
+            local keyManager = setmetatable({}, {__index = KeyManager})
+            local savedKeys = {}
+            local success, err = pcall(function() savedKeys = keyManager:readSavedKeys() end)
+            
+            -- AX脚本配置
+            local AX_CONFIG = {
+                keyId = "AX_KEY",
+                scriptUrl = "https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua",
+                unlockUrl = "https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna",
+                name = "AX新版"
+            }
+            
+            -- 获取AX卡密数据
+            local axKeyData = savedKeys[AX_CONFIG.keyId]
+            local hasAxKey = axKeyData ~= nil
+            local isAxExpired = hasAxKey and keyManager:isKeyExpired(axKeyData)
+            local axRemainingDays = hasAxKey and keyManager:getRemainingDays(axKeyData) or 0
+
+            -- 创建AX卡密管理区域 (修复时长选择)
+            local axContainer = Instance.new("Frame")
+            axContainer.Name = "AXManagementSection"
+            axContainer.LayoutOrder = 1
+            axContainer.Size = UDim2.new(1, 0, 0, 180 * UI_STATE.scale)
+            axContainer.BackgroundColor3 = Color3.fromRGB(45, 45, 65)
+            axContainer.BackgroundTransparency = 0.7
+            axContainer.Parent = container
+            createCorner(axContainer, 8)
+
+            -- AX标题和状态
+            local titleRow = Instance.new("Frame")
+            titleRow.Name = "TitleRow"
+            titleRow.Size = UDim2.new(1, -10, 0, 25)
+            titleRow.Position = UDim2.new(0, 5, 0, 5)
+            titleRow.BackgroundTransparency = 1
+            titleRow.Parent = axContainer
+
+            createLabel(titleRow, {
+                name = "AXTitle",
+                size = UDim2.new(0.5, 0, 1, 0),
+                position = UDim2.new(0, 0, 0, 0),
+                text = "AX脚本管理",
+                color = CONFIG.UI_COLORS.accent,
+                textSize = 16,
+                font = Enum.Font.SourceSansBold,
+                xAlign = Enum.TextXAlignment.Left
+            })
+
+            local statusText = hasAxKey and (isAxExpired and "卡密已过期" or string.format("剩余%d天", axRemainingDays)) 
+                              or "未设置卡密"
+            local statusColor = hasAxKey and (isAxExpired and Color3.fromRGB(255, 80, 80) or Color3.fromRGB(80, 255, 80)) 
+                              or Color3.fromRGB(200, 200, 200)
+            createLabel(titleRow, {
+                name = "AXStatus",
+                size = UDim2.new(0.5, 0, 1, 0),
+                position = UDim2.new(0.5, 0, 0, 0),
+                text = statusText,
+                color = statusColor,
+                textSize = 14,
+                xAlign = Enum.TextXAlignment.Right
+            })
+
+            -- 卡密输入与保存按钮容器
+            local inputContainer = Instance.new("Frame")
+            inputContainer.Name = "InputContainer"
+            inputContainer.Size = UDim2.new(1, -10, 0, 30)
+            inputContainer.Position = UDim2.new(0, 5, 0, 35)
+            inputContainer.BackgroundTransparency = 1
+            inputContainer.Parent = axContainer
+
+            -- 卡密输入框
+            local keyInput = Instance.new("TextBox")
+            keyInput.Name = "AXKeyInput"
+            keyInput.Size = UDim2.new(0.6, -5, 1, 0)
+            keyInput.Position = UDim2.new(0, 0, 0, 0)
+            keyInput.PlaceholderText = "输入AX卡密"
+            keyInput.Text = hasAxKey and axKeyData.value or ""
+            keyInput.TextColor3 = Color3.new(1, 1, 1)
+            keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+            keyInput.TextSize = 14
+            keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+            keyInput.BackgroundTransparency = 0.7
+            keyInput.Parent = inputContainer
+            createCorner(keyInput, 6)
+
+            -- 保存卡密按钮容器
+            local buttonContainer = Instance.new("Frame")
+            buttonContainer.Name = "ButtonContainer"
+            buttonContainer.Size = UDim2.new(0.4, 0, 1, 0)
+            buttonContainer.Position = UDim2.new(0.6, 5, 0, 0)
+            buttonContainer.BackgroundTransparency = 1
+            buttonContainer.Parent = inputContainer
+
+            -- 时长选择区域（修复不高亮+闪退）
+-- 时长选择区域（最终修复版）
+local durationRow = Instance.new("Frame")
+durationRow.Name = "DurationRow"
+durationRow.Size = UDim2.new(1, -10, 0, 30)
+durationRow.Position = UDim2.new(0, 5, 0, 70)
+durationRow.BackgroundTransparency = 1
+durationRow.Parent = axContainer
+
+createLabel(durationRow, {
+    name = "DurationLabel",
+    size = UDim2.new(0.25, 0, 1, 0),
+    position = UDim2.new(0, 0, 0, 0),
+    text = "有效期:",
+    textSize = 14,
+    xAlign = Enum.TextXAlignment.Left
+})
+
+local durationOptions = {
+    { text = "6小时", value = 0.25 },
+    { text = "12小时", value = 0.5 },
+    { text = "1天", value = 1 },
+    { text = "2天", value = 2 },
+    { text = "3天", value = 3 },
+    { text = "30天", value = 30 }
+}
+local selectedDuration = 30  -- 初始化默认值
+local durationButtons = {}  -- 确保数组初始化
+
+local btnWidth = 0.12
+local startX = 0.28
+for i, option in ipairs(durationOptions) do
+    if not option then break end
+    
+    local btn = createButton(durationRow, {
+        name = "DurationBtn_" .. option.text,
+        size = UDim2.new(btnWidth, -3, 1, 0),
+        position = UDim2.new(startX + (i-1)*btnWidth, 3, 0, 0),
+        text = option.text,
+        textSize = 10,
+        bgColor = (option.value == selectedDuration) and CONFIG.UI_COLORS.accent or CONFIG.UI_COLORS.secondary,
+        bgTransparency = 0,
+        hoverColor = Color3.fromRGB(70, 70, 120),
+        onClick = function()
+            -- 防空检查：确保按钮未被销毁
+            if not btn:IsDescendantOf(game) then return end
+            
+            -- 1. 重置所有按钮颜色
+            for _, b in ipairs(durationButtons) do
+                if b and b:IsDescendantOf(game) then
+                    b.BackgroundColor3 = CONFIG.UI_COLORS.secondary
+                end
             end
-            local success, keys = pcall(function()
-                return HttpService:JSONDecode(content)
-            end)
-            return success and keys or {}
+            
+            -- 2. 高亮当前按钮并强制更新selectedDuration
+            selectedDuration = option.value
+            btn.BackgroundColor3 = CONFIG.UI_COLORS.accent
+            btn.BackgroundColor3 = btn.BackgroundColor3  -- 强制引擎刷新
+            
+            -- 3. 调试输出（验证是否真的选中）
+            print("已选中时长：" .. option.text .. "（" .. selectedDuration .. "天）")
         end
-        
-        -- 保存卡密
-        local function saveKey(keyId, keyValue)
-            if not writeFunc then return false end
-            local keys = readSavedKeys()
-            keys[keyId] = keyValue
-            local success, json = pcall(function()
-                return HttpService:JSONEncode(keys)
-            end)
-            if not success then return false end
-            local success, err = pcall(writeFunc, KEY_FILE_PATH, json)
-            return success
-        end
-        
-        -- 获取已保存的卡密
-        local savedKeys = readSavedKeys()
-        
-        -- 创建AX执行按钮（放在最前面）
-        for i, btn in ipairs(axButtons) do
-            createButton(container, {
-                name = "AX" .. i,
-                layoutOrder = i, -- 放在最前面
-                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-                text = btn.name .. (savedKeys[btn.keyId] and " (已保存)" or ""),
+    })
+    
+    -- 确保按钮加入数组（关键修复）
+    if btn then
+        table.insert(durationButtons, btn)
+    end
+end
+
+            -- 修复：保存卡密按钮
+            createButton(buttonContainer, {
+                name = "SaveKeyBtn",
+                size = UDim2.new(1, 0, 1, 0),
+                position = UDim2.new(0, 0, 0, 0),
+                text = hasAxKey and "更换卡密" or "保存卡密",
                 bgColor = CONFIG.UI_COLORS.primary,
                 hoverColor = Color3.fromRGB(70, 70, 120),
                 onClick = function()
-                    -- 如果有保存的卡密，直接执行
-                    if savedKeys[btn.keyId] then
-                        createExecutionDialog(
-                            "执行 " .. btn.name,
-                            "使用已保存的卡密执行脚本",
-                            function()
-                                btn.func(savedKeys[btn.keyId])
-                                showNotification("功能加载中", "脚本执行中...")
-                            end,
-                            "确认执行",
-                            "取消"
-                        )
+                    if not keyInput:IsDescendantOf(game) or not keyManager or #durationButtons == 0 then
+                        showNotification("界面异常", "请重新打开墨水游戏菜单", 2)
+                        return
+                    end
+                    if keyInput.Text == "" then
+                        showNotification("输入错误", "请输入有效的卡密", 2)
+                        return
+                    end
+                    local expiryDays = selectedDuration or 30
+                    local saveSuccess = keyManager:saveKey(AX_CONFIG.keyId, keyInput.Text, expiryDays)
+                    if saveSuccess then
+                        showNotification("卡密已保存", string.format("AX卡密有效期：%d天", expiryDays), 3)
+                        task.spawn(function()
+                            local currentMenu = UI_STATE.activeMenu
+                            cleanupOldUI()
+                            UI_STATE.activeMenu = currentMenu
+                            createMainUI()
+                        end)
                     else
-                        createExecutionDialog(
-                            "执行 " .. btn.name,
-                            btn.desc,
-                            function()
-                                -- 创建卡密输入弹窗
-                                local localPlayer = Players.LocalPlayer
-                                if not localPlayer then return end
-                                local playerGui = localPlayer:FindFirstChild("PlayerGui")
-                                if not playerGui then return end
-                                
-                                local keyInputGui = Instance.new("ScreenGui")
-                                keyInputGui.Name = "AXKeyInputDialog"
-                                keyInputGui.IgnoreGuiInset = true
-                                keyInputGui.Parent = playerGui
-                                
-                                -- 设置最高显示层级
-                                pcall(function()
-                                    keyInputGui.DisplayOrder = 1000
-                                end)
-                                
-                                local overlay = Instance.new("Frame")
-                                overlay.Size = UDim2.new(1, 0, 1, 0)
-                                overlay.BackgroundColor3 = Color3.new(0, 0, 0)
-                                overlay.BackgroundTransparency = 0.7
-                                overlay.Parent = keyInputGui
-                                
-                                -- 对话框框架
-                                local dialogFrame = Instance.new("Frame")
-                                dialogFrame.Size = UDim2.new(0, 350, 0, 280) -- 增加高度以容纳保存选项
-                                dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-                                dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-                                dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
-                                dialogFrame.BackgroundTransparency = 0.3
-                                dialogFrame.Parent = overlay
-                                createCorner(dialogFrame, 12)
-                                
-                                -- 标题
-                                local titleLabel = createLabel(dialogFrame, {
-                                    name = "KeyInputTitle",
-                                    size = UDim2.new(1, -40, 0, 40),
-                                    position = UDim2.new(0.5, 0, 0, 15),
-                                    anchor = Vector2.new(0.5, 0),
-                                    text = "输入AX卡密",
-                                    color = CONFIG.UI_COLORS.accent,
-                                    textSize = 18,
-                                    xAlign = Enum.TextXAlignment.Center
-                                })
-                                
-                                -- 输入框（使用密码模式）
-                                local keyInput = Instance.new("TextBox")
-                                keyInput.Name = "AXKeyInput"
-                                keyInput.Size = UDim2.new(0.8, 0, 0, 40)
-                                keyInput.Position = UDim2.new(0.5, 0, 0.3, 0)
-                                keyInput.AnchorPoint = Vector2.new(0.5, 0.5)
-                                keyInput.PlaceholderText = "请输入AX卡密"
-                                keyInput.Text = ""
-                                keyInput.TextColor3 = Color3.new(1, 1, 1)
-                                keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-                                keyInput.TextSize = 16
-                                keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-                                keyInput.BackgroundTransparency = 0.7
-                                keyInput.TextXAlignment = Enum.TextXAlignment.Center
-                                keyInput.Password = true -- 设置为密码模式
-                                keyInput.Parent = dialogFrame
-                                createCorner(keyInput, 6)
-                                
-                                -- 保存卡密选项
-                                local saveCheckbox = Instance.new("TextButton")
-                                saveCheckbox.Name = "SaveKeyCheckbox"
-                                saveCheckbox.Size = UDim2.new(0, 20, 0, 20)
-                                saveCheckbox.Position = UDim2.new(0.3, 0, 0.55, 0)
-                                saveCheckbox.AnchorPoint = Vector2.new(0.5, 0.5)
-                                saveCheckbox.BackgroundColor3 = Color3.fromRGB(80, 80, 100)
-                                saveCheckbox.Text = ""
-                                saveCheckbox.Parent = dialogFrame
-                                createCorner(saveCheckbox, 4)
-                                
-                                local checkmark = Instance.new("Frame")
-                                checkmark.Name = "Checkmark"
-                                checkmark.Size = UDim2.new(0, 12, 0, 12)
-                                checkmark.Position = UDim2.new(0.5, 0, 0.5, 0)
-                                checkmark.AnchorPoint = Vector2.new(0.5, 0.5)
-                                checkmark.BackgroundColor3 = CONFIG.UI_COLORS.accent
-                                checkmark.Visible = true -- 默认选中
-                                checkmark.Parent = saveCheckbox
-                                createCorner(checkmark, 2)
-                                
-                                local saveLabel = createLabel(dialogFrame, {
-                                    name = "SaveKeyLabel",
-                                    size = UDim2.new(0, 120, 0, 20),
-                                    position = UDim2.new(0.5, 10, 0.55, 0),
-                                    anchor = Vector2.new(0, 0.5),
-                                    text = "保存卡密",
-                                    textSize = 14,
-                                    xAlign = Enum.TextXAlignment.Left
-                                })
-                                
-                                saveCheckbox.MouseButton1Click:Connect(function()
-                                    checkmark.Visible = not checkmark.Visible
-                                end)
-                                
-                                -- 按钮容器
-                                local buttonContainer = Instance.new("Frame")
-                                buttonContainer.Size = UDim2.new(0.8, 0, 0, 40)
-                                buttonContainer.Position = UDim2.new(0.5, 0, 0.8, 0)
-                                buttonContainer.AnchorPoint = Vector2.new(0.5, 0.5)
-                                buttonContainer.BackgroundTransparency = 1
-                                buttonContainer.Parent = dialogFrame
-                                
-                                -- 确认执行按钮
-                                createButton(buttonContainer, {
-                                    name = "ConfirmKeyBtn",
-                                    size = UDim2.new(0.45, 0, 1, 0),
-                                    position = UDim2.new(0, 0, 0, 0),
-                                    text = "确认执行",
-                                    bgColor = CONFIG.UI_COLORS.success,
-                                    onClick = function()
-                                        if keyInput.Text == "" then
-                                            showNotification("输入错误", "请输入有效的卡密", 2)
-                                            return
-                                        end
-                                        
-                                        -- 保存卡密（如果选中）
-                                        if checkmark.Visible then
-                                            local saveSuccess = saveKey(btn.keyId, keyInput.Text)
-                                            if saveSuccess then
-                                                showNotification("卡密已保存", "卡密已保存，下次无需输入", 2)
-                                                -- 更新按钮文本
-                                                container:FindFirstChild("AX" .. i).Text = btn.name .. " (已保存)"
-                                            else
-                                                showNotification("保存失败", "卡密保存失败", 2)
-                                            end
-                                        end
-                                        
-                                        btn.func(keyInput.Text)
-                                        keyInputGui:Destroy()
-                                        showNotification("功能加载中", "脚本执行中...")
-                                    end
-                                })
-                                
-                                -- 退出按钮
-                                createButton(buttonContainer, {
-                                    name = "CancelBtn",
-                                    size = UDim2.new(0.45, 0, 1, 0),
-                                    position = UDim2.new(0.55, 0, 0, 0),
-                                    text = "退出",
-                                    bgColor = CONFIG.UI_COLORS.danger,
-                                    onClick = function()
-                                        keyInputGui:Destroy()
-                                        showNotification("已取消", "AX脚本执行已取消", 2)
-                                    end
-                                })
-                                
-                                -- 自动聚焦到输入框
-                                task.spawn(function()
-                                    wait(0.1)
-                                    if keyInput and keyInput:IsDescendantOf(game) then
-                                        keyInput:CaptureFocus()
-                                    end
-                                end)
-                                
-                                -- 支持回车键确认
-                                keyInput.FocusLost:Connect(function(enterPressed)
-                                    if enterPressed then
-                                        if keyInput.Text ~= "" then
-                                            -- 保存卡密（如果选中）
-                                            if checkmark.Visible then
-                                                saveKey(btn.keyId, keyInput.Text)
-                                            end
-                                            btn.func(keyInput.Text)
-                                            keyInputGui:Destroy()
-                                            showNotification("功能加载中", "脚本执行中...")
-                                        end
-                                    end
-                                end)
-                            else
-                                loadstring(game:HttpGet(btn.url))()
-                            end
-                        )
+                        showNotification("保存失败", "卡密保存失败", 2)
                     end
                 end
             })
-        end
-        
-        -- 创建解卡链接按钮（放在AX按钮下方）
-        createButton(container, {
-            name = "解卡链接",
-            layoutOrder = #axButtons + 1,
-            size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale),
-            text = "点击获取AX卡密（需要登录DC）",
-            bgColor = CONFIG.UI_COLORS.accent,
-            hoverColor = Color3.fromRGB(90, 60, 60),
-            onClick = function()
-                setclipboard("https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna")
-                showNotification("链接已复制", "已复制解卡链接到剪贴板，请在浏览器中打开")
-            end
-        })
-        
-        -- 创建分隔线
-        local separator = Instance.new("Frame")
-        separator.Name = "Separator"
-        separator.Size = UDim2.new(1, -20, 0, 2)
-        separator.Position = UDim2.new(0, 10, 0, 0)
-        separator.LayoutOrder = #axButtons + 2
-        separator.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-        separator.BorderSizePixel = 0
-        separator.Parent = container
-        
-        -- 创建普通脚本按钮
-        for i, btn in ipairs(buttons) do
-            createButton(container, {
-                name = "Script" .. i,
-                layoutOrder = #axButtons + 2 + i, -- 放在分隔线下面
-                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-                text = btn.name,
-                bgColor = CONFIG.UI_COLORS.primary,
-                hoverColor = Color3.fromRGB(70, 70, 120),
+
+            -- 执行AX脚本按钮
+            createButton(axContainer, {
+                name = "ExecuteAXBtn",
+                size = UDim2.new(0.48, -5, 0, 30),
+                position = UDim2.new(0, 5, 0, 105),
+                text = "执行AX脚本",
+                textSize = 14,
+                bgColor = hasAxKey and not isAxExpired and CONFIG.UI_COLORS.success or CONFIG.UI_COLORS.danger,
+                hoverColor = hasAxKey and not isAxExpired and Color3.fromRGB(70, 120, 70) or Color3.fromRGB(170, 70, 70),
                 onClick = function()
-                    createExecutionDialog(
-                        "执行 " .. btn.name,
-                        btn.desc,
-                        function()
-                            loadstring(game:HttpGet(btn.url))()
-                            showNotification("功能加载中", btn.name .. "脚本执行中...")
-                        end
-                    )
+                    if not hasAxKey or isAxExpired then
+                        showNotification("卡密错误", "请先设置有效的AX卡密", 3)
+                        return
+                    end
+                    getfenv().ADittoKey = axKeyData.value
+                    loadstring(game:HttpGet(AX_CONFIG.scriptUrl))()
+                    showNotification("脚本执行中", "AX脚本加载中...")
                 end
             })
-        end
-        
-        return function() end
-    end,
-    panelTitle = "墨水游戏"
-},
+
+            -- 获取卡密按钮
+            createButton(axContainer, {
+                name = "GetAXKeyBtn",
+                size = UDim2.new(0.48, -5, 0, 30),
+                position = UDim2.new(0.52, 0, 0, 105),
+                text = "获取AX卡密",
+                textSize = 14,
+                bgColor = CONFIG.UI_COLORS.accent,
+                hoverColor = Color3.fromRGB(255, 200, 100),
+                onClick = function()
+                    setclipboard(AX_CONFIG.unlockUrl)
+                    showNotification("链接已复制", "已复制解卡链接到剪贴板", 3)
+                end
+            })
+
+            -- 分隔线
+            local separator = Instance.new("Frame")
+            separator.Name = "Separator"
+            separator.Size = UDim2.new(1, -20, 0, 2)
+            separator.Position = UDim2.new(0, 10, 0, 125)
+            separator.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+            separator.BorderSizePixel = 0
+            separator.Parent = axContainer
+
+            -- 其他墨水游戏脚本
+            local otherScripts = {
+                {
+                    name = "ink-game(测试版)",
+                    url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
+                    desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+                },
+                {
+                    name = "RINGTA",
+                    url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
+                    desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+                }
+            }
+
+            -- 创建其他脚本按钮
+            for i, script in ipairs(otherScripts) do
+                createButton(container, {
+                    name = "Script" .. i,
+                    layoutOrder = i + 1,
+                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                    text = script.name,
+                    bgColor = CONFIG.UI_COLORS.primary,
+                    hoverColor = Color3.fromRGB(70, 70, 120),
+                    onClick = function()
+                        createExecutionDialog(
+                            "执行 " .. script.name,
+                            script.desc,
+                            function()
+                                loadstring(game:HttpGet(script.url))()
+                                showNotification("功能加载中", script.name .. "脚本执行中...")
+                            end
+                        )
+                    end
+                })
+            end
+
+            return function() end
+        end,
+        panelTitle = "墨水游戏"
+    },
     {
-        id = "99生存",--菜单名称
-        displayName = "99生存",--菜单名称
-        layoutOrder = 6,--菜单编号顺序
+        id = "99生存",
+        displayName = "99生存",
+        layoutOrder = 7,
         contentFunc = function(container)
-            -- 偷走脑红菜单内容
             if not container or not container:IsDescendantOf(game) then return function() end end
             
             -- 按钮数据（含说明）
-        local buttons = {
-            {
-                name = "虚空脚本",
-                url = "https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/nightsintheforest.lua",
-                desc = "搭配一件汉化"
-            },
-            {
-                name = "DarkEsc Hub v1.02",
-                url = "https://raw.githubusercontent.com/DarkenedEssence/DarkEsc/refs/heads/main/Loader.lua",
-                desc = "搭配一键汉化"
-            },
-            {
-                name = "RINGTA",
-                url = "https://raw.githubusercontent.com/wefwef127382/99daysloader.github.io/refs/heads/main/ringta.lua",
-                desc = "搭配一键汉化"
-            }
-        }        
+            local buttons = {
+                {
+                    name = "虚空脚本",
+                    url = "https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/nightsintheforest.lua",
+                    desc = "搭配一件汉化"
+                },
+                {
+                    name = "DarkEsc Hub v1.02",
+                    url = "https://raw.githubusercontent.com/DarkenedEssence/DarkEsc/refs/heads/main/Loader.lua",
+                    desc = "搭配一键汉化"
+                },
+                {
+                    name = "RINGTA",
+                    url = "https://raw.githubusercontent.com/wefwef127382/99daysloader.github.io/refs/heads/main/ringta.lua",
+                    desc = "搭配一键汉化"
+                }
+            }        
             -- 创建按钮
             for i, btn in ipairs(buttons) do
                 createButton(container, {
@@ -2028,30 +1999,28 @@ local MENU_CONFIG = {
                     end
                 })
             end
-            -- 功能说明整合到弹窗，菜单内无标签
             return function() end
         end,
-        panelTitle = "99生存"--内容名称
+        panelTitle = "99生存"
     },
     {
-        id = "被遗弃",--菜单名称
-        displayName = "被遗弃",--菜单名称
-        layoutOrder = 7,--菜单编号顺序
+        id = "被遗弃",
+        displayName = "被遗弃",
+        layoutOrder = 8,
         contentFunc = function(container)
-            -- 偷走脑红菜单内容
-    if not container or not container:IsDescendantOf(game) then return function() end end
-    
-    -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "ky3-nol😎", 
-            func = function()
-                getfenv().ADittoKey = "NOL_FRERKEY"
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
-            end,
-            desc = "建议搭配一键汉化"
-        }
-    }    
+            if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 按钮数据（含说明）
+            local buttons = {
+                {
+                    name = "ky3-nol😎", 
+                    func = function()
+                        getfenv().ADittoKey = "NOL_FRERKEY"
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
+                    end,
+                    desc = "建议搭配一键汉化"
+                }
+            }        
             -- 创建按钮
             for i, btn in ipairs(buttons) do
                 createButton(container, {
@@ -2065,116 +2034,38 @@ local MENU_CONFIG = {
                         createExecutionDialog(
                             "执行 " .. btn.name,
                             btn.desc,
-                    function()
-                        -- 直接执行 func 而不是通过 URL
-                        if btn.func then
-                            btn.func()
-                        else
-                            loadstring(game:HttpGet(btn.url))()
-                        end
-                        showNotification("功能加载中", "脚本执行中...")
-                    end
+                            function()
+                                if btn.func then
+                                    btn.func()
+                                else
+                                    loadstring(game:HttpGet(btn.url))()
+                                end
+                                showNotification("功能加载中", "脚本执行中...")
+                            end
                         )
                     end
                 })
             end
-            -- 功能说明整合到弹窗，菜单内无标签
             return function() end
         end,
-        panelTitle = "被遗弃"--内容名称
+        panelTitle = "被遗弃"
     },
--- 在 MENU_CONFIG 中找到 "被遗弃" 菜单的配置，修改 contentFunc 部分
---[[
-{
-    id = "被遗弃",
-    displayName = "被遗弃",
-    layoutOrder = 7,
-    contentFunc = function(container)
-        if not container or not container:IsDescendantOf(game) then return function() end end
-        
-        -- 按钮数据（含说明）
-        local buttons = {
-            {
-                name = "ky3-nol😎", 
-                func = function(key)
-                    getfenv().ADittoKey = key
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Syndromehsh/NOL/refs/heads/main/Nolsaken"))()
-                end,
-                desc = "建议搭配一键汉化\n需要输入卡密"
-            }
-        }
-        
-        -- 创建卡密输入框
-        local keyInputFrame = Instance.new("Frame")
-        keyInputFrame.Name = "KeyInputFrame"
-        keyInputFrame.Size = UDim2.new(1, 0, 0, 40 * UI_STATE.scale)
-        keyInputFrame.LayoutOrder = 1
-        keyInputFrame.BackgroundTransparency = 1
-        keyInputFrame.Parent = container
-        
-        local keyInput = Instance.new("TextBox")
-        keyInput.Name = "KeyInput"
-        keyInput.Size = UDim2.new(0.7, 0, 1, 0)
-        keyInput.Position = UDim2.new(0.15, 0, 0, 0)
-        keyInput.PlaceholderText = "这里输入卡密"
-        keyInput.Text = ""
-        keyInput.TextColor3 = Color3.new(1, 1, 1)
-        keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-        keyInput.TextSize = 14 * UI_STATE.scale
-        keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-        keyInput.BackgroundTransparency = 0.7
-        keyInput.Parent = keyInputFrame
-        createCorner(keyInput, 6)
-        
-        -- 创建按钮
-        for i, btn in ipairs(buttons) do
-            createButton(container, {
-                name = "11" .. i,
-                layoutOrder = i + 1, -- 放在输入框下面
-                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-                text = btn.name,
-                bgColor = CONFIG.UI_COLORS.primary,
-                hoverColor = Color3.fromRGB(70, 70, 120),
-                onClick = function()
-                    createExecutionDialog(
-                        "执行 " .. btn.name,
-                        btn.desc,
-                        function()
-                            -- 直接执行 func 而不是通过 URL
-                            if btn.func then
-                                btn.func(keyInput.Text)
-                            else
-                                loadstring(game:HttpGet(btn.url))()
-                            end
-                            showNotification("功能加载中", "脚本执行中...")
-                        end
-                    )
-                end
-            })
-        end
-        
-        return function() end
-    end,
-    panelTitle = "被遗弃"
-},
-]]
     {
-        id = "最强的战场",--菜单名称
-        displayName = "最强的战场",--菜单名称
-        layoutOrder = 8,--菜单编号顺序
+        id = "最强的战场",
+        displayName = "最强的战场",
+        layoutOrder = 9,
         contentFunc = function(container)
-            -- 最强的战场菜单内容
             if not container or not container:IsDescendantOf(game) then return function() end end
             
-            -- 添加复制卡密按钮（放在最前面）
+            -- 添加复制卡密按钮
             createButton(container, {
                 name = "CopyKeyBtn",
                 layoutOrder = 1,
                 size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
                 text = "点击复制VexonHub卡密",
-                bgColor = Color3.fromRGB(255, 215, 0), -- 黄色背景
-                textColor = Color3.fromRGB(0, 0, 0), -- 黑色文字
-                hoverColor = Color3.fromRGB(255, 230, 100), -- 亮黄色悬停
+                bgColor = Color3.fromRGB(255, 215, 0),
+                textColor = Color3.fromRGB(0, 0, 0),
+                hoverColor = Color3.fromRGB(255, 230, 100),
                 onClick = function()
                     setclipboard("VexonHub_3")
                     showNotification("卡密已复制", "VexonHub_3 已复制到剪贴板", 2)
@@ -2184,21 +2075,21 @@ local MENU_CONFIG = {
             -- 按钮数据（含说明）
             local buttons = {
                 {
-                    name = "VexonHub",--脚本名称
-                    url = "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub",--脚本链接
-                    desc = "建议搭配一键汉化"--详情注释
+                    name = "VexonHub",
+                    url = "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/VexonHub",
+                    desc = "建议搭配一键汉化"
                 },
                 {
-                    name = "扔垃圾桶",--脚本名称
-                    url = "https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man",--脚本链接
-                    desc = "cs脚本家里还在的不要用"--详情注释
+                    name = "扔垃圾桶",
+                    url = "https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man",
+                    desc = "cs脚本家里还在的不要用"
                 }             
             }
             -- 创建按钮
             for i, btn in ipairs(buttons) do
                 createButton(container, {
                     name = "11" .. i,
-                    layoutOrder = i + 1, -- 放在复制按钮后面
+                    layoutOrder = i + 1,
                     size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
                     text = btn.name,
                     bgColor = CONFIG.UI_COLORS.primary,
@@ -2215,72 +2106,30 @@ local MENU_CONFIG = {
                     end
                 })
             end
-            -- 功能说明整合到弹窗，菜单内无标签
             return function() end
         end,
-        panelTitle = "最强的战场"--内容名称
+        panelTitle = "最强的战场"
     },
-   }
---[[
-    {
-        id = "541888869999",--菜单名称
-        displayName = "541888869999",--菜单名称
-        layoutOrder = ,--菜单编号顺序
-        contentFunc = function(container)
-            -- 偷走脑红菜单内容
-            if not container or not container:IsDescendantOf(game) then return function() end end
-            
-            -- 按钮数据（含说明）
-            local buttons = {
-                {
-                    name = "541888869999",--脚本名称
-                    url = "",--脚本链接
-                    desc = "建议搭配一键汉化"--详情注释
-                }
-            }
-            -- 创建按钮
-            for i, btn in ipairs(buttons) do
-                createButton(container, {
-                    name = "11" .. i,
-                    layoutOrder = i,
-                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-                    text = btn.name,
-                    bgColor = CONFIG.UI_COLORS.primary,
-                    hoverColor = Color3.fromRGB(70, 70, 120),
-                    onClick = function()
-                        createExecutionDialog(
-                            "执行 " .. btn.name,
-                            btn.desc,
-                            function()
-                                loadstring(game:HttpGet(btn.url))("")
-                                showNotification("功能加载中", btn.name .. "脚本执行中...")
-                            end
-                        )
-                    end
-                })
-            end
-            -- 功能说明整合到弹窗，菜单内无标签
-            return function() end
-        end,
-        panelTitle = "541888869999"--内容名称
-    },
-]]
--- ====================== 菜单内容面板创建 ======================
+}
+-- ================ 菜单内容面板创建 ================
 local function createMenuContentPanel(rightPanel, menuKey, panelTitle, contentFunc)
     if not rightPanel or not rightPanel:IsDescendantOf(game) then return nil end
+    
     local panel = Instance.new("Frame")
     panel.Name = "ContentPanel_" .. menuKey:gsub("%p", "")
     panel.Size = UDim2.new(1, 0, 1, 0)
     panel.BackgroundTransparency = 1
     panel.Parent = rightPanel
-    -- 直接根据当前活跃菜单设置可见性（无延迟）
     panel.Visible = (menuKey == UI_STATE.activeMenu)
     panel.Active = false
     
+    local titleHeight = 36 * UI_STATE.scale
+    local titlePadding = 15 * UI_STATE.scale
+    
     local title = createLabel(panel, {
         name = "PanelTitle",
-        size = UDim2.new(1, -20 * UI_STATE.scale, 0, 36 * UI_STATE.scale),
-        position = UDim2.new(0, 10 * UI_STATE.scale, 0, 15 * UI_STATE.scale),
+        size = UDim2.new(1, -20 * UI_STATE.scale, 0, titleHeight),
+        position = UDim2.new(0, 10 * UI_STATE.scale, 0, titlePadding),
         text = panelTitle or (menuKey .. "内容"),
         color = CONFIG.UI_COLORS.accent,
         textSize = 18,
@@ -2289,37 +2138,19 @@ local function createMenuContentPanel(rightPanel, menuKey, panelTitle, contentFu
         bgTransparency = 0.8,
         xAlign = Enum.TextXAlignment.Center
     })
+    
     if title then createCorner(title, 6) end
     
+    local scrollTop = titlePadding + titleHeight + 10 * UI_STATE.scale
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Name = "ContentScroll_" .. menuKey:gsub("%p", "")
-    local titleHeight = title and (title.Position.Y.Offset + title.Size.Y.Offset + 15 * UI_STATE.scale) or 50
-    scrollFrame.Size = UDim2.new(1, -20 * UI_STATE.scale, 1, -titleHeight)
-    scrollFrame.Position = UDim2.new(0, 10 * UI_STATE.scale, 0, titleHeight)
+    scrollFrame.Size = UDim2.new(1, -20 * UI_STATE.scale, 1, -scrollTop)
+    scrollFrame.Position = UDim2.new(0, 10 * UI_STATE.scale, 0, scrollTop)
     scrollFrame.BackgroundTransparency = 1
     scrollFrame.Parent = panel
     scrollFrame.ClipsDescendants = true
+    scrollFrame.ScrollBarThickness = 6 * UI_STATE.scale
     createCorner(scrollFrame, 6)
-    
-    -- 优化滚动逻辑：确保内容过多时可滚动到底部
-    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)  -- 初始化为0，动态更新
--- 在 createMenuContentPanel 函数中，找到 scrollFrame.InputBegan 代码，新增 InputEnded 监听
-scrollFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-       input.UserInputType == Enum.UserInputType.Touch then
-        UI_STATE.isScrolling = true
-        UI_STATE.scrollStartPositions[scrollFrame] = scrollFrame.CanvasPosition
-    end
-end)
-
--- 新增 InputEnded 监听，重置滚动状态
-scrollFrame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-       input.UserInputType == Enum.UserInputType.Touch then
-        UI_STATE.isScrolling = false
-    end
-end)
-
     
     local actionContainer = Instance.new("Frame")
     actionContainer.Name = "ActionContainer_" .. menuKey:gsub("%p", "")
@@ -2333,45 +2164,53 @@ end)
     listLayout.Padding = UDim.new(0, 10 * UI_STATE.scale)
     listLayout.SortOrder = Enum.SortOrder.LayoutOrder
     
-    -- 修复滚动到底部的问题：动态更新CanvasSize和滚动范围
     local function updateScrollBar()
         local contentHeight = listLayout.AbsoluteContentSize.Y
         local visibleHeight = scrollFrame.AbsoluteSize.Y
         
-        -- 关键修复：设置CanvasSize为内容实际高度
         scrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentHeight)
         
-        -- 计算最大滚动范围
         local maxY = math.max(0, contentHeight - visibleHeight)
-        -- 限制滚动位置在有效范围内
-        scrollFrame.CanvasPosition = Vector2.new(0, math.clamp(scrollFrame.CanvasPosition.Y, 0, maxY))
-        -- 确保滚动条可见性
-        scrollFrame.ScrollBarThickness = (contentHeight > visibleHeight) and (6 * UI_STATE.scale) or 0
+        if scrollFrame.CanvasPosition.Y > maxY then
+            scrollFrame.CanvasPosition = Vector2.new(0, maxY)
+        end
+        
+        scrollFrame.ScrollBarThickness = (contentHeight > visibleHeight + 5) and (6 * UI_STATE.scale) or 0
     end
     
-    -- 监听内容变化自动更新滚动设置
     updateScrollBar()
     listLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateScrollBar)
-    scrollFrame:GetPropertyChangedSignal("CanvasPosition"):Connect(updateScrollBar)
-    scrollFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollBar)  -- 窗口大小变化时更新
+    scrollFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollBar)
+    
+    scrollFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+           input.UserInputType == Enum.UserInputType.Touch then
+            UI_STATE.isScrolling = true
+            UI_STATE.scrollStartPositions[scrollFrame] = scrollFrame.CanvasPosition
+        end
+    end)
+    scrollFrame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+           input.UserInputType == Enum.UserInputType.Touch then
+            UI_STATE.isScrolling = false
+        end
+    end)
     
     local updateCallback = contentFunc and contentFunc(actionContainer) or function() end
     
-    -- 绑定面板可见性变化事件
     panel:GetPropertyChangedSignal("Visible"):Connect(function()
         if updateCallback then
             updateCallback(panel.Visible)
         end
     end)
     
-    -- 初始可见时立即执行回调
     if panel.Visible and updateCallback then
         updateCallback(true)
     end
     
     return panel
 end
--- ====================== 主UI创建 ======================
+-- ================ 主UI创建 ================
 local function createMainUI()
     cleanupOldUI()
     UI_STATE.isScaling = true
@@ -2422,7 +2261,7 @@ local function createMainUI()
     createCorner(topBar, 8)
     UI_STATE.topBar = topBar
     
-    -- 左侧一键汉化按钮（金色字体+边框）
+    -- 左侧一键汉化按钮
     local leftInfo = Instance.new("Frame")
     leftInfo.Size = UDim2.new(0, 240 * UI_STATE.scale, 0, 60 * UI_STATE.scale)
     leftInfo.Position = UDim2.new(0, 10 * UI_STATE.scale, 0.5, 0)
@@ -2430,40 +2269,38 @@ local function createMainUI()
     leftInfo.BackgroundTransparency = 1
     leftInfo.Parent = topBar
     
-local translateButton = createButton(leftInfo, {
-    name = "QuickTranslateBtn",
-    size = UDim2.new(0, 180 * UI_STATE.scale, 0, 50 * UI_STATE.scale),
-    position = UDim2.new(0, 0, 0, 0),
-    text = "点击看支持汉化服务器", -- 修改按钮文本
-    textColor = Color3.fromRGB(255, 215, 0),
-    textSize = 18,
-    bgColor = CONFIG.UI_COLORS.primary,
-    hoverColor = Color3.fromRGB(70, 70, 120),
-    radius = 8,
-    onClick = function()
-        createExecutionDialog(
-            "支持汉化的服务器", -- 修改标题
-            "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02--RINGTA",
-            function()
-                -- 移除原有的执行代码，只关闭弹窗
-                showNotification("已查看", "支持汉化的服务器列表已查看", 2)
-            end,
-            "知道了已查看", -- 确认按钮文本
-            "看完关闭了" -- 取消按钮文本
-        )
-    end
-})
+    local translateButton = createButton(leftInfo, {
+        name = "QuickTranslateBtn",
+        size = UDim2.new(0, 180 * UI_STATE.scale, 0, 50 * UI_STATE.scale),
+        position = UDim2.new(0, 0, 0, 0),
+        text = "点击看支持汉化服务器",
+        textColor = Color3.fromRGB(255, 215, 0),
+        textSize = 18,
+        bgColor = CONFIG.UI_COLORS.primary,
+        hoverColor = Color3.fromRGB(70, 70, 120),
+        radius = 8,
+        onClick = function()
+            createExecutionDialog(
+                "支持汉化的服务器",
+                "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02--RINGTA",
+                function()
+                    showNotification("已查看", "支持汉化的服务器列表已查看", 2)
+                end,
+                "知道了已查看",
+                "看完关闭了"
+            )
+        end
+    })
     
     -- 汉化按钮金色边框
     if translateButton then
         local uiStroke = Instance.new("UIStroke")
         uiStroke.Name = "GoldenBorder"
         uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        uiStroke.Color = Color3.fromRGB(255, 215, 0) -- 金黄色
-        uiStroke.Thickness = 2.5 * UI_STATE.scale -- 边框粗细
+        uiStroke.Color = Color3.fromRGB(255, 215, 0)
+        uiStroke.Thickness = 2.5 * UI_STATE.scale
         uiStroke.Parent = translateButton
         
-        -- 悬停边框加粗效果
         translateButton.MouseEnter:Connect(function()
             if not UI_STATE.isDragging and not UI_STATE.isScrolling and translateButton:IsDescendantOf(game) then
                 TweenService:Create(
@@ -2488,7 +2325,7 @@ local translateButton = createButton(leftInfo, {
     local versionText = createLabel(topBar, {
         name = "VersionText",
         size = UDim2.new(0, 0, 0, 20 * UI_STATE.scale),
-        position = UDim2.new(0.5, 0, 0.1, 0), -- 居中偏上
+        position = UDim2.new(0.5, 0, 0.1, 0),
         anchor = Vector2.new(0.5, 0),
         text = "2.0",
         color = CONFIG.UI_COLORS.accent,
@@ -2517,13 +2354,13 @@ local translateButton = createButton(leftInfo, {
         position = UDim2.new(0.5, 0, 0.6, 0),
         anchor = Vector2.new(0.5, 0),
         text = string.format("尊贵的[%s]欢迎使用！", localPlayer.Name),
-        color = Color3.fromRGB(255, 200, 100), -- 金色系字体
+        color = Color3.fromRGB(255, 200, 100),
         textSize = 14,
         font = Enum.Font.SourceSansBold,
         xAlign = Enum.TextXAlignment.Center
     })
     
-    -- 顶部控制按钮（缩小/放大/关闭）
+    -- 顶部控制按钮
     local function createControlButton(text, offset, color, callback)
         createButton(topBar, {
             name = text == "X" and "CloseBtn" or (text == "+" and "ZoomInBtn" or "ZoomOutBtn"),
@@ -2611,7 +2448,6 @@ local translateButton = createButton(leftInfo, {
     leftPadding.PaddingBottom = UDim.new(0, 8 * UI_STATE.scale)
     leftPadding.Parent = leftContainer
     
-    -- 左侧菜单滚动更新
     local function updateLeftScroll()
         local contentHeight = leftLayout.AbsoluteContentSize.Y
         local visibleHeight = leftScroll.AbsoluteSize.Y
@@ -2637,13 +2473,12 @@ local translateButton = createButton(leftInfo, {
     
     -- 切换面板可见性通用逻辑
     local function setActivePanel(targetKey)
-        -- 切换面板显示
         for key, panel in pairs(UI_STATE.menuPanels) do
             if panel and panel:IsDescendantOf(game) then
                 panel.Visible = (key == targetKey)
             end
         end
-        -- 同步菜单按钮颜色
+        
         if leftContainer and leftContainer:IsDescendantOf(game) then
             for _, child in ipairs(leftContainer:GetChildren()) do
                 if child:IsA("TextButton") and child.Name:match("MenuButton_") then
@@ -2651,23 +2486,21 @@ local translateButton = createButton(leftInfo, {
                     local targetKeyClean = targetKey:gsub("%p", "")
                     child.BackgroundColor3 = btnMenuKey == targetKeyClean and 
                         Color3.fromRGB(80, 80, 130) or CONFIG.UI_COLORS.primary
-                    child.BackgroundColor3 = child.BackgroundColor3 -- 强制刷新
+                    child.BackgroundColor3 = child.BackgroundColor3
                 end
             end
         end
-        -- 更新活跃菜单标识
+        
         UI_STATE.activeMenu = targetKey
     end
     
     -- 从菜单配置表创建菜单按钮和内容面板
     for _, menu in ipairs(MENU_CONFIG) do
-        -- 创建左侧菜单按钮
         createMenuItem(leftContainer, menu.displayName, menu.layoutOrder, function()
             setActivePanel(menu.id)
             showNotification("菜单切换成功", "当前菜单：" .. menu.displayName)
         end)
         
-        -- 创建右侧内容面板
         UI_STATE.menuPanels[menu.id] = createMenuContentPanel(rightPanel, menu.id, menu.panelTitle, menu.contentFunc)
     end
     
@@ -2700,25 +2533,21 @@ local translateButton = createButton(leftInfo, {
         end
     end)
     
--- 替换原有的 UserInputService.InputEnded 连接代码
-UserInputService.InputEnded:Connect(function(input)
-    -- 输入结束时，同时重置拖动和滚动状态
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or 
-       input.UserInputType == Enum.UserInputType.Touch then
-        UI_STATE.isDragging = false  -- 重置拖动状态
-        UI_STATE.isScrolling = false -- 重置滚动状态（关键补充）
-        -- 同时重置悬浮窗单独的拖动状态
-        btnIsDragging = false
-    end
-end)
-
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+           input.UserInputType == Enum.UserInputType.Touch then
+            UI_STATE.isDragging = false
+            UI_STATE.isScrolling = false
+            btnIsDragging = false
+        end
+    end)
     
     -- 创建悬浮窗
     createFloatingButton()
     UI_STATE.isScaling = false
     print("主UI创建成功")
 end
--- ====================== 脚本初始化 ======================
+-- ================ 脚本初始化 ================
 local function initScript()
     local localPlayer = Players.LocalPlayer
     if not localPlayer then
@@ -2779,7 +2608,19 @@ local function initScript()
     showNotification("UI2.0加载成功", "尊贵的用户欢迎使用秋容脚本")
     print("初始化完成")
 end
--- ====================== 脚本启动 ======================
+-- ================ 脚本启动 ================
+local isFirstUse = not folderExists()  -- 检测持久化文件夹和卡密是否存在且正确
+if isFirstUse then
+    -- 首次使用：执行验证 → 创建持久化文件夹 → 显示公告
+    Popup_VerifyKuaishou()
+    Popup_VerifyKey()
+    showAnnouncement()
+else
+    -- 非首次使用：直接显示公告（跳过验证）
+    print("检测到验证文件夹且卡密正确，跳过验证")
+    showAnnouncement()
+end
+
 local success, errorMsg = pcall(initScript)
 if not success then
     local fullError = debug.traceback(errorMsg)
@@ -2808,3 +2649,4 @@ if not success then
     end)
 end
 loadstring(game:HttpGet("https://raw.githubusercontent.com/QRLIANGXINFENGHE/K/refs/heads/main/548125425"))()
+
