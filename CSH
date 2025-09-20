@@ -320,7 +320,7 @@ local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
     
-    local titleLabel = createLabel(noticeFrame, "3.3汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createLabel(noticeFrame, "3.3.1汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 11
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -334,7 +334,7 @@ local function showAnnouncement()
     scrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
     scrollFrame.Parent = noticeFrame
     
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可\n9月20日15:17添加了墨水游戏ax卡验证并且将自动隐藏卡密信息并且修复点击ax卡密不会取消窗口而是得自己手动取消然后再添加了一个保存卡密信息，防止第二次重复输入，可直接点击执行就行\n9月20日16:32修复脚本无法执行添加了注入器下载链接\n9月20日19:19修复偷偷更新导致你们部分人使用不了添加了卡密验证系统想要获取卡密要进QQ频道免费获取并且随时更改卡密\n并且添加ax卡密保存和检测卡密使用时长如果卡密过期将会直接通知", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可\n9月20日15:17添加了墨水游戏ax卡验证并且将自动隐藏卡密信息并且修复点击ax卡密不会取消窗口而是得自己手动取消然后再添加了一个保存卡密信息，防止第二次重复输入，可直接点击执行就行\n9月20日16:32修复脚本无法执行添加了注入器下载链接\n9月20日19:19修复偷偷更新导致你们部分人使用不了添加了卡密验证系统想要获取卡密要进QQ频道免费获取并且随时更改卡密\n并且添加ax卡密保存和检测卡密使用时长如果卡密过期将会直接通知\n9月21日修复ax卡密保存和检查卡密使用时间没有效果问题并且优化了自动汉化执行脚本基本上秒汉化。", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
     contentLabel.TextSize = 8
     contentLabel.TextWrapped = true
@@ -1591,368 +1591,487 @@ local MENU_CONFIG = {
         end,
         panelTitle = "红叶脚本"
     },
-    {
-        id = "墨水游戏",
-        displayName = "墨水游戏",
-        layoutOrder = 6,
-        contentFunc = function(container)
-            if not container or not container:IsDescendantOf(game) then return function() end end
+{
+    id = "墨水游戏",
+    displayName = "墨水游戏",
+    layoutOrder = 6,
+    contentFunc = function(container)
+        if not container or not container:IsDescendantOf(game) then return function() end end
+        
+        -- 卡密管理器模块 (内置一体化，含剩余时间计算)
+        local KeyManager = {
+            KEY_FILE_PATH = (getPathFunc and getPathFunc() or "RobloxScripts") .. "/ScriptKeys.json",
             
-            -- 卡密管理器模块 (内置一体化)
-            local KeyManager = {
-                KEY_FILE_PATH = (getPathFunc and getPathFunc() or "RobloxScripts") .. "/ScriptKeys.json",
+            readSavedKeys = function(self)
+                if not readFunc then return {} end
                 
-                readSavedKeys = function(self)
-                    if not readFunc then return {} end
-                    
-                    local fileExists = pcall(function() readFunc(self.KEY_FILE_PATH) end)
-                    if not fileExists then return {} end
-                    
-                    local success, content = pcall(readFunc, self.KEY_FILE_PATH)
-                    if not success or not content or content == "" or content == "{}" then return {} end
-                    
-                    local success, keys = pcall(function()
-                        if content:sub(1, 1) ~= "{" or content:sub(-1) ~= "}" then
-                            error("Invalid JSON format")
-                        end
-                        return HttpService:JSONDecode(content)
-                    end)
-                    
-                    if not success then
-                        pcall(function()
-                            if writeFunc then writeFunc(self.KEY_FILE_PATH, "{}") end
-                        end)
-                        return {}
+                local fileExists = pcall(function() readFunc(self.KEY_FILE_PATH) end)
+                if not fileExists then return {} end
+                
+                local success, content = pcall(readFunc, self.KEY_FILE_PATH)
+                if not success or not content or content == "" or content == "{}" then return {} end
+                
+                local success, keys = pcall(function()
+                    if content:sub(1, 1) ~= "{" or content:sub(-1) ~= "}" then
+                        error("Invalid JSON format")
                     end
-                    
-                    return keys or {}
-                end,
+                    return HttpService:JSONDecode(content)
+                end)
                 
-                saveKey = function(self, keyId, keyValue, expiryDays)
-                    if not writeFunc then return false end
-                    
-                    local keys = self:readSavedKeys()
-                    keys[keyId] = {
-                        value = keyValue,
-                        timestamp = os.time(),
-                        expiryDays = expiryDays or 30
-                    }
-                    
-                    local success, json = pcall(function() return HttpService:JSONEncode(keys) end)
-                    if not success or not json or json == "" or json:sub(1, 1) ~= "{" then return false end
-                    
-                    local success, err = pcall(writeFunc, self.KEY_FILE_PATH, json)
-                    return success
-                end,
-                
-                deleteKey = function(self, keyId)
-                    if not writeFunc then return false end
-                    local keys = self:readSavedKeys()
-                    keys[keyId] = nil
-                    
-                    local success, json = pcall(function() return HttpService:JSONEncode(keys) end)
-                    if not success then return false end
-                    
-                    local success, err = pcall(writeFunc, self.KEY_FILE_PATH, json)
-                    return success
-                end,
-                
-                isKeyExpired = function(self, keyData)
-                    if not keyData or not keyData.timestamp then return true end
-                    local currentTime = os.time()
-                    local keyAge = currentTime - keyData.timestamp
-                    local expirySeconds = (keyData.expiryDays or 30) * 24 * 60 * 60
-                    return keyAge > expirySeconds
-                end,
-                
-                getRemainingDays = function(self, keyData)
-                    if not keyData or not keyData.timestamp then return 0 end
-                    local currentTime = os.time()
-                    local keyAge = currentTime - keyData.timestamp
-                    local expirySeconds = (keyData.expiryDays or 30) * 24 * 60 * 60
-                    return math.max(0, math.floor((expirySeconds - keyAge) / (24 * 60 * 60)))
+                if not success then
+                    pcall(function()
+                        if writeFunc then writeFunc(self.KEY_FILE_PATH, "{}") end
+                    end)
+                    return {}
                 end
-            }
+                
+                return keys or {}
+            end,
             
-            local keyManager = setmetatable({}, {__index = KeyManager})
-            local savedKeys = {}
-            local success, err = pcall(function() savedKeys = keyManager:readSavedKeys() end)
+            saveKey = function(self, keyId, keyValue, expiryDays)
+                if not writeFunc then return false end
+                
+                local keys = self:readSavedKeys()
+                keys[keyId] = {
+                    value = keyValue,
+                    timestamp = os.time(),
+                    expiryDays = expiryDays or 30
+                }
+                
+                local success, json = pcall(function() return HttpService:JSONEncode(keys) end)
+                if not success or not json or json == "" or json:sub(1, 1) ~= "{" then return false end
+                
+                local success, err = pcall(writeFunc, self.KEY_FILE_PATH, json)
+                return success
+            end,
             
-            -- AX脚本配置
-            local AX_CONFIG = {
-                keyId = "AX_KEY",
-                scriptUrl = "https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua",
-                unlockUrl = "https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna",
-                name = "AX新版"
-            }
+            deleteKey = function(self, keyId)
+                if not writeFunc then return false end
+                local keys = self:readSavedKeys()
+                keys[keyId] = nil
+                
+                local success, json = pcall(function() return HttpService:JSONEncode(keys) end)
+                if not success then return false end
+                
+                local success, err = pcall(writeFunc, self.KEY_FILE_PATH, json)
+                return success
+            end,
             
-            -- 获取AX卡密数据
-            local axKeyData = savedKeys[AX_CONFIG.keyId]
-            local hasAxKey = axKeyData ~= nil
-            local isAxExpired = hasAxKey and keyManager:isKeyExpired(axKeyData)
-            local axRemainingDays = hasAxKey and keyManager:getRemainingDays(axKeyData) or 0
-
-            -- 创建AX卡密管理区域 (修复时长选择)
-            local axContainer = Instance.new("Frame")
-            axContainer.Name = "AXManagementSection"
-            axContainer.LayoutOrder = 1
-            axContainer.Size = UDim2.new(1, 0, 0, 180 * UI_STATE.scale)
-            axContainer.BackgroundColor3 = Color3.fromRGB(45, 45, 65)
-            axContainer.BackgroundTransparency = 0.7
-            axContainer.Parent = container
-            createCorner(axContainer, 8)
-
-            -- AX标题和状态
-            local titleRow = Instance.new("Frame")
-            titleRow.Name = "TitleRow"
-            titleRow.Size = UDim2.new(1, -10, 0, 25)
-            titleRow.Position = UDim2.new(0, 5, 0, 5)
-            titleRow.BackgroundTransparency = 1
-            titleRow.Parent = axContainer
-
-            createLabel(titleRow, {
-                name = "AXTitle",
-                size = UDim2.new(0.5, 0, 1, 0),
-                position = UDim2.new(0, 0, 0, 0),
-                text = "AX脚本管理",
-                color = CONFIG.UI_COLORS.accent,
-                textSize = 16,
-                font = Enum.Font.SourceSansBold,
-                xAlign = Enum.TextXAlignment.Left
-            })
-
-            local statusText = hasAxKey and (isAxExpired and "卡密已过期" or string.format("剩余%d天", axRemainingDays)) 
-                              or "未设置卡密"
-            local statusColor = hasAxKey and (isAxExpired and Color3.fromRGB(255, 80, 80) or Color3.fromRGB(80, 255, 80)) 
-                              or Color3.fromRGB(200, 200, 200)
-            createLabel(titleRow, {
-                name = "AXStatus",
-                size = UDim2.new(0.5, 0, 1, 0),
-                position = UDim2.new(0.5, 0, 0, 0),
-                text = statusText,
-                color = statusColor,
-                textSize = 14,
-                xAlign = Enum.TextXAlignment.Right
-            })
-
-            -- 卡密输入与保存按钮容器
-            local inputContainer = Instance.new("Frame")
-            inputContainer.Name = "InputContainer"
-            inputContainer.Size = UDim2.new(1, -10, 0, 30)
-            inputContainer.Position = UDim2.new(0, 5, 0, 35)
-            inputContainer.BackgroundTransparency = 1
-            inputContainer.Parent = axContainer
-
-            -- 卡密输入框
-            local keyInput = Instance.new("TextBox")
-            keyInput.Name = "AXKeyInput"
-            keyInput.Size = UDim2.new(0.6, -5, 1, 0)
-            keyInput.Position = UDim2.new(0, 0, 0, 0)
-            keyInput.PlaceholderText = "输入AX卡密"
-            keyInput.Text = hasAxKey and axKeyData.value or ""
-            keyInput.TextColor3 = Color3.new(1, 1, 1)
-            keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-            keyInput.TextSize = 14
-            keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-            keyInput.BackgroundTransparency = 0.7
-            keyInput.Parent = inputContainer
-            createCorner(keyInput, 6)
-
-            -- 保存卡密按钮容器
-            local buttonContainer = Instance.new("Frame")
-            buttonContainer.Name = "ButtonContainer"
-            buttonContainer.Size = UDim2.new(0.4, 0, 1, 0)
-            buttonContainer.Position = UDim2.new(0.6, 5, 0, 0)
-            buttonContainer.BackgroundTransparency = 1
-            buttonContainer.Parent = inputContainer
-
-            -- 时长选择区域（修复不高亮+闪退）
--- 时长选择区域（最终修复版）
-local durationRow = Instance.new("Frame")
-durationRow.Name = "DurationRow"
-durationRow.Size = UDim2.new(1, -10, 0, 30)
-durationRow.Position = UDim2.new(0, 5, 0, 70)
-durationRow.BackgroundTransparency = 1
-durationRow.Parent = axContainer
-
-createLabel(durationRow, {
-    name = "DurationLabel",
-    size = UDim2.new(0.25, 0, 1, 0),
-    position = UDim2.new(0, 0, 0, 0),
-    text = "有效期:",
-    textSize = 14,
-    xAlign = Enum.TextXAlignment.Left
-})
-
-local durationOptions = {
-    { text = "6小时", value = 0.25 },
-    { text = "12小时", value = 0.5 },
-    { text = "1天", value = 1 },
-    { text = "2天", value = 2 },
-    { text = "3天", value = 3 },
-    { text = "30天", value = 30 }
-}
-local selectedDuration = 30  -- 初始化默认值
-local durationButtons = {}  -- 确保数组初始化
-
-local btnWidth = 0.12
-local startX = 0.28
-for i, option in ipairs(durationOptions) do
-    if not option then break end
-    
-    local btn = createButton(durationRow, {
-        name = "DurationBtn_" .. option.text,
-        size = UDim2.new(btnWidth, -3, 1, 0),
-        position = UDim2.new(startX + (i-1)*btnWidth, 3, 0, 0),
-        text = option.text,
-        textSize = 10,
-        bgColor = (option.value == selectedDuration) and CONFIG.UI_COLORS.accent or CONFIG.UI_COLORS.secondary,
-        bgTransparency = 0,
-        hoverColor = Color3.fromRGB(70, 70, 120),
-        onClick = function()
-            -- 防空检查：确保按钮未被销毁
-            if not btn:IsDescendantOf(game) then return end
+            isKeyExpired = function(self, keyData)
+                if not keyData or not keyData.timestamp then return true end
+                local currentTime = os.time()
+                local keyAge = currentTime - keyData.timestamp
+                local expirySeconds = (keyData.expiryDays or 30) * 24 * 60 * 60
+                return keyAge > expirySeconds
+            end,
             
-            -- 1. 重置所有按钮颜色
-            for _, b in ipairs(durationButtons) do
-                if b and b:IsDescendantOf(game) then
-                    b.BackgroundColor3 = CONFIG.UI_COLORS.secondary
+            -- 计算剩余时间：拆分天/时/分/秒/分秒
+            getRemainingTime = function(self, keyData)
+                if not keyData or not keyData.timestamp then 
+                    return {days=0, hours=0, mins=0, secs=0, ms=0} 
+                end
+                
+                local currentTime = os.time()
+                local keyAge = currentTime - keyData.timestamp
+                local expirySeconds = (keyData.expiryDays or 30) * 24 * 60 * 60
+                local remainingTotalSec = math.max(0, expirySeconds - keyAge)
+                
+                local days = math.floor(remainingTotalSec / 86400)
+                remainingTotalSec = remainingTotalSec % 86400
+                
+                local hours = math.floor(remainingTotalSec / 3600)
+                remainingTotalSec = remainingTotalSec % 3600
+                
+                local mins = math.floor(remainingTotalSec / 60)
+                remainingTotalSec = remainingTotalSec % 60
+                
+                local secs = math.floor(remainingTotalSec)
+                local ms = math.floor((remainingTotalSec - secs) * 10)
+                
+                return {
+                    days = days,
+                    hours = hours,
+                    mins = mins,
+                    secs = secs,
+                    ms = ms
+                }
+            end
+        }
+        
+        local keyManager = setmetatable({}, {__index = KeyManager})
+        local savedKeys = {}
+        local success, err = pcall(function() savedKeys = keyManager:readSavedKeys() end)
+        
+        -- AX脚本配置
+        local AX_CONFIG = {
+            keyId = "AX_KEY",
+            scriptUrl = "https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua",
+            unlockUrl = "https://ads.luarmor.net/get_key?for=AX__KEY_SYSTEM-AEkCrvrYBzna",
+            name = "AX新版"
+        }
+        
+        -- 获取AX卡密数据
+        local axKeyData = savedKeys[AX_CONFIG.keyId]
+        local hasAxKey = axKeyData ~= nil
+        local isAxExpired = hasAxKey and keyManager:isKeyExpired(axKeyData)
+
+        -- 创建AX卡密管理区域
+        local axContainer = Instance.new("Frame")
+        axContainer.Name = "AXManagementSection"
+        axContainer.LayoutOrder = 1
+        axContainer.Size = UDim2.new(1, 0, 0, 180 * UI_STATE.scale)
+        axContainer.BackgroundColor3 = Color3.fromRGB(45, 45, 65)
+        axContainer.BackgroundTransparency = 0.7
+        axContainer.Parent = container
+        createCorner(axContainer, 8)
+
+        -- AX标题、卡密显示、剩余时间（核心优化：新增卡密显示）
+        local titleRow = Instance.new("Frame")
+        titleRow.Name = "TitleRow"
+        titleRow.Size = UDim2.new(1, -10, 0, 25)
+        titleRow.Position = UDim2.new(0, 5, 0, 5)
+        titleRow.BackgroundTransparency = 1
+        titleRow.Parent = axContainer
+
+        -- 1. AX脚本管理标题（左侧固定）
+        createLabel(titleRow, {
+            name = "AXTitle",
+            size = UDim2.new(0.3, 0, 1, 0),
+            position = UDim2.new(0, 0, 0, 0),
+            text = "AX脚本管理",
+            color = CONFIG.UI_COLORS.accent,
+            textSize = 16,
+            font = Enum.Font.SourceSansBold,
+            xAlign = Enum.TextXAlignment.Left
+        })
+
+        -- 2. 卡密显示（中间：仅展示前2位+后2位）
+        local axKeyDisplayLabel = createLabel(titleRow, {
+            name = "AXKeyDisplay",
+            size = UDim2.new(0.4, 0, 1, 0),
+            position = UDim2.new(0.3, 0, 0, 0),
+            text = "卡密:未设置",
+            color = Color3.fromRGB(220, 220, 220),
+            textSize = 14,
+            xAlign = Enum.TextXAlignment.Left
+        })
+
+        -- 3. 剩余时间显示（右侧：原实时更新区域）
+        local axStatusLabel = createLabel(titleRow, {
+            name = "AXStatus",
+            size = UDim2.new(0.3, 0, 1, 0),
+            position = UDim2.new(0.7, 0, 0, 0),
+            text = "未设置卡密",
+            color = Color3.fromRGB(200, 200, 200),
+            textSize = 14,
+            xAlign = Enum.TextXAlignment.Right
+        })
+
+        -- 【核心优化1：剩余时间+卡密实时更新循环（每秒刷新）】
+        local timeUpdateConnection = nil  -- 保存循环连接，用于后续销毁
+        local function startRealTimeUpdate()
+            -- 先断开旧循环（防止重复创建）
+            if timeUpdateConnection then
+                timeUpdateConnection:Disconnect()
+                timeUpdateConnection = nil
+            end
+
+            -- 启动新循环：每秒刷新一次卡密和剩余时间
+            timeUpdateConnection = task.spawn(function()
+                while true do
+                    -- 检查UI是否存在（防止UI销毁后报错）
+                    if not (axKeyDisplayLabel and axStatusLabel and axKeyDisplayLabel:IsDescendantOf(game) and axStatusLabel:IsDescendantOf(game)) then
+                        break
+                    end
+                    if not axContainer or not axContainer.Visible then
+                        task.wait(1)  -- UI隐藏时仍保持循环，但不更新（节省资源）
+                        break
+                    end
+
+                    -- 重新获取最新卡密数据（防止卡密更换后未更新）
+                    local latestSavedKeys = keyManager:readSavedKeys()
+                    local latestAxKey = latestSavedKeys[AX_CONFIG.keyId]
+                    local latestHasKey = latestAxKey ~= nil
+                    local latestIsExpired = latestHasKey and keyManager:isKeyExpired(latestAxKey)
+
+                    -- ------------ 卡密显示处理（仅前2位+后2位） ------------
+                    local keyDisplayText = "卡密:未设置"
+                    if latestHasKey then
+                        local key = latestAxKey.value
+                        if #key >= 4 then
+                            -- 卡密长度≥4位：显示前2位+...+后2位
+                            keyDisplayText = string.format("卡密:%s...%s", key:sub(1, 2), key:sub(-2))
+                        else
+                            -- 卡密长度<4位：直接显示完整卡密（避免...后无内容）
+                            keyDisplayText = string.format("卡密:%s", key)
+                        end
+                    end
+
+                    -- ------------ 剩余时间处理（原逻辑保留） ------------
+                    local statusText = "未设置卡密"
+                    local statusColor = Color3.fromRGB(200, 200, 200)
+                    if latestHasKey then
+                        if latestIsExpired then
+                            statusText = "卡密已过期"
+                            statusColor = Color3.fromRGB(255, 80, 80)
+                            -- 卡密过期后，停止循环（无需再刷新）
+                            if timeUpdateConnection then
+                                timeUpdateConnection:Disconnect()
+                                timeUpdateConnection = nil
+                            end
+                        else
+                            local timeData = keyManager:getRemainingTime(latestAxKey)
+                            statusText = string.format(
+                                "剩余 %d天%d小时%d分钟%d秒",
+                                timeData.days, timeData.hours, timeData.mins, timeData.secs, timeData.ms
+                            )
+                            statusColor = Color3.fromRGB(80, 255, 80)
+                        end
+                    end
+
+                    -- 更新UI显示（确保在Roblox主线程更新）
+                    task.defer(function()
+                        if axKeyDisplayLabel and axKeyDisplayLabel:IsDescendantOf(game) then
+                            axKeyDisplayLabel.Text = keyDisplayText
+                        end
+                        if axStatusLabel and axStatusLabel:IsDescendantOf(game) then
+                            axStatusLabel.Text = statusText
+                            axStatusLabel.TextColor3 = statusColor
+                        end
+                    end)
+
+                    task.wait(1)  -- 每秒刷新一次（均衡性能与实时性）
+                end
+            end)
+        end
+
+        -- 【核心优化2：UI显示时启动刷新，隐藏时停止】
+        axContainer:GetPropertyChangedSignal("Visible"):Connect(function()
+            if axContainer.Visible then
+                startRealTimeUpdate()  -- UI显示，启动实时更新
+            else
+                -- UI隐藏，断开循环（节省资源）
+                if timeUpdateConnection then
+                    timeUpdateConnection:Disconnect()
+                    timeUpdateConnection = nil
                 end
             end
-            
-            -- 2. 高亮当前按钮并强制更新selectedDuration
-            selectedDuration = option.value
-            btn.BackgroundColor3 = CONFIG.UI_COLORS.accent
-            btn.BackgroundColor3 = btn.BackgroundColor3  -- 强制引擎刷新
-            
-            -- 3. 调试输出（验证是否真的选中）
-            print("已选中时长：" .. option.text .. "（" .. selectedDuration .. "天）")
-        end
-    })
-    
-    -- 确保按钮加入数组（关键修复）
-    if btn then
-        table.insert(durationButtons, btn)
-    end
-end
+        end)
 
-            -- 修复：保存卡密按钮
-            createButton(buttonContainer, {
-                name = "SaveKeyBtn",
-                size = UDim2.new(1, 0, 1, 0),
-                position = UDim2.new(0, 0, 0, 0),
-                text = hasAxKey and "更换卡密" or "保存卡密",
+        -- 初始化时立即启动一次刷新
+        startRealTimeUpdate()
+
+        -- 卡密输入与保存按钮容器
+        local inputContainer = Instance.new("Frame")
+        inputContainer.Name = "InputContainer"
+        inputContainer.Size = UDim2.new(1, -10, 0, 30)
+        inputContainer.Position = UDim2.new(0, 5, 0, 35)
+        inputContainer.BackgroundTransparency = 1
+        inputContainer.Parent = axContainer
+
+        -- 卡密输入框
+        local keyInput = Instance.new("TextBox")
+        keyInput.Name = "AXKeyInput"
+        keyInput.Size = UDim2.new(0.6, -5, 1, 0)
+        keyInput.Position = UDim2.new(0, 0, 0, 0)
+        keyInput.PlaceholderText = "输入AX卡密"
+        keyInput.Text = hasAxKey and axKeyData.value or ""
+        keyInput.TextColor3 = Color3.new(1, 1, 1)
+        keyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+        keyInput.TextSize = 14
+        keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+        keyInput.BackgroundTransparency = 0.7
+        keyInput.Parent = inputContainer
+        createCorner(keyInput, 6)
+
+        -- 保存卡密按钮容器
+        local buttonContainer = Instance.new("Frame")
+        buttonContainer.Name = "ButtonContainer"
+        buttonContainer.Size = UDim2.new(0.4, 0, 1, 0)
+        buttonContainer.Position = UDim2.new(0.6, 5, 0, 0)
+        buttonContainer.BackgroundTransparency = 1
+        buttonContainer.Parent = inputContainer
+
+        -- 时长选择区域（取消高亮，右下角提示）
+        local durationRow = Instance.new("Frame")
+        durationRow.Name = "DurationRow"
+        durationRow.Size = UDim2.new(1, -10, 0, 30)
+        durationRow.Position = UDim2.new(0, 5, 0, 70)
+        durationRow.BackgroundTransparency = 1
+        durationRow.Parent = axContainer
+
+        createLabel(durationRow, {
+            name = "DurationLabel",
+            size = UDim2.new(0.25, 0, 1, 0),
+            position = UDim2.new(0, 0, 0, 0),
+            text = "有效期:",
+            textSize = 14,
+            xAlign = Enum.TextXAlignment.Left
+        })
+
+        local durationOptions = {
+            { text = "6小时", value = 0.25 },
+            { text = "12小时", value = 0.5 },
+            { text = "1天", value = 1 },
+            { text = "2天", value = 2 },
+            { text = "3天", value = 3 },
+            { text = "30天", value = 30 }
+        }
+        local selectedDuration = nil
+        local durationButtons = {}
+        local btnWidth = 0.12
+        local startX = 0.28
+
+        for i, option in ipairs(durationOptions) do
+            if not option then break end
+            
+            local btn = createButton(durationRow, {
+                name = "DurationBtn_" .. option.text,
+                size = UDim2.new(btnWidth, -3, 1, 0),
+                position = UDim2.new(startX + (i-1)*btnWidth, 3, 0, 0),
+                text = option.text,
+                textSize = 10,
+                bgColor = CONFIG.UI_COLORS.secondary,
+                bgTransparency = 0,
+                hoverColor = Color3.fromRGB(70, 70, 120),
+                onClick = function()
+                    selectedDuration = option.value
+                    showNotification("时长选择", "已选择有效期：" .. option.text, 2)
+                    print("已选中时长：" .. option.text .. "（" .. selectedDuration .. "天）")
+                end
+            })
+            
+            if btn then
+                table.insert(durationButtons, btn)
+            end
+        end
+
+        -- 保存卡密按钮（保存后重启刷新，确保显示最新卡密和剩余时间）
+        createButton(buttonContainer, {
+            name = "SaveKeyBtn",
+            size = UDim2.new(1, 0, 1, 0),
+            position = UDim2.new(0, 0, 0, 0),
+            text = hasAxKey and "更换卡密" or "保存卡密",
+            bgColor = CONFIG.UI_COLORS.primary,
+            hoverColor = Color3.fromRGB(70, 70, 120),
+            onClick = function()
+                if not keyInput:IsDescendantOf(game) or not keyManager or #durationButtons == 0 then
+                    showNotification("界面异常", "请重新打开墨水游戏菜单", 2)
+                    return
+                end
+                if keyInput.Text == "" then
+                    showNotification("输入错误", "请输入有效的卡密", 2)
+                    return
+                end
+                local expiryDays = selectedDuration or 30
+                local saveSuccess = keyManager:saveKey(AX_CONFIG.keyId, keyInput.Text, expiryDays)
+                if saveSuccess then
+                    showNotification("卡密已保存", string.format("AX卡密有效期：%d天", expiryDays), 3)
+                    -- 保存后重启实时更新，立即显示最新卡密和剩余时间
+                    startRealTimeUpdate()
+                    task.spawn(function()
+                        local currentMenu = UI_STATE.activeMenu
+                        cleanupOldUI()
+                        UI_STATE.activeMenu = currentMenu
+                        createMainUI()
+                    end)
+                else
+                    showNotification("保存失败", "卡密保存失败", 2)
+                end
+            end
+        })
+
+        -- 执行AX脚本按钮
+        createButton(axContainer, {
+            name = "ExecuteAXBtn",
+            size = UDim2.new(0.48, -5, 0, 30),
+            position = UDim2.new(0, 5, 0, 105),
+            text = "执行AX脚本",
+            textSize = 14,
+            bgColor = hasAxKey and not isAxExpired and CONFIG.UI_COLORS.success or CONFIG.UI_COLORS.danger,
+            hoverColor = hasAxKey and not isAxExpired and Color3.fromRGB(70, 120, 70) or Color3.fromRGB(170, 70, 70),
+            onClick = function()
+                if not hasAxKey or isAxExpired then
+                    showNotification("卡密错误", "请先设置有效的AX卡密", 3)
+                    return
+                end
+                getfenv().ADittoKey = axKeyData.value
+                loadstring(game:HttpGet(AX_CONFIG.scriptUrl))()
+                showNotification("脚本执行中", "AX脚本加载中...")
+            end
+        })
+
+        -- 获取卡密按钮
+        createButton(axContainer, {
+            name = "GetAXKeyBtn",
+            size = UDim2.new(0.48, -5, 0, 30),
+            position = UDim2.new(0.52, 0, 0, 105),
+            text = "获取AX卡密",
+            textSize = 14,
+            bgColor = CONFIG.UI_COLORS.accent,
+            hoverColor = Color3.fromRGB(255, 200, 100),
+            onClick = function()
+                setclipboard(AX_CONFIG.unlockUrl)
+                showNotification("链接已复制", "已复制解卡链接到剪贴板", 3)
+            end
+        })
+
+        -- 分隔线
+        local separator = Instance.new("Frame")
+        separator.Name = "Separator"
+        separator.Size = UDim2.new(1, -20, 0, 2)
+        separator.Position = UDim2.new(0, 10, 0, 125)
+        separator.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        separator.BorderSizePixel = 0
+        separator.Parent = axContainer
+
+        -- 其他墨水游戏脚本
+        local otherScripts = {
+            {
+                name = "ink-game(测试版)",
+                url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
+                desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+            },
+            {
+                name = "RINGTA",
+                url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
+                desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+            }
+        }
+
+        -- 创建其他脚本按钮
+        for i, script in ipairs(otherScripts) do
+            createButton(container, {
+                name = "Script" .. i,
+                layoutOrder = i + 1,
+                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                text = script.name,
                 bgColor = CONFIG.UI_COLORS.primary,
                 hoverColor = Color3.fromRGB(70, 70, 120),
                 onClick = function()
-                    if not keyInput:IsDescendantOf(game) or not keyManager or #durationButtons == 0 then
-                        showNotification("界面异常", "请重新打开墨水游戏菜单", 2)
-                        return
-                    end
-                    if keyInput.Text == "" then
-                        showNotification("输入错误", "请输入有效的卡密", 2)
-                        return
-                    end
-                    local expiryDays = selectedDuration or 30
-                    local saveSuccess = keyManager:saveKey(AX_CONFIG.keyId, keyInput.Text, expiryDays)
-                    if saveSuccess then
-                        showNotification("卡密已保存", string.format("AX卡密有效期：%d天", expiryDays), 3)
-                        task.spawn(function()
-                            local currentMenu = UI_STATE.activeMenu
-                            cleanupOldUI()
-                            UI_STATE.activeMenu = currentMenu
-                            createMainUI()
-                        end)
-                    else
-                        showNotification("保存失败", "卡密保存失败", 2)
-                    end
+                    createExecutionDialog(
+                        "执行 " .. script.name,
+                        script.desc,
+                        function()
+                            loadstring(game:HttpGet(script.url))()
+                            showNotification("功能加载中", script.name .. "脚本执行中...")
+                        end
+                    )
                 end
             })
+        end
 
-            -- 执行AX脚本按钮
-            createButton(axContainer, {
-                name = "ExecuteAXBtn",
-                size = UDim2.new(0.48, -5, 0, 30),
-                position = UDim2.new(0, 5, 0, 105),
-                text = "执行AX脚本",
-                textSize = 14,
-                bgColor = hasAxKey and not isAxExpired and CONFIG.UI_COLORS.success or CONFIG.UI_COLORS.danger,
-                hoverColor = hasAxKey and not isAxExpired and Color3.fromRGB(70, 120, 70) or Color3.fromRGB(170, 70, 70),
-                onClick = function()
-                    if not hasAxKey or isAxExpired then
-                        showNotification("卡密错误", "请先设置有效的AX卡密", 3)
-                        return
-                    end
-                    getfenv().ADittoKey = axKeyData.value
-                    loadstring(game:HttpGet(AX_CONFIG.scriptUrl))()
-                    showNotification("脚本执行中", "AX脚本加载中...")
-                end
-            })
-
-            -- 获取卡密按钮
-            createButton(axContainer, {
-                name = "GetAXKeyBtn",
-                size = UDim2.new(0.48, -5, 0, 30),
-                position = UDim2.new(0.52, 0, 0, 105),
-                text = "获取AX卡密",
-                textSize = 14,
-                bgColor = CONFIG.UI_COLORS.accent,
-                hoverColor = Color3.fromRGB(255, 200, 100),
-                onClick = function()
-                    setclipboard(AX_CONFIG.unlockUrl)
-                    showNotification("链接已复制", "已复制解卡链接到剪贴板", 3)
-                end
-            })
-
-            -- 分隔线
-            local separator = Instance.new("Frame")
-            separator.Name = "Separator"
-            separator.Size = UDim2.new(1, -20, 0, 2)
-            separator.Position = UDim2.new(0, 10, 0, 125)
-            separator.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-            separator.BorderSizePixel = 0
-            separator.Parent = axContainer
-
-            -- 其他墨水游戏脚本
-            local otherScripts = {
-                {
-                    name = "ink-game(测试版)",
-                    url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
-                    desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
-                },
-                {
-                    name = "RINGTA",
-                    url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
-                    desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
-                }
-            }
-
-            -- 创建其他脚本按钮
-            for i, script in ipairs(otherScripts) do
-                createButton(container, {
-                    name = "Script" .. i,
-                    layoutOrder = i + 1,
-                    size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-                    text = script.name,
-                    bgColor = CONFIG.UI_COLORS.primary,
-                    hoverColor = Color3.fromRGB(70, 70, 120),
-                    onClick = function()
-                        createExecutionDialog(
-                            "执行 " .. script.name,
-                            script.desc,
-                            function()
-                                loadstring(game:HttpGet(script.url))()
-                                showNotification("功能加载中", script.name .. "脚本执行中...")
-                            end
-                        )
-                    end
-                })
+        -- 【核心优化3：脚本清理时断开循环（防止内存泄漏）】
+        return function()
+            if timeUpdateConnection then
+                timeUpdateConnection:Disconnect()
+                timeUpdateConnection = nil
             end
+        end
+    end,
+    panelTitle = "墨水游戏"
+},
 
-            return function() end
-        end,
-        panelTitle = "墨水游戏"
-    },
     {
         id = "99生存",
         displayName = "99生存",
