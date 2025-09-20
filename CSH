@@ -270,7 +270,7 @@ local function showAnnouncement()
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
     
     -- 标题（缩小50%：原22 → 11）
-    local titleLabel = createBasicLabel(noticeFrame, "3.21汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createBasicLabel(noticeFrame, "3.22汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 22 * 0.5  -- 仅公告标题缩小
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -286,7 +286,7 @@ local function showAnnouncement()
     scrollFrame.Parent = noticeFrame
     
     -- 内容标签（放在滚动框架内）
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n8月21日05:35更新军事大亨去除GB失效脚本全自动农场脚本挂机即可\n8月21日10:07更新墨水游戏新版老外Xa包括使用教程获取方法和注意事项\n8月21日00:58更新WARMIX[PVP FPS 武器战斗射击枪]-保护房屋免受怪物侵害-保护总统\n8月22日18:17添加了chain服务器脚本\n9月12日更新墨水游戏汉化脚目前作者已学会汉化逐渐汉化中\n9月13日10:00更新新的墨水游戏汉化去除墨水游戏过期脚本去除ink-game正常版添加ink-game测试版汉化\n9月13日16:12全面取消汉化更新新的方法等待半天新更新了Xa链接修复过期\n9月13日23:08更新一键汉化脚本打开脚本点击按钮将进行汉化目前只支持墨水游戏ax或ink-game和RINGTA一键汉化脚本在墨水游戏菜单(禁止拿去圈💰尤其是知道源码地址的人)\n9月14日12:23添加了最强战场汉化还是在一键汉化脚本里面，还是在墨水菜单\n9月14日17:55经过3小时也是汉化成功红叶脚本鱼详情看一键汉化\n去除全部没有汉化的脚本只留下汉化脚本汉化请点击一键汉化请优先将你需要的汉化脚本给执行出来点击汉化即可汉化点击一键汉化脚本会有详细提示哪些服务器脚本可以使用汉化欢迎使用！添加了红叶鱼的汉化(完整度极高)\n9月15日00:00添加被遗弃脚本ky3-nol😎推荐搭配一键汉化\n9月15日02:57添加99生存虚空脚本汉化和DarkEsc Hub v1.02汉化\n9月15日更新doors:NullFire汉化\n9月15日12:47添加偷走脑红Chilli脚本\n9月16日22:20添加了99生存RINGTA\n9月17日大更新调整所有菜单调整优化所有汉化\n9月19日09:53大整改修复部分没有汉化并且修复被遗弃卡密失效问题添加ax输入卡密按钮到时候解完卡密，直接输入卡密执行即可\n9月20日15:17添加了墨水游戏ax卡验证并且将自动隐藏卡密信息并且修复点击ax卡密不会取消窗口而是得自己手动取消然后再添加了一个保存卡密信息，防止第二次重复输入，可直接点击执行就行", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
     contentLabel.TextSize = 16 * 0.5  -- 仅公告内容缩小
     contentLabel.TextWrapped = true
@@ -1666,18 +1666,19 @@ local MENU_CONFIG = {
         if not container or not container:IsDescendantOf(game) then return function() end end
         
         -- 按钮数据（含说明）
-    local buttons = {
-        {
-            name = "ink-game(测试版)",
-            url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
-            desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
-        },
-        {
-            name = "RINGTA",
-            url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
-            desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+        local buttons = {
+            {
+                name = "ink-game(测试版)",
+                url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
+                desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+            },
+            {
+                name = "RINGTA",
+                url = "https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua",
+                desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
+            }
         }
-    }
+        
         -- AX登录卡密部分
         local axButtons = {
             {
@@ -1686,9 +1687,42 @@ local MENU_CONFIG = {
                     script_key = key or ""
                     loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/2401c37b94195677018fb18f72dec3fe.lua"))()
                 end,
-                desc = "脚本使用说明和介绍\n首先在下方输入卡密，然后点击执行\n需要先到解卡链接获取卡密"
+                desc = "脚本使用说明和介绍\n首先在下方输入卡密，然后点击执行\n需要先到解卡链接获取卡密",
+                keyId = "AX_KEY" -- 唯一标识符
             }
         }
+        
+        -- 卡密文件路径
+        local KEY_FILE_PATH = (getPathFunc and getPathFunc() or "RobloxScripts") .. "/ScriptKeys.json"
+        
+        -- 读取保存的卡密
+        local function readSavedKeys()
+            if not readFunc then return {} end
+            local success, content = pcall(readFunc, KEY_FILE_PATH)
+            if not success or not content or content == "" then
+                return {}
+            end
+            local success, keys = pcall(function()
+                return HttpService:JSONDecode(content)
+            end)
+            return success and keys or {}
+        end
+        
+        -- 保存卡密
+        local function saveKey(keyId, keyValue)
+            if not writeFunc then return false end
+            local keys = readSavedKeys()
+            keys[keyId] = keyValue
+            local success, json = pcall(function()
+                return HttpService:JSONEncode(keys)
+            end)
+            if not success then return false end
+            local success, err = pcall(writeFunc, KEY_FILE_PATH, json)
+            return success
+        end
+        
+        -- 获取已保存的卡密
+        local savedKeys = readSavedKeys()
         
         -- 创建AX执行按钮（放在最前面）
         for i, btn in ipairs(axButtons) do
@@ -1696,16 +1730,28 @@ local MENU_CONFIG = {
                 name = "AX" .. i,
                 layoutOrder = i, -- 放在最前面
                 size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
-                text = btn.name,
+                text = btn.name .. (savedKeys[btn.keyId] and " (已保存)" or ""),
                 bgColor = CONFIG.UI_COLORS.primary,
                 hoverColor = Color3.fromRGB(70, 70, 120),
                 onClick = function()
-                    createExecutionDialog(
-                        "执行 " .. btn.name,
-                        btn.desc,
-                        function()
-                            if btn.func then
-                                -- 创建卡密输入弹窗（完全居中版本）
+                    -- 如果有保存的卡密，直接执行
+                    if savedKeys[btn.keyId] then
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            "使用已保存的卡密执行脚本",
+                            function()
+                                btn.func(savedKeys[btn.keyId])
+                                showNotification("功能加载中", "脚本执行中...")
+                            end,
+                            "确认执行",
+                            "取消"
+                        )
+                    else
+                        createExecutionDialog(
+                            "执行 " .. btn.name,
+                            btn.desc,
+                            function()
+                                -- 创建卡密输入弹窗
                                 local localPlayer = Players.LocalPlayer
                                 if not localPlayer then return end
                                 local playerGui = localPlayer:FindFirstChild("PlayerGui")
@@ -1716,7 +1762,7 @@ local MENU_CONFIG = {
                                 keyInputGui.IgnoreGuiInset = true
                                 keyInputGui.Parent = playerGui
                                 
-                                -- 设置最高显示层级（忍者注入器兼容）
+                                -- 设置最高显示层级
                                 pcall(function()
                                     keyInputGui.DisplayOrder = 1000
                                 end)
@@ -1727,9 +1773,9 @@ local MENU_CONFIG = {
                                 overlay.BackgroundTransparency = 0.7
                                 overlay.Parent = keyInputGui
                                 
-                                -- 对话框框架（完全居中）
+                                -- 对话框框架
                                 local dialogFrame = Instance.new("Frame")
-                                dialogFrame.Size = UDim2.new(0, 350, 0, 220)
+                                dialogFrame.Size = UDim2.new(0, 350, 0, 280) -- 增加高度以容纳保存选项
                                 dialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
                                 dialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
                                 dialogFrame.BackgroundColor3 = CONFIG.UI_COLORS.secondary
@@ -1737,7 +1783,7 @@ local MENU_CONFIG = {
                                 dialogFrame.Parent = overlay
                                 createCorner(dialogFrame, 12)
                                 
-                                -- 标题（居中）
+                                -- 标题
                                 local titleLabel = createLabel(dialogFrame, {
                                     name = "KeyInputTitle",
                                     size = UDim2.new(1, -40, 0, 40),
@@ -1749,11 +1795,11 @@ local MENU_CONFIG = {
                                     xAlign = Enum.TextXAlignment.Center
                                 })
                                 
-                                -- 输入框（完全居中）
+                                -- 输入框（使用密码模式）
                                 local keyInput = Instance.new("TextBox")
                                 keyInput.Name = "AXKeyInput"
                                 keyInput.Size = UDim2.new(0.8, 0, 0, 40)
-                                keyInput.Position = UDim2.new(0.5, 0, 0.5, -10)
+                                keyInput.Position = UDim2.new(0.5, 0, 0.3, 0)
                                 keyInput.AnchorPoint = Vector2.new(0.5, 0.5)
                                 keyInput.PlaceholderText = "请输入AX卡密"
                                 keyInput.Text = ""
@@ -1763,10 +1809,46 @@ local MENU_CONFIG = {
                                 keyInput.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
                                 keyInput.BackgroundTransparency = 0.7
                                 keyInput.TextXAlignment = Enum.TextXAlignment.Center
+                                keyInput.Password = true -- 设置为密码模式
                                 keyInput.Parent = dialogFrame
                                 createCorner(keyInput, 6)
                                 
-                                -- 按钮容器（完全居中）
+                                -- 保存卡密选项
+                                local saveCheckbox = Instance.new("TextButton")
+                                saveCheckbox.Name = "SaveKeyCheckbox"
+                                saveCheckbox.Size = UDim2.new(0, 20, 0, 20)
+                                saveCheckbox.Position = UDim2.new(0.3, 0, 0.55, 0)
+                                saveCheckbox.AnchorPoint = Vector2.new(0.5, 0.5)
+                                saveCheckbox.BackgroundColor3 = Color3.fromRGB(80, 80, 100)
+                                saveCheckbox.Text = ""
+                                saveCheckbox.Parent = dialogFrame
+                                createCorner(saveCheckbox, 4)
+                                
+                                local checkmark = Instance.new("Frame")
+                                checkmark.Name = "Checkmark"
+                                checkmark.Size = UDim2.new(0, 12, 0, 12)
+                                checkmark.Position = UDim2.new(0.5, 0, 0.5, 0)
+                                checkmark.AnchorPoint = Vector2.new(0.5, 0.5)
+                                checkmark.BackgroundColor3 = CONFIG.UI_COLORS.accent
+                                checkmark.Visible = true -- 默认选中
+                                checkmark.Parent = saveCheckbox
+                                createCorner(checkmark, 2)
+                                
+                                local saveLabel = createLabel(dialogFrame, {
+                                    name = "SaveKeyLabel",
+                                    size = UDim2.new(0, 120, 0, 20),
+                                    position = UDim2.new(0.5, 10, 0.55, 0),
+                                    anchor = Vector2.new(0, 0.5),
+                                    text = "保存卡密",
+                                    textSize = 14,
+                                    xAlign = Enum.TextXAlignment.Left
+                                })
+                                
+                                saveCheckbox.MouseButton1Click:Connect(function()
+                                    checkmark.Visible = not checkmark.Visible
+                                end)
+                                
+                                -- 按钮容器
                                 local buttonContainer = Instance.new("Frame")
                                 buttonContainer.Size = UDim2.new(0.8, 0, 0, 40)
                                 buttonContainer.Position = UDim2.new(0.5, 0, 0.8, 0)
@@ -1786,6 +1868,19 @@ local MENU_CONFIG = {
                                             showNotification("输入错误", "请输入有效的卡密", 2)
                                             return
                                         end
+                                        
+                                        -- 保存卡密（如果选中）
+                                        if checkmark.Visible then
+                                            local saveSuccess = saveKey(btn.keyId, keyInput.Text)
+                                            if saveSuccess then
+                                                showNotification("卡密已保存", "卡密已保存，下次无需输入", 2)
+                                                -- 更新按钮文本
+                                                container:FindFirstChild("AX" .. i).Text = btn.name .. " (已保存)"
+                                            else
+                                                showNotification("保存失败", "卡密保存失败", 2)
+                                            end
+                                        end
+                                        
                                         btn.func(keyInput.Text)
                                         keyInputGui:Destroy()
                                         showNotification("功能加载中", "脚本执行中...")
@@ -1817,6 +1912,10 @@ local MENU_CONFIG = {
                                 keyInput.FocusLost:Connect(function(enterPressed)
                                     if enterPressed then
                                         if keyInput.Text ~= "" then
+                                            -- 保存卡密（如果选中）
+                                            if checkmark.Visible then
+                                                saveKey(btn.keyId, keyInput.Text)
+                                            end
                                             btn.func(keyInput.Text)
                                             keyInputGui:Destroy()
                                             showNotification("功能加载中", "脚本执行中...")
@@ -1826,8 +1925,8 @@ local MENU_CONFIG = {
                             else
                                 loadstring(game:HttpGet(btn.url))()
                             end
-                        end
-                    )
+                        )
+                    end
                 end
             })
         end
