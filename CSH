@@ -2064,8 +2064,23 @@ local MENU_CONFIG = {
         displayName = "最强的战场",--菜单名称
         layoutOrder = 8,--菜单编号顺序
         contentFunc = function(container)
-            -- 偷走脑红菜单内容
+            -- 最强的战场菜单内容
             if not container or not container:IsDescendantOf(game) then return function() end end
+            
+            -- 添加复制卡密按钮（放在最前面）
+            createButton(container, {
+                name = "CopyKeyBtn",
+                layoutOrder = 1,
+                size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
+                text = "点击复制VexonHub卡密",
+                bgColor = Color3.fromRGB(255, 215, 0), -- 黄色背景
+                textColor = Color3.fromRGB(0, 0, 0), -- 黑色文字
+                hoverColor = Color3.fromRGB(255, 230, 100), -- 亮黄色悬停
+                onClick = function()
+                    setclipboard("VexonHub_3")
+                    showNotification("卡密已复制", "VexonHub_3 已复制到剪贴板", 2)
+                end
+            })
             
             -- 按钮数据（含说明）
             local buttons = {
@@ -2084,7 +2099,7 @@ local MENU_CONFIG = {
             for i, btn in ipairs(buttons) do
                 createButton(container, {
                     name = "11" .. i,
-                    layoutOrder = i,
+                    layoutOrder = i + 1, -- 放在复制按钮后面
                     size = UDim2.new(1, 0, 0, 45 * UI_STATE.scale),
                     text = btn.name,
                     bgColor = CONFIG.UI_COLORS.primary,
