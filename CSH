@@ -16,7 +16,7 @@ local task = task
 local Enum = Enum
 
 -- 卡密配置（保留原定义）
-local VALID_KEY = "QRNB" -- 默认卡密
+local VALID_KEY = "QRNB4588" -- 默认卡密
 local PERMANENT_KEY = "秋容粉丝团永久卡" -- 永久卡密
 
 -- 注入器文件操作兼容（核心：获取持久化路径）
@@ -287,7 +287,7 @@ end
 local function Popup_VerifyKey()
     local gui = createScreenGui("Popup_KeyVerify")
     local frame = createFrame(gui, UDim2.new(0, 420, 0, 260), UDim2.new(0.5, -210, 0.5, -130))
-    createLabel(frame, "请输入免费卡密(进QQ频道获取)", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
+    createLabel(frame, "请输入免费卡密(进QQ频道获取最新9月21日)", UDim2.new(1, 0, 0, 35), UDim2.new(0, 0, 0, 25))
     
     local _, inputKey = createClickToInput(
         frame, UDim2.new(1, -50, 0, 45), UDim2.new(0, 25, 0, 75),
@@ -297,13 +297,13 @@ local function Popup_VerifyKey()
     local statusLabel = createLabel(frame, "", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 135))
     local done = false
     
-    createButton(frame, "验证卡密", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
+    createButton(frame, "确认回答", UDim2.new(0.45, 0, 0, 35), UDim2.new(0.1, 0, 0, 185), function()
         if inputKey.Text == VALID_KEY or inputKey.Text == PERMANENT_KEY then
             done = true
             createTargetFolder(inputKey.Text) -- 验证通过创建文件
             gui:Destroy()
         else
-            statusLabel.Text = "卡密错误，请检查后重新输入"
+            statusLabel.Text = "卡密输入错误或者已失效请前往QQ频道\nQRYYDS54188NB获取最新卡密"
             statusLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
         end
     end)
