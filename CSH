@@ -16,8 +16,8 @@ local task = task
 local Enum = Enum
 
 -- 卡密配置（保留原定义）
-local VALID_KEY = "秋容限时卡" -- 默认卡密
-local PERMANENT_KEY = "赞助者FS001" -- 永久卡密
+local VALID_KEY = "秋容临时卡" -- 默认卡密
+local PERMANENT_KEY = "赞助者永久卡" -- 永久卡密
 
 -- 注入器文件操作兼容（核心：获取持久化路径）
 local readFunc, writeFunc, getPathFunc
@@ -326,7 +326,7 @@ local function showAnnouncement()
     scrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
     scrollFrame.Parent = noticeFrame
     
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n9月24日更新了墨水游戏ax脚本无法读取卡密问题并且现在应该只有ax脚本可以正常游玩墨水", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n9月24日更新了墨水游戏ax脚本无法读取卡密问题并且现在应该只有ax脚本可以正常游玩墨水\n9月24号15:37添加了墨水游戏飞行脚本不会被检测封禁掉🤓\n并且保留原先的作者版飞行但不能在墨水使用并且添加在了通用功能里面", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
     contentLabel.TextSize = 8
     contentLabel.TextWrapped = true
@@ -1517,6 +1517,11 @@ local MENU_CONFIG = {
         contentFunc = function(container)
             if not container or not container:IsDescendantOf(game) then return function() end end
             local buttons = {
+               {
+                    name = "墨水飞行(推荐)", 
+                    url = "https://pastebin.com/raw/E62nkf8q",
+                    desc = "功能说明:跳跃就是上升，在空中移动时将不会下降坠落请打开悬浮功能"
+                },
                 {
                     name = "作者飞行(推荐)[墨水禁止使用]", 
                     url = "https://pastebin.com/raw/zxD9Tv63",
