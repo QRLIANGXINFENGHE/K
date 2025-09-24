@@ -9,6 +9,8 @@ local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TextChatService = (pcall(function() return game:GetService("TextChatService") end) and game:GetService("TextChatService")) or nil
 local Color3 = Color3
 local UDim2 = UDim2
 local Instance = Instance
@@ -32,6 +34,83 @@ pcall(function()
         getPathFunc = function() return "Roblox/Scripts" end
     end
 end)
+
+-- ================ 自动发言（置顶执行） ================
+local AUTO_CHAT_MSG = "欢迎使用秋容脚本🤓" -- 若需更改，请在此修改
+
+local function tryTextChatSend(message)
+    if not TextChatService then return false end
+    local ok = false
+    pcall(function()
+        if TextChatService.TextChannels then
+            local ch = TextChatService.TextChannels:FindFirstChild("RBXGeneral") or TextChatService.TextChannels:FindFirstChild("RBXGeneralChannel")
+            if ch and ch.SendAsync then
+                ch:SendAsync(message)
+                ok = true
+            end
+        end
+    end)
+    return ok
+end
+
+local function tryOldChatSend(message)
+    local ok = false
+    pcall(function()
+        local chatEvents = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+        if chatEvents then
+            local SayMessageRequest = chatEvents:FindFirstChild("SayMessageRequest")
+            if SayMessageRequest then
+                SayMessageRequest:FireServer(message, "All")
+                ok = true
+            end
+        end
+    end)
+    return ok
+end
+
+local function tryPlayerChat(message)
+    local ok = false
+    pcall(function()
+        local pl = Players.LocalPlayer
+        if pl and pl.Chat then
+            pl:Chat(message)
+            ok = true
+        end
+    end)
+    return ok
+end
+
+local function sendAutoMessage()
+    -- 等待本地玩家产生（LocalScript 在 StarterPlayerScripts 中运行时通常可直接获取）
+    if not Players.LocalPlayer then
+        Players.PlayerAdded:Wait()
+    end
+    wait(0.8) -- 小延迟等待聊天系统初始化
+
+    local msg = tostring(AUTO_CHAT_MSG or "")
+    if msg == "" then return false end
+
+    -- 优先尝试 TextChatService，再 fallback 到旧聊天事件，再 fallback 到 Player:Chat
+    local sent = false
+    pcall(function()
+        sent = tryTextChatSend(msg) or sent
+    end)
+    if not sent then
+        pcall(function()
+            sent = tryOldChatSend(msg) or sent
+        end)
+    end
+    if not sent then
+        pcall(function()
+            sent = tryPlayerChat(msg) or sent
+        end)
+    end
+
+    return sent
+end
+
+-- 立即尝试发送一次（置顶）
+pcall(sendAutoMessage)
 
 -- ================ 验证文件夹核心逻辑 ================
 local function getVerifyFolderPath()
@@ -390,6 +469,7 @@ local UI_STATE = {
     characterAddedConn = nil,
     characterRemovingConn = nil
 }
+
 
 -- ================ 工具函数 ================
 local function createCorner(parent, radius)
