@@ -36,7 +36,7 @@ pcall(function()
 end)
 
 -- ================ 自动发言（置顶执行） ================
-local AUTO_CHAT_MSG = "欢迎使用秋容脚本🤓" -- 若需更改，请在此修改
+local AUTO_CHAT_MSG = "秋容太帅了🤓👆" -- 若需更改，请在此修改
 
 local function tryTextChatSend(message)
     if not TextChatService then return false end
