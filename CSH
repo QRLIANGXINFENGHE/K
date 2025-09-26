@@ -1,3 +1,18 @@
+-- 秋容脚本：服务器黑名单检测（强烈建议放在脚本最顶部）
+local BLOCKED_SERVERS = {
+    [12603480397] = "https://www.roblox.com/games/12603480397/1937",
+    -- [更多PlaceId] = "对应链接",
+    -- [111111111] = "https://www.roblox.com/games/111111111/xxxx",
+    -- [222222222] = "https://www.roblox.com/games/222222222/yyyy",
+}
+if BLOCKED_SERVERS[game.PlaceId] then
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    if LocalPlayer and LocalPlayer.Kick then
+        LocalPlayer:Kick("检测到本服（PlaceId: " .. tostring(game.PlaceId) .. "）禁止使用秋容脚本。\n如需体验请前往其他服务器"..BLOCKED_SERVERS[game.PlaceId])
+    end
+    return
+end
 -- 秋容脚本验证核心逻辑（LocalScript，适配多注入器）
 -- 验证标记：注入器持久化目录下的"同意秋容脚本"文件夹
 -----------------------------------------------------------
@@ -18,7 +33,7 @@ local task = task
 local Enum = Enum
 
 -- 卡密配置（保留原定义）
-local VALID_KEY = "秋容无敌卡" -- 默认卡密
+local VALID_KEY = "秋容临时卡" -- 默认卡密
 local PERMANENT_KEY = "赞助者永久卡" -- 永久卡密
 
 -- 注入器文件操作兼容（核心：获取持久化路径）
@@ -36,7 +51,7 @@ pcall(function()
 end)
 
 -- ================ 自动发言（置顶执行） ================
-local AUTO_CHAT_MSG = "😘欢迎使用免费秋容脚本KS搜CN_QRNBYYDS获取脚本" -- 若需更改，请在此修改
+local AUTO_CHAT_MSG = "欢迎使用秋容脚本🤓" -- 若需更改，请在此修改
 
 local function tryTextChatSend(message)
     if not TextChatService then return false end
@@ -391,7 +406,7 @@ local function showAnnouncement()
     local noticeGui = createScreenGui("Popup_Announcement")
     local noticeFrame = createFrame(noticeGui, UDim2.new(0, 400, 0, 300), UDim2.new(0.5, -200, 0.5, -150))
     
-    local titleLabel = createLabel(noticeFrame, "3.4汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
+    local titleLabel = createLabel(noticeFrame, "3.3.1汉化版 脚本公告", UDim2.new(1, 0, 0, 40), UDim2.new(0, 0, 0, 15))
     titleLabel.TextSize = 11
     titleLabel.TextColor3 = Color3.fromRGB(255, 210, 0)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -405,7 +420,7 @@ local function showAnnouncement()
     scrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
     scrollFrame.Parent = noticeFrame
     
-    local contentLabel = createLabel(scrollFrame, "更新日志:\n9月24日更新了墨水游戏ax脚本无法读取卡密问题并且现在应该只有ax脚本可以正常游玩墨水\n9月24号15:37添加了墨水游戏飞行脚本不会被检测封禁掉🤓\n并且保留原先的作者版飞行但不能在墨水使用并且添加在了通用功能里面的墨水飞行也可以试用其他服务器\n9月26日16:29添加了墨水游戏新的Owl-Hook脚本并且支持汉化", 
+    local contentLabel = createLabel(scrollFrame, "更新日志:\n9月24日更新了墨水游戏ax脚本无法读取卡密问题并且现在应该只有ax脚本可以正常游玩墨水\n9月24号15:37添加了墨水游戏飞行脚本不会被检测封禁掉🤓\n并且保留原先的作者版飞行但不能在墨水使用并且添加在了通用功能里面", 
         UDim2.new(1, -10, 0, 0), UDim2.new(0, 5, 0, 5))
     contentLabel.TextSize = 8
     contentLabel.TextWrapped = true
@@ -2123,11 +2138,6 @@ local MENU_CONFIG = {
             -- 其他墨水游戏脚本
             local otherScripts = {
                 {
-                    name = "Owl-Hook可以使用",
-                    url = "https://api.luarmor.net/files/v4/loaders/0785b4b8f41683be513badd57f6a71c0.lua",
-                    desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
-                },
-                {
                     name = "ink-game(测试版)无法使用！",
                     url = "https://raw.githubusercontent.com/TexRBLX/Roblox-stuff/refs/heads/main/ink-game/testing.lua",
                     desc = "全面取消汉化🤝🤓👆请使用一键汉化脚本"
@@ -2487,7 +2497,7 @@ local function createMainUI()
         onClick = function()
             createExecutionDialog(
                 "支持汉化的服务器",
-                "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)--Owl-Hook\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02--RINGTA",
+                "功能说明：\n秋容汉化你值得拥有🤝🤓👆\n使用教程先执行你需要汉化的脚本如RINGTA\n等它加载完成UI点击右上角汉化界面即可\n目前支持汉化的脚本有\n墨水游戏:RINGTA--ink-game(测试版)\n最坚强的战场:VexonHub\n鱼:红叶(已汉化全部只有极少部分没有汉化因为不需要)\n死铁轨:红叶\n被遗弃:ky3-nol\n99生存:虚空--DarkEsc Hub v1.02--RINGTA",
                 function()
                     showNotification("已查看", "支持汉化的服务器列表已查看", 2)
                 end,
